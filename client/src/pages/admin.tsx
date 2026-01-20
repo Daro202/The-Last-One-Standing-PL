@@ -64,8 +64,8 @@ export default function AdminPanel() {
     <div className="min-h-screen bg-background text-foreground grid grid-cols-[300px_1fr_350px] gap-0 h-screen overflow-hidden">
       
       {/* LEFT: Navigation & Questions */}
-      <div className="border-r border-border bg-card/50 flex flex-col h-full">
-        <div className="p-4 border-b border-border">
+      <div className="border-r border-border bg-card/50 flex flex-col h-full overflow-hidden">
+        <div className="p-4 border-b border-border shrink-0">
           <h2 className="font-bold text-lg tracking-wider text-primary">GAME CONTROLS</h2>
           <Button 
             variant="outline" 
@@ -122,7 +122,7 @@ export default function AdminPanel() {
           </div>
         </div>
         
-        <ScrollArea className="flex-1">
+        <div className="flex-1 overflow-y-auto custom-scrollbar">
           <div className="p-4 space-y-6">
             {ROUNDS.map((round) => (
               <div key={round.id} className="space-y-2">
@@ -167,7 +167,7 @@ export default function AdminPanel() {
               </div>
             ))}
           </div>
-        </ScrollArea>
+        </div>
       </div>
 
       {/* CENTER: Live Control */}
