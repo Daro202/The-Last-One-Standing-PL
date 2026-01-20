@@ -24,9 +24,17 @@ export default function AdminPanel() {
         <div className="p-4 border-b border-border">
           <h2 className="font-bold text-lg tracking-wider text-primary">GAME CONTROLS</h2>
           <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full mt-4 mb-2 border-primary/50 text-primary hover:bg-primary/10"
+            onClick={() => window.open('/audience', '_blank', 'location=yes,height=1080,width=1920,scrollbars=yes,status=yes')}
+          >
+            <Tv className="w-4 h-4 mr-2" /> Open Projector View
+          </Button>
+          <Button 
             variant="destructive" 
             size="sm" 
-            className="w-full mt-2"
+            className="w-full"
             onClick={resetGame}
           >
             <RotateCcw className="w-4 h-4 mr-2" /> Reset Game
