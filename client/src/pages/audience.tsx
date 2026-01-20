@@ -40,9 +40,12 @@ export default function AudienceView() {
               exit={{ opacity: 0, scale: 1.1 }}
               className="space-y-8"
             >
-              <h2 className="text-6xl md:text-8xl font-black text-white/20 tracking-tighter">
+              <h2 className="text-6xl md:text-8xl font-black text-white/20 tracking-tighter animate-pulse">
                 WAITING FOR QUESTION
               </h2>
+              <p className="text-white/10 font-mono mt-4 uppercase tracking-widest text-sm">
+                Waiting for host to select next question...
+              </p>
             </motion.div>
           ) : (
             <motion.div

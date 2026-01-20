@@ -33,8 +33,13 @@ const CHANNEL_NAME = '1_of_10_game_channel';
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<GameState>(() => {
-    const saved = localStorage.getItem('game_state');
-    return saved ? JSON.parse(saved) : INITIAL_STATE;
+    try {
+      const saved = localStorage.getItem('game_state');
+      return saved ? JSON.parse(saved) : INITIAL_STATE;
+    } catch (e) {
+      console.error("Failed to load game state", e);
+      return INITIAL_STATE;
+    }
   });
 
   // Sync with BroadcastChannel

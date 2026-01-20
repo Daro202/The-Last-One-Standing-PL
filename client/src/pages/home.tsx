@@ -17,26 +17,40 @@ export default function Home() {
 
       <div className="grid md:grid-cols-2 gap-8 w-full max-w-2xl">
         <Link href="/admin">
-          <div className="group relative p-8 rounded-2xl bg-card border border-border hover:border-primary transition-all cursor-pointer overflow-hidden">
+          <div className="group relative p-8 rounded-2xl bg-card border border-border hover:border-primary transition-all cursor-pointer overflow-hidden h-full">
             <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="flex flex-col items-center gap-4 relative z-10">
-              <Monitor className="w-16 h-16 text-primary" />
+              <div className="p-4 rounded-full bg-primary/10 text-primary mb-2">
+                <Monitor className="w-12 h-12" />
+              </div>
               <div className="space-y-2">
-                <h2 className="text-2xl font-bold">Host Panel</h2>
-                <p className="text-muted-foreground text-sm">Control the game flow, questions, and players.</p>
+                <h2 className="text-3xl font-bold uppercase">Host Panel</h2>
+                <div className="px-4 py-1 bg-primary/20 text-primary rounded-full text-xs font-bold inline-block mb-2">
+                  CLICK HERE TO CONTROL GAME
+                </div>
+                <p className="text-muted-foreground text-sm">
+                  Open this to select questions, award points, and manage the show.
+                </p>
               </div>
             </div>
           </div>
         </Link>
 
         <Link href="/audience">
-          <div className="group relative p-8 rounded-2xl bg-card border border-border hover:border-accent transition-all cursor-pointer overflow-hidden">
+          <div className="group relative p-8 rounded-2xl bg-card border border-border hover:border-accent transition-all cursor-pointer overflow-hidden h-full">
             <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="flex flex-col items-center gap-4 relative z-10">
-              <Tv className="w-16 h-16 text-accent" />
+              <div className="p-4 rounded-full bg-accent/10 text-accent mb-2">
+                <Tv className="w-12 h-12" />
+              </div>
               <div className="space-y-2">
-                <h2 className="text-2xl font-bold">Audience View</h2>
-                <p className="text-muted-foreground text-sm">Display for the big screen / projector.</p>
+                <h2 className="text-3xl font-bold uppercase">Audience View</h2>
+                <div className="px-4 py-1 bg-accent/20 text-accent rounded-full text-xs font-bold inline-block mb-2">
+                  DISPLAY ONLY
+                </div>
+                <p className="text-muted-foreground text-sm">
+                  Open this on the big screen. It will automatically update when the Host acts.
+                </p>
               </div>
             </div>
           </div>
