@@ -1,0 +1,160 @@
+PROMPT DO REPLIT AI
+
+Build a web application for a quiz game inspired by “1 of 10”.
+
+Goal
+Create a visual prototype for a live quiz event.
+The app is a demo / MVP focused on UI, layout and flow, not perfect game logic.
+
+Application Views
+
+Audience View (Large Screen / TV)
+
+Optimized for big screens and visibility from several meters
+
+Very large, high-contrast question text
+
+Display:
+
+Current round name
+
+Question text
+
+Status messages (e.g. “Waiting for answer”, “Correct”, “Incorrect”)
+
+No buttons for answering
+
+Host / Admin Panel
+
+Accessible via a separate route (e.g. /admin)
+
+Functions:
+
+Select current round
+
+Load and display next question
+
+Mark answer as correct or incorrect
+
+Select which player answered
+
+Eliminate players
+
+Assign points
+
+View player list with:
+
+name
+
+status (ACTIVE / ELIMINATED)
+
+points
+
+Simple statistics view
+
+Game Rounds (high-level, for UI flow only)
+
+Round 1 – Yes / No warm-up
+
+Simple yes/no questions
+
+Wrong answer eliminates the player
+
+Round 2 – Yes / No warm-up
+
+Simple yes/no questions
+
+Wrong answer eliminates the player
+
+Round 3 – Mandatory Answer Round
+
+All players must answer
+
+Correct answer gives +1 point
+
+No elimination during the round
+
+After the round, 40% of players with the lowest score are eliminated
+
+Round 4 – Battle Round
+
+Question asked to all remaining players
+
+First player to buzz in answers
+
+If correct, player chooses to answer again or challenge another player
+
+Wrong answers eliminate the player
+
+These rules are for UI flow only.
+Backend logic can be simplified.
+
+Data Handling
+
+Load data from Excel files instead of a database.
+
+questions.xlsx
+Columns:
+
+question_id
+
+question_text
+
+correct_answer
+
+question_type (YES_NO or OPEN)
+
+players.xlsx
+Columns:
+
+player_id
+
+name
+
+points
+
+status (ACTIVE / ELIMINATED)
+
+The players file is imported at the start and exported at the end with final results.
+
+Technical Preferences
+
+Backend: Python + Flask (preferred)
+
+Simple in-memory state
+
+Clean, readable code
+
+Focus on clarity and live-event usability
+
+This application is a prototype for demonstration purposes.
+
+🧠 2️⃣ PRZYKŁADOWE PYTANIA DO KONKURSU
+
+Poniżej masz gotową bazę startową – dokładnie pod Wasze rundy.
+Możesz to skopiować do Excela.
+
+📄 RUNDY 1–2 – TAK / NIE (YES_NO)
+question_id	question_text	correct_answer	question_type
+1	Czy stolicą Szwecji jest Sztokholm?	TAK	YES_NO
+2	Czy Szwajcaria należy do Unii Europejskiej?	NIE	YES_NO
+3	Czy walutą Australii jest dolar australijski?	TAK	YES_NO
+4	Czy Polska leży w Azji?	NIE	YES_NO
+5	Czy Rzym jest stolicą Włoch?	TAK	YES_NO
+6	Czy euro jest walutą Wielkiej Brytanii?	NIE	YES_NO
+7	Czy Japonia jest wyspą?	TAK	YES_NO
+8	Czy Amazonka jest najdłuższą rzeką świata?	NIE	YES_NO
+📄 RUNDA 3 – ODPOWIEDŹ OBOWIĄZKOWA (OPEN – łatwe)
+question_id	question_text	correct_answer	question_type
+21	Jak nazywa się stolica Francji?	Paryż	OPEN
+22	Ile dni ma tydzień?	7	OPEN
+23	Jak nazywa się największa planeta Układu Słonecznego?	Jowisz	OPEN
+24	W jakim kraju znajduje się Koloseum?	Włochy	OPEN
+25	Jak nazywa się najwyższa góra świata?	Mount Everest	OPEN
+📄 RUNDA 4 – WALKA (OPEN – wiedza ogólna)
+question_id	question_text	correct_answer	question_type
+41	Kto namalował „Mona Lisę”?	Leonardo da Vinci	OPEN
+42	W którym roku Polska weszła do Unii Europejskiej?	2004	OPEN
+43	Jak nazywa się pierwiastek chemiczny o symbolu O?	Tlen	OPEN
+44	Jak nazywa się największy ocean na Ziemi?	Ocean Spokojny	OPEN
+45	Kto był pierwszym człowiekiem na Księżycu?	Neil Armstrong	OPEN
