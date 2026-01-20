@@ -44,6 +44,20 @@ export default function AdminPanel() {
     XLSX.writeFile(wb, "quiz_results.xlsx");
   };
 
+  const handleExportQuestions = () => {
+    // Flatten all questions from all rounds into a single list for export
+    const allQuestions = Object.entries(QUESTIONS).flatMap(([roundId, questions]) => 
+      questions.map(q => ({
+        round: ROUNDS.find(r => r.id === parseInt(roundId))?.name || `Round ${roundId}`,
+        ...q
+      }))
+    );
+    const ws = XLSX.utils.json_to_sheet(allQuestions);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Questions");
+    XLSX.writeFile(wb, "quiz_questions.xlsx");
+  };
+
   const currentQuestions = QUESTIONS[roundId.toString()] || [];
 
   return (
@@ -94,8 +108,16 @@ export default function AdminPanel() {
             >
               <Download className="w-4 h-4 mr-2" /> Export Results (.xlsx)
             </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="w-full mt-2"
+              onClick={handleExportQuestions}
+            >
+              <Download className="w-4 h-4 mr-2" /> Export Questions (.xlsx)
+            </Button>
             <p className="text-[10px] text-muted-foreground mt-2 text-center leading-tight">
-              Import questions/players or export final results.
+              Import questions/players or export data.
             </p>
           </div>
         </div>
