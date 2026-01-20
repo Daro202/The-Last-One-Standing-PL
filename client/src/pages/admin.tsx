@@ -145,7 +145,7 @@ export default function AdminPanel() {
                 
                 {roundId === round.id && (
                   <div className="pl-2 space-y-1">
-                    {(dynamicQuestions[round.id.toString()] || [])?.map((q) => (
+                    {(dynamicQuestions?.[round.id.toString()] || [])?.map((q) => (
                       <Button
                         key={q.id}
                         variant={currentQuestion?.id === q.id ? "default" : "outline"}

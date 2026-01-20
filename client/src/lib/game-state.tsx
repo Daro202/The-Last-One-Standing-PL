@@ -39,7 +39,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<GameState>(() => {
     try {
       const saved = localStorage.getItem('game_state');
-      return saved ? JSON.parse(saved) : INITIAL_STATE;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Migration/Safety: Ensure dynamicQuestions exists
+        if (!parsed.dynamicQuestions) {
+          parsed.dynamicQuestions = STATIC_QUESTIONS;
+        }
+        return parsed;
+      }
+      return INITIAL_STATE;
     } catch (e) {
       return INITIAL_STATE;
     }
