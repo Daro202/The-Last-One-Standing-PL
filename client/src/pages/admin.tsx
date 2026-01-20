@@ -142,13 +142,24 @@ export default function AdminPanel() {
                         variant={currentQuestion?.id === q.id ? "default" : "outline"}
                         size="sm"
                         className={cn(
-                          "w-full justify-start text-xs h-auto py-2 whitespace-normal text-left",
-                          currentQuestion?.id === q.id && "border-primary"
+                          "w-full justify-start text-xs h-auto py-2.5 px-3 whitespace-normal text-left transition-all",
+                          currentQuestion?.id === q.id 
+                            ? "bg-primary text-primary-foreground border-primary shadow-[0_0_10px_rgba(var(--primary),0.3)]" 
+                            : "hover:bg-primary/10 hover:border-primary/50"
                         )}
                         onClick={() => setQuestion(q.id)}
                       >
-                        <span className="opacity-50 mr-2">#{q.id}</span>
-                        {q.text.substring(0, 30)}...
+                        <div className="flex items-start gap-2">
+                          <span className={cn(
+                            "font-mono opacity-70 shrink-0 mt-0.5",
+                            currentQuestion?.id === q.id ? "text-primary-foreground" : "text-primary"
+                          )}>
+                            #{q.id}
+                          </span>
+                          <span className="font-medium line-clamp-2 leading-relaxed">
+                            {q.text}
+                          </span>
+                        </div>
                       </Button>
                     ))}
                   </div>
