@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, X, Eye, EyeOff, RotateCcw, Trophy, Skull, Tv, Upload } from "lucide-react";
+import { Check, X, Eye, EyeOff, RotateCcw, Trophy, Skull, Tv, Upload, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRef } from "react";
 import * as XLSX from "xlsx";
@@ -35,6 +35,13 @@ export default function AdminPanel() {
       alert("Imported " + data.length + " rows successfully!");
     };
     reader.readAsBinaryString(file);
+  };
+
+  const handleExportPlayers = () => {
+    const ws = XLSX.utils.json_to_sheet(players);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Players");
+    XLSX.writeFile(wb, "quiz_results.xlsx");
   };
 
   const currentQuestions = QUESTIONS[roundId.toString()] || [];
@@ -79,8 +86,16 @@ export default function AdminPanel() {
             >
               <Upload className="w-4 h-4 mr-2" /> Import Excel (.xlsx)
             </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="w-full mt-2"
+              onClick={handleExportPlayers}
+            >
+              <Download className="w-4 h-4 mr-2" /> Export Results (.xlsx)
+            </Button>
             <p className="text-[10px] text-muted-foreground mt-2 text-center leading-tight">
-              Import questions/players from Excel files.
+              Import questions/players or export final results.
             </p>
           </div>
         </div>
