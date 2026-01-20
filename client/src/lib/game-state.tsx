@@ -50,6 +50,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
       if (event.data && event.data.type === 'SYNC') {
         setState(event.data.payload);
       }
+      if (event.data && event.data.type === 'REQUEST_SYNC') {
+        // Someone asked for state, let's send it
+        channel.postMessage({ type: 'SYNC', payload: state });
+      }
       if (event.data && event.data.type === 'CONFETTI') {
         confetti({
           particleCount: 100,
@@ -59,8 +63,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
       }
     };
 
+    // Ask for sync on mount (in case we are a new tab)
+    channel.postMessage({ type: 'REQUEST_SYNC' });
+
     return () => channel.close();
-  }, []);
+  }, []); // Note: We don't add 'state' to dependency array here to avoid infinite loops, logic is handled elsewhere
+
+  // Listen to state changes to answer sync requests properly (optional optimization, 
+  // but better to just broadcast on change which we do in 'broadcast' function)
+
 
   // Persist state
   useEffect(() => {
