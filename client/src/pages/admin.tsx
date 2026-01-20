@@ -170,18 +170,18 @@ export default function AdminPanel() {
                       <Button 
                         size="icon" 
                         variant="ghost" 
-                        className="h-8 w-8 hover:text-green-400 hover:bg-green-400/10"
+                        className="h-10 w-10 text-green-500 hover:text-green-400 hover:bg-green-500/20 border border-green-500/20"
                         onClick={() => updatePlayer(player.id, { points: player.points + 1 })}
                       >
-                        +1
+                        <span className="text-lg font-bold">+1</span>
                       </Button>
                       <Button 
                         size="icon" 
                         variant="ghost" 
-                        className="h-8 w-8 hover:text-red-400 hover:bg-red-400/10"
+                        className="h-10 w-10 text-red-500 hover:text-red-400 hover:bg-red-500/20 border border-red-500/20 ml-2"
                         onClick={() => updatePlayer(player.id, { status: 'ELIMINATED' })}
                       >
-                        <X className="w-4 h-4" />
+                        <X className="w-5 h-5" />
                       </Button>
                     </>
                   )}
