@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, useRef, ReactNode } from 'react';
-import { Player, Question, INITIAL_PLAYERS, QUESTIONS, ROUNDS } from './mock-data';
+import { Player, Question, INITIAL_PLAYERS, QUESTIONS as STATIC_QUESTIONS, ROUNDS } from './mock-data';
 import confetti from 'canvas-confetti';
 
 interface GameState {
@@ -8,6 +8,7 @@ interface GameState {
   status: 'WAITING' | 'READING' | 'ANSWER_REVEALED';
   players: Player[];
   message: string;
+  dynamicQuestions: Record<string, Question[]>;
 }
 
 interface GameContextType extends GameState {
@@ -17,6 +18,8 @@ interface GameContextType extends GameState {
   updatePlayer: (id: number, updates: Partial<Player>) => void;
   resetGame: () => void;
   broadcast: (state: GameState) => void;
+  importQuestions: (questions: Question[]) => void;
+  importPlayers: (players: Player[]) => void;
 }
 
 const INITIAL_STATE: GameState = {
@@ -25,6 +28,7 @@ const INITIAL_STATE: GameState = {
   status: 'WAITING',
   players: INITIAL_PLAYERS,
   message: '',
+  dynamicQuestions: STATIC_QUESTIONS,
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -67,7 +71,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
     channel.onmessage = handleMessage;
 
-    // Reliability Fallback: Sync via LocalStorage event (works across tabs)
     const handleStorage = (e: StorageEvent) => {
       if (e.key === 'game_state' && e.newValue) {
         setState(JSON.parse(e.newValue));
@@ -75,7 +78,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
     };
     window.addEventListener('storage', handleStorage);
 
-    // Initial sync request
     channel.postMessage({ type: 'REQUEST_SYNC' });
 
     return () => {
@@ -89,7 +91,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
     if (channelRef.current) {
       channelRef.current.postMessage({ type: 'SYNC', payload: newState });
     }
-    // Storage event doesn't fire in the same tab, but it will in others
     localStorage.setItem('game_state', JSON.stringify(newState));
   };
 
@@ -98,7 +99,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   };
 
   const setQuestion = (id: number) => {
-    const roundQuestions = QUESTIONS[state.roundId.toString()] || [];
+    const roundQuestions = state.dynamicQuestions[state.roundId.toString()] || [];
     const question = roundQuestions.find(q => q.id === id) || null;
     broadcast({ ...state, currentQuestion: question, status: 'READING', message: '' });
   };
@@ -122,8 +123,37 @@ export function GameProvider({ children }: { children: ReactNode }) {
     broadcast(INITIAL_STATE);
   };
 
+  const importQuestions = (newQuestions: Question[]) => {
+    // Basic logic to group by round or type if available in Excel
+    // For now, let's just group them into the current round or by a provided round_id column
+    const updatedQuestions = { ...state.dynamicQuestions };
+    
+    newQuestions.forEach(q => {
+      // In a real scenario, we'd look for a 'round' column, here we use roundId 1 as default
+      const rId = '1'; 
+      if (!updatedQuestions[rId]) updatedQuestions[rId] = [];
+      updatedQuestions[rId].push(q);
+    });
+
+    broadcast({ ...state, dynamicQuestions: updatedQuestions });
+  };
+
+  const importPlayers = (newPlayers: Player[]) => {
+    broadcast({ ...state, players: newPlayers });
+  };
+
   return (
-    <GameContext.Provider value={{ ...state, setRound, setQuestion, revealAnswer, updatePlayer, resetGame, broadcast }}>
+    <GameContext.Provider value={{ 
+      ...state, 
+      setRound, 
+      setQuestion, 
+      revealAnswer, 
+      updatePlayer, 
+      resetGame, 
+      broadcast,
+      importQuestions,
+      importPlayers
+    }}>
       {children}
     </GameContext.Provider>
   );

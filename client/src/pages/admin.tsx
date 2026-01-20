@@ -1,19 +1,18 @@
 import { useGame } from "@/lib/game-state";
-import { ROUNDS, QUESTIONS } from "@/lib/mock-data";
+import { ROUNDS } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, X, Eye, EyeOff, RotateCcw, Trophy, Skull, Tv, Upload, Download } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { X, Eye, RotateCcw, Skull, Tv, Upload, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRef } from "react";
 import * as XLSX from "xlsx";
 
 export default function AdminPanel() {
   const { 
-    roundId, currentQuestion, status, players, 
-    setRound, setQuestion, revealAnswer, updatePlayer, resetGame, broadcast 
+    roundId, currentQuestion, status, players, dynamicQuestions,
+    setRound, setQuestion, revealAnswer, updatePlayer, resetGame, importQuestions, importPlayers 
   } = useGame();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -24,15 +23,39 @@ export default function AdminPanel() {
 
     const reader = new FileReader();
     reader.onload = (evt) => {
-      const bstr = evt.target?.result;
-      const wb = XLSX.read(bstr, { type: 'binary' });
-      const wsname = wb.SheetNames[0];
-      const ws = wb.Sheets[wsname];
-      const data = XLSX.utils.sheet_to_json(ws);
-      
-      console.log("Imported Data:", data);
-      // Logic to update QUESTIONS or Players would go here
-      alert("Imported " + data.length + " rows successfully!");
+      try {
+        const bstr = evt.target?.result;
+        const wb = XLSX.read(bstr, { type: 'binary' });
+        const wsname = wb.SheetNames[0];
+        const ws = wb.Sheets[wsname];
+        const data = XLSX.utils.sheet_to_json(ws) as any[];
+        
+        if (data.length > 0) {
+          // Check if it's questions or players based on columns
+          if (data[0].question_text || data[0].text) {
+            const questions = data.map((row, idx) => ({
+              id: row.question_id || row.id || idx + 100,
+              text: row.question_text || row.text,
+              answer: String(row.correct_answer || row.answer),
+              type: row.question_type || row.type || 'OPEN'
+            }));
+            importQuestions(questions);
+            alert(`Imported ${questions.length} questions!`);
+          } else if (data[0].name) {
+            const players = data.map((row, idx) => ({
+              id: row.player_id || row.id || idx + 1,
+              name: row.name,
+              points: row.points || 0,
+              status: row.status || 'ACTIVE'
+            }));
+            importPlayers(players);
+            alert(`Imported ${players.length} players!`);
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error parsing Excel file");
+      }
     };
     reader.readAsBinaryString(file);
   };
@@ -45,10 +68,9 @@ export default function AdminPanel() {
   };
 
   const handleExportQuestions = () => {
-    // Flatten all questions from all rounds into a single list for export
-    const allQuestions = Object.entries(QUESTIONS).flatMap(([roundId, questions]) => 
+    const allQuestions = Object.entries(dynamicQuestions).flatMap(([rId, questions]) => 
       questions.map(q => ({
-        round: ROUNDS.find(r => r.id === parseInt(roundId))?.name || `Round ${roundId}`,
+        round: ROUNDS.find(r => r.id === parseInt(rId))?.name || `Round ${rId}`,
         ...q
       }))
     );
@@ -58,15 +80,13 @@ export default function AdminPanel() {
     XLSX.writeFile(wb, "quiz_questions.xlsx");
   };
 
-  const currentQuestions = QUESTIONS[roundId.toString()] || [];
-
   return (
     <div className="min-h-screen bg-background text-foreground grid grid-cols-[300px_1fr_350px] gap-0 h-screen overflow-hidden">
       
       {/* LEFT: Navigation & Questions */}
       <div className="border-r border-border bg-card/50 flex flex-col h-full overflow-hidden">
         <div className="p-4 border-b border-border shrink-0">
-          <h2 className="font-bold text-lg tracking-wider text-primary">GAME CONTROLS</h2>
+          <h2 className="font-bold text-lg tracking-wider text-primary uppercase">Game Controls</h2>
           <Button 
             variant="outline" 
             size="sm" 
@@ -100,25 +120,14 @@ export default function AdminPanel() {
             >
               <Upload className="w-4 h-4 mr-2" /> Import Excel (.xlsx)
             </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="w-full mt-2"
-              onClick={handleExportPlayers}
-            >
-              <Download className="w-4 h-4 mr-2" /> Export Results (.xlsx)
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="w-full mt-2"
-              onClick={handleExportQuestions}
-            >
-              <Download className="w-4 h-4 mr-2" /> Export Questions (.xlsx)
-            </Button>
-            <p className="text-[10px] text-muted-foreground mt-2 text-center leading-tight">
-              Import questions/players or export data.
-            </p>
+            <div className="grid grid-cols-2 gap-2 mt-2">
+              <Button variant="outline" size="xs" onClick={handleExportPlayers}>
+                <Download className="w-3 h-3 mr-1" /> Players
+              </Button>
+              <Button variant="outline" size="xs" onClick={handleExportQuestions}>
+                <Download className="w-3 h-3 mr-1" /> Questions
+              </Button>
+            </div>
           </div>
         </div>
         
@@ -136,7 +145,7 @@ export default function AdminPanel() {
                 
                 {roundId === round.id && (
                   <div className="pl-2 space-y-1">
-                    {QUESTIONS[round.id.toString()]?.map((q) => (
+                    {(dynamicQuestions[round.id.toString()] || [])?.map((q) => (
                       <Button
                         key={q.id}
                         variant={currentQuestion?.id === q.id ? "default" : "outline"}
@@ -218,7 +227,6 @@ export default function AdminPanel() {
           </CardContent>
         </Card>
 
-        {/* Round Info */}
         <div className="p-6 rounded-xl bg-muted/20 border border-border">
           <h4 className="font-bold text-muted-foreground uppercase text-xs mb-2">Round Rules</h4>
           <p className="text-lg">{ROUNDS.find(r => r.id === roundId)?.description}</p>
