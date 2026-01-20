@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, X, Eye, EyeOff, RotateCcw, Trophy, Skull } from "lucide-react";
+import { Check, X, Eye, EyeOff, RotateCcw, Trophy, Skull, Tv } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function AdminPanel() {
