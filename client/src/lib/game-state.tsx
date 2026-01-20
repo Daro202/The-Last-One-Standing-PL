@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, useRef, ReactNode } from 'react';
 import { Player, Question, INITIAL_PLAYERS, QUESTIONS, ROUNDS } from './mock-data';
 import confetti from 'canvas-confetti';
 
@@ -42,6 +42,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
     }
   });
 
+  const stateRef = useRef(state);
+  
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
+
   // Sync with BroadcastChannel
   useEffect(() => {
     const channel = new BroadcastChannel(CHANNEL_NAME);
@@ -51,8 +57,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
         setState(event.data.payload);
       }
       if (event.data && event.data.type === 'REQUEST_SYNC') {
-        // Someone asked for state, let's send it
-        channel.postMessage({ type: 'SYNC', payload: state });
+        // Someone asked for state, let's send it using the REF (current value)
+        // NOT the 'state' from closure (which is stale)
+        channel.postMessage({ type: 'SYNC', payload: stateRef.current });
       }
       if (event.data && event.data.type === 'CONFETTI') {
         confetti({
@@ -67,11 +74,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     channel.postMessage({ type: 'REQUEST_SYNC' });
 
     return () => channel.close();
-  }, []); // Note: We don't add 'state' to dependency array here to avoid infinite loops, logic is handled elsewhere
-
-  // Listen to state changes to answer sync requests properly (optional optimization, 
-  // but better to just broadcast on change which we do in 'broadcast' function)
-
+  }, []); 
 
   // Persist state
   useEffect(() => {
