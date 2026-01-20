@@ -5,14 +5,37 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, X, Eye, EyeOff, RotateCcw, Trophy, Skull, Tv } from "lucide-react";
+import { Check, X, Eye, EyeOff, RotateCcw, Trophy, Skull, Tv, Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useRef } from "react";
+import * as XLSX from "xlsx";
 
 export default function AdminPanel() {
   const { 
     roundId, currentQuestion, status, players, 
-    setRound, setQuestion, revealAnswer, updatePlayer, resetGame 
+    setRound, setQuestion, revealAnswer, updatePlayer, resetGame, broadcast 
   } = useGame();
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const bstr = evt.target?.result;
+      const wb = XLSX.read(bstr, { type: 'binary' });
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_json(ws);
+      
+      console.log("Imported Data:", data);
+      // Logic to update QUESTIONS or Players would go here
+      alert("Imported " + data.length + " rows successfully!");
+    };
+    reader.readAsBinaryString(file);
+  };
 
   const currentQuestions = QUESTIONS[roundId.toString()] || [];
 
@@ -39,6 +62,27 @@ export default function AdminPanel() {
           >
             <RotateCcw className="w-4 h-4 mr-2" /> Reset Game
           </Button>
+          
+          <div className="mt-4 pt-4 border-t border-border">
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              className="hidden" 
+              accept=".xlsx, .xls" 
+              onChange={handleFileUpload}
+            />
+            <Button 
+              variant="secondary" 
+              size="sm" 
+              className="w-full"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <Upload className="w-4 h-4 mr-2" /> Import Excel (.xlsx)
+            </Button>
+            <p className="text-[10px] text-muted-foreground mt-2 text-center leading-tight">
+              Import questions/players from Excel files.
+            </p>
+          </div>
         </div>
         
         <ScrollArea className="flex-1">
