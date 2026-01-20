@@ -132,16 +132,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
   };
 
   const importQuestions = (newQuestions: Question[]) => {
-    // Basic logic to group by round or type if available in Excel
-    // For now, let's just group them into the current round or by a provided round_id column
+    const rId = state.roundId.toString();
     const updatedQuestions = { ...state.dynamicQuestions };
     
-    newQuestions.forEach(q => {
-      // In a real scenario, we'd look for a 'round' column, here we use roundId 1 as default
-      const rId = '1'; 
-      if (!updatedQuestions[rId]) updatedQuestions[rId] = [];
-      updatedQuestions[rId].push(q);
-    });
+    // Clear existing questions for the current round and replace with new sorted ones
+    updatedQuestions[rId] = [...newQuestions].sort((a, b) => a.id - b.id);
 
     broadcast({ ...state, dynamicQuestions: updatedQuestions });
   };

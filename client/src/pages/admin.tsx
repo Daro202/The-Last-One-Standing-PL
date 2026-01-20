@@ -34,13 +34,13 @@ export default function AdminPanel() {
           // Check if it's questions or players based on columns
           if (data[0].question_text || data[0].text) {
             const questions = data.map((row, idx) => ({
-              id: row.question_id || row.id || idx + 100,
+              id: parseInt(row.question_id || row.id || idx + 1),
               text: row.question_text || row.text,
               answer: String(row.correct_answer || row.answer),
               type: row.question_type || row.type || 'OPEN'
             }));
             importQuestions(questions);
-            alert(`Imported ${questions.length} questions!`);
+            alert(`Imported ${questions.length} questions to ${ROUNDS.find(r => r.id === roundId)?.name}!`);
           } else if (data[0].name) {
             const players = data.map((row, idx) => ({
               id: row.player_id || row.id || idx + 1,
