@@ -29,7 +29,7 @@ const INITIAL_STATE: GameState = {
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
-const CHANNEL_NAME = 'one_of_ten_broadcast_v2'; // Changed channel name to ensure fresh connection
+const CHANNEL_NAME = 'one_of_ten_broadcast_final';
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<GameState>(() => {
@@ -37,7 +37,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const saved = localStorage.getItem('game_state');
       return saved ? JSON.parse(saved) : INITIAL_STATE;
     } catch (e) {
-      console.error("Failed to load game state", e);
       return INITIAL_STATE;
     }
   });
@@ -54,8 +53,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const channel = new BroadcastChannel(CHANNEL_NAME);
     channelRef.current = channel;
     
-    channel.onmessage = (event) => {
-      console.log('Received message:', event.data.type, event.data.payload);
+    const handleMessage = (event: MessageEvent) => {
       if (event.data && event.data.type === 'SYNC') {
         setState(event.data.payload);
       }
@@ -63,20 +61,26 @@ export function GameProvider({ children }: { children: ReactNode }) {
         channel.postMessage({ type: 'SYNC', payload: stateRef.current });
       }
       if (event.data && event.data.type === 'CONFETTI') {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       }
     };
 
-    // Immediate request for state on mount
+    channel.onmessage = handleMessage;
+
+    // Reliability Fallback: Sync via LocalStorage event (works across tabs)
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === 'game_state' && e.newValue) {
+        setState(JSON.parse(e.newValue));
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+
+    // Initial sync request
     channel.postMessage({ type: 'REQUEST_SYNC' });
 
     return () => {
       channel.close();
-      channelRef.current = null;
+      window.removeEventListener('storage', handleStorage);
     };
   }, []);
 
@@ -85,6 +89,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
     if (channelRef.current) {
       channelRef.current.postMessage({ type: 'SYNC', payload: newState });
     }
+    // Storage event doesn't fire in the same tab, but it will in others
+    localStorage.setItem('game_state', JSON.stringify(newState));
   };
 
   const setRound = (id: number) => {
@@ -104,6 +110,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       channelRef.current.postMessage({ type: 'SYNC', payload: newState });
       channelRef.current.postMessage({ type: 'CONFETTI' });
     }
+    localStorage.setItem('game_state', JSON.stringify(newState));
   };
 
   const updatePlayer = (id: number, updates: Partial<Player>) => {
