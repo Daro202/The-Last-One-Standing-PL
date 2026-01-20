@@ -29,7 +29,7 @@ const INITIAL_STATE: GameState = {
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
-const CHANNEL_NAME = '1_of_10_game_channel';
+const CHANNEL_NAME = 'one_of_ten_broadcast_v2'; // Changed channel name to ensure fresh connection
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<GameState>(() => {
@@ -43,22 +43,23 @@ export function GameProvider({ children }: { children: ReactNode }) {
   });
 
   const stateRef = useRef(state);
+  const channelRef = useRef<BroadcastChannel | null>(null);
   
   useEffect(() => {
     stateRef.current = state;
+    localStorage.setItem('game_state', JSON.stringify(state));
   }, [state]);
 
-  // Sync with BroadcastChannel
   useEffect(() => {
     const channel = new BroadcastChannel(CHANNEL_NAME);
+    channelRef.current = channel;
     
     channel.onmessage = (event) => {
+      console.log('Received message:', event.data.type, event.data.payload);
       if (event.data && event.data.type === 'SYNC') {
         setState(event.data.payload);
       }
       if (event.data && event.data.type === 'REQUEST_SYNC') {
-        // Someone asked for state, let's send it using the REF (current value)
-        // NOT the 'state' from closure (which is stale)
         channel.postMessage({ type: 'SYNC', payload: stateRef.current });
       }
       if (event.data && event.data.type === 'CONFETTI') {
@@ -70,22 +71,20 @@ export function GameProvider({ children }: { children: ReactNode }) {
       }
     };
 
-    // Ask for sync on mount (in case we are a new tab)
+    // Immediate request for state on mount
     channel.postMessage({ type: 'REQUEST_SYNC' });
 
-    return () => channel.close();
-  }, []); 
-
-  // Persist state
-  useEffect(() => {
-    localStorage.setItem('game_state', JSON.stringify(state));
-  }, [state]);
+    return () => {
+      channel.close();
+      channelRef.current = null;
+    };
+  }, []);
 
   const broadcast = (newState: GameState) => {
     setState(newState);
-    const channel = new BroadcastChannel(CHANNEL_NAME);
-    channel.postMessage({ type: 'SYNC', payload: newState });
-    channel.close();
+    if (channelRef.current) {
+      channelRef.current.postMessage({ type: 'SYNC', payload: newState });
+    }
   };
 
   const setRound = (id: number) => {
@@ -99,10 +98,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
   };
 
   const revealAnswer = () => {
-    broadcast({ ...state, status: 'ANSWER_REVEALED' });
-    const channel = new BroadcastChannel(CHANNEL_NAME);
-    channel.postMessage({ type: 'CONFETTI' });
-    channel.close();
+    const newState: GameState = { ...state, status: 'ANSWER_REVEALED' };
+    setState(newState);
+    if (channelRef.current) {
+      channelRef.current.postMessage({ type: 'SYNC', payload: newState });
+      channelRef.current.postMessage({ type: 'CONFETTI' });
+    }
   };
 
   const updatePlayer = (id: number, updates: Partial<Player>) => {
