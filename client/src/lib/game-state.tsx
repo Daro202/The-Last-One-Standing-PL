@@ -135,10 +135,18 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const rId = state.roundId.toString();
     const updatedQuestions = { ...state.dynamicQuestions };
     
-    // Clear existing questions for the current round and replace with new sorted ones
+    // Clear ALL existing questions for the current round and replace with new sorted ones
     updatedQuestions[rId] = [...newQuestions].sort((a, b) => a.id - b.id);
 
-    broadcast({ ...state, dynamicQuestions: updatedQuestions });
+    // If current round questions were updated, clear current selection to avoid stale data
+    const newState: GameState = { 
+      ...state, 
+      dynamicQuestions: updatedQuestions,
+      currentQuestion: null,
+      status: 'WAITING'
+    };
+
+    broadcast(newState);
   };
 
   const importPlayers = (newPlayers: Player[]) => {
