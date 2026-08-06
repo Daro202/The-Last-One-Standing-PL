@@ -1,0 +1,379 @@
+Implement Phase 1 of “The Last Standing” in the existing project.
+
+This is an existing Node.js / React / TypeScript / Vite application.
+
+IMPORTANT CONSTRAINTS
+
+- Work inside the current project.
+- Do not create a new project.
+- Do not change the framework or application architecture.
+- Do not add a database.
+- Do not add a new backend unless absolutely necessary.
+- Use the existing client-side XLSX support.
+- Preserve the current smooth visual style, routes and layout.
+- Do not redesign the interface yet.
+- Do not add ElevenLabs yet.
+- Do not build complex animated player figurines yet.
+- Do not invent additional game rules.
+- Do not replace working functionality unnecessarily.
+
+Before editing, create a checkpoint.
+
+==================================================
+1. EXCEL QUESTION FILE
+==================================================
+
+The default question file already exists here:
+
+client/public/data/quiz_questions.xlsx
+
+Load it automatically when the application starts using:
+
+/data/quiz_questions.xlsx
+
+Keep the existing manual Excel import feature so the host can replace the default question set during runtime.
+
+Expected worksheet columns:
+
+ID
+ROUND
+CATEGORY
+TYPE
+QUESTION
+CORRECT_ANSWER
+DIFFICULTY
+ACTIVE
+
+Supported ROUND values:
+
+WARM UP
+SURVIVAL
+MANDATORY
+BATTLE
+
+Supported TYPE values:
+
+TRUE_FALSE
+OPEN
+
+Only load questions where:
+
+ACTIVE = 1
+
+Categories must be discovered dynamically from the CATEGORY column.
+
+Do not hard-code category names.
+
+Validate the imported file and show clear English messages for:
+
+- missing required columns,
+- empty question,
+- empty correct answer,
+- duplicated ID,
+- invalid round,
+- invalid question type,
+- no active questions,
+- unreadable Excel file.
+
+Do not crash the application when the Excel file is invalid.
+
+==================================================
+2. GAME ROUNDS AND SCORING
+==================================================
+
+Difficulty increases in this order:
+
+WARM UP < SURVIVAL < MANDATORY < BATTLE
+
+Scoring:
+
+WARM UP:
++1 point for a correct answer
+
+SURVIVAL:
++2 points for a correct answer
+
+MANDATORY:
++3 points for a correct answer
+
+BATTLE:
++5 points for a correct answer
+
+Create one clear scoring configuration, for example:
+
+const ROUND_POINTS = {
+  "WARM UP": 1,
+  "SURVIVAL": 2,
+  "MANDATORY": 3,
+  "BATTLE": 5,
+};
+
+Do not store duplicated scoring values in multiple components.
+
+==================================================
+3. PLAYER MODEL
+==================================================
+
+Extend the player model to contain:
+
+id
+name
+avatarId
+points
+lives
+active
+
+Every player starts with:
+
+points = 0
+lives = 2
+active = true
+
+Correct answer:
+
+- add points based on the current round,
+- keep the player active,
+- move to the next active player.
+
+Wrong answer:
+
+- subtract one life,
+- points are not subtracted,
+- when lives reach 0, set active = false,
+- move automatically to the next active player.
+
+Lives must never become negative.
+
+The game ends when only one active player remains.
+
+Store the winner in the game state and show a clear English winner message.
+
+Handle the edge case where no active players remain without crashing.
+
+==================================================
+4. PLAYER MANAGEMENT
+==================================================
+
+In the Admin screen add controls for:
+
+- editing a player’s name,
+- selecting a player avatar,
+- resetting one player,
+- restoring an eliminated player,
+- manually selecting the current player.
+
+Use a small predefined avatar collection.
+
+For this phase, avatars may be clean icons, illustrated heads or simple character portraits.
+
+Use avatarId values rather than storing image data inside the player state.
+
+Do not add custom photo uploads yet.
+
+The Audience screen must show:
+
+- avatar,
+- player name,
+- points,
+- remaining lives,
+- active or eliminated status.
+
+Use two visible life indicators, such as hearts.
+
+An eliminated player should remain visible but clearly marked as eliminated.
+
+==================================================
+5. QUESTION SELECTION
+==================================================
+
+Add the following game-state fields:
+
+currentRound
+selectedCategory
+currentQuestion
+answerRevealed
+currentPlayerId
+usedQuestionIds
+winnerId
+
+Implement random question selection.
+
+A question is eligible only when:
+
+- its ROUND matches currentRound,
+- its CATEGORY matches selectedCategory when a category is selected,
+- ACTIVE equals 1,
+- its ID is not present in usedQuestionIds.
+
+Do not repeat questions during the same game.
+
+After drawing a question:
+
+- add its ID to usedQuestionIds,
+- hide the correct answer,
+- synchronize the new state with the Audience screen.
+
+When no unused questions remain for the selected filters, show a clear English message instead of repeating a question.
+
+Provide an “All Categories” option.
+
+Changing category must not clear already used question IDs.
+
+==================================================
+6. ADMIN SCREEN
+==================================================
+
+Preserve the existing Admin layout as much as possible.
+
+The host must be able to:
+
+- select the round,
+- select a category,
+- draw a random question,
+- reveal the correct answer,
+- mark the answer as correct,
+- mark the answer as wrong,
+- manually choose the current player,
+- move to the next active player,
+- edit player names,
+- select player avatars,
+- restore a player,
+- reset the game,
+- manually import another Excel file,
+- export results.
+
+Prevent marking an answer correct or wrong when there is no current question.
+
+Prevent scoring the same question more than once.
+
+After an answer is scored, disable the correct and wrong controls until another question is drawn.
+
+Show how many unused questions remain for the current round and category.
+
+==================================================
+7. AUDIENCE SCREEN
+==================================================
+
+Preserve the existing smooth Audience presentation.
+
+Display:
+
+- game title,
+- current round,
+- current category,
+- current player,
+- current player avatar,
+- current question,
+- question type,
+- all players,
+- points,
+- lives,
+- elimination status,
+- winner message.
+
+Never show CORRECT_ANSWER before the host reveals it.
+
+When the host reveals the answer, show it clearly.
+
+TRUE_FALSE questions must display as TRUE / FALSE questions.
+
+OPEN questions must not show multiple-choice answers.
+
+==================================================
+8. STATE, SYNC AND PERSISTENCE
+==================================================
+
+Preserve and extend the existing:
+
+- React game state,
+- localStorage persistence,
+- BroadcastChannel synchronization,
+- Admin/Audience synchronization,
+- state recovery after page refresh.
+
+Use one shared source of truth for the game state.
+
+Do not create separate incompatible Admin and Audience states.
+
+Ensure these values synchronize immediately:
+
+- questions,
+- players,
+- names,
+- avatars,
+- points,
+- lives,
+- active status,
+- current player,
+- current round,
+- category,
+- current question,
+- revealed answer,
+- used question IDs,
+- winner.
+
+Keep existing routes working:
+
+/
+ /admin
+ /audience
+
+==================================================
+9. GAME RESET
+==================================================
+
+Reset Game must:
+
+- set all players to 0 points,
+- restore all players to 2 lives,
+- set all players active,
+- clear currentQuestion,
+- clear usedQuestionIds,
+- clear winnerId,
+- hide the answer,
+- select the first active player,
+- preserve edited player names,
+- preserve selected player avatars,
+- preserve the loaded question set.
+
+Ask for confirmation before performing a full reset.
+
+==================================================
+10. TESTING
+==================================================
+
+After implementation, test the application thoroughly.
+
+Test at least:
+
+1. Default Excel file loads automatically.
+2. All 200 questions can be parsed.
+3. Manual Excel import still works.
+4. Categories are generated from Excel.
+5. WARM UP gives 1 point.
+6. SURVIVAL gives 2 points.
+7. MANDATORY gives 3 points.
+8. BATTLE gives 5 points.
+9. Wrong answer removes one life.
+10. Player is eliminated at zero lives.
+11. Next active player is selected correctly.
+12. Questions do not repeat.
+13. Correct answer remains hidden until revealed.
+14. A question cannot be scored twice.
+15. Player name editing works.
+16. Avatar selection works.
+17. Admin and Audience synchronize in two browser tabs.
+18. Refresh restores the current game.
+19. Winner detection works.
+20. Game reset works correctly.
+
+Fix all TypeScript, runtime and console errors found during testing.
+
+Do not perform a visual redesign after completing the mechanics.
+
+At the end, report only:
+
+- changed files,
+- implemented mechanics,
+- tests performed,
+- any remaining issue.
