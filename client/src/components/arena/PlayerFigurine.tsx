@@ -5,37 +5,43 @@ interface PlayerFigurineProps {
 }
 
 /**
- * Abstract 2.5D museum-sculpture bust — CSS/SVG only.
- * Wide shoulders, prominent head, substantial chest.
- * Monumental graphite sculpture — not a chess pawn, not an emoji.
- * Width is 100 % of the wrapper div; caller controls display size.
+ * Museum-quality stone bust — deliberately visible against dark stage.
+ * Regular players: cool stone grey. Current player: warm limestone / bronze.
+ * Eliminated: near-black, clearly dead.
  */
 export function PlayerFigurine({ playerId, isCurrent, isEliminated }: PlayerFigurineProps) {
   const gId = `bust-${playerId}`;
 
+  // ── Eliminated — nearly invisible dark silhouette ──
   if (isEliminated) {
     return (
       <svg
         viewBox="0 0 130 162"
-        style={{ display: "block", width: "100%", height: "auto", opacity: 0.22, filter: "grayscale(1) brightness(0.45)" }}
+        style={{ display: "block", width: "100%", height: "auto" }}
         preserveAspectRatio="xMidYMid meet"
       >
-        <ellipse cx="65" cy="44" rx="30" ry="33" fill="#111114" />
-        <path d="M54 76 L76 76 L79 94 L51 94 Z" fill="#111114" />
+        <ellipse cx="65" cy="44" rx="30" ry="33" fill="#1A1A1E" />
+        <path d="M54 76 L76 76 L79 95 L51 95 Z" fill="#1A1A1E" />
         <path
-          d="M51 94 C 38 89, 18 88, 4 99 L 4 160 L 126 160 L 126 99 C 112 88, 92 89, 79 94 Z"
-          fill="#111114"
+          d="M51 95 C37 90,17 89,3 100 L3 160 L127 160 L127 100 C113 89,93 90,79 95 Z"
+          fill="#1A1A1E"
         />
       </svg>
     );
   }
 
-  const headTop   = isCurrent ? "#525259" : "#33333C";
-  const headBot   = isCurrent ? "#383840" : "#20202A";
-  const bodyTop   = isCurrent ? "#424249" : "#2A2A32";
-  const bodyBot   = isCurrent ? "#28282F" : "#16161E";
-  const shineAmt  = isCurrent ? 0.12 : 0.04;
-  const rimAmt    = isCurrent ? 0.20 : 0;
+  // ── Colour palette per state ──
+  // Regular: cool pale stone — clearly visible on dark background
+  // Current: warm limestone with amber/bronze warmth — obviously different
+  const headHigh  = isCurrent ? "#A08B6A" : "#6E6E7E";
+  const headMid   = isCurrent ? "#7A6248" : "#565666";
+  const headShad  = isCurrent ? "#4E3E2C" : "#363646";
+  const bodyHigh  = isCurrent ? "#8C7858" : "#626270";
+  const bodyMid   = isCurrent ? "#6A5640" : "#484858";
+  const bodyShad  = isCurrent ? "#3E2E1E" : "#282838";
+  const rimColor  = isCurrent ? "rgba(255,210,140,0.28)" : "rgba(200,200,220,0.08)";
+  const faceLight = isCurrent ? "rgba(255,230,160,0.12)" : "rgba(255,255,255,0.07)";
+  const shoulderHL= isCurrent ? "rgba(255,220,140,0.14)" : "rgba(255,255,255,0.06)";
 
   return (
     <svg
@@ -44,91 +50,76 @@ export function PlayerFigurine({ playerId, isCurrent, isEliminated }: PlayerFigu
       preserveAspectRatio="xMidYMid meet"
     >
       <defs>
-        {/* Head: lighter at top-left (overhead + front light) */}
+        {/* Head: 3-stop to give hemisphere depth */}
         <linearGradient id={`${gId}-hd`} x1="0.25" y1="0" x2="0.75" y2="1">
-          <stop offset="0%"   stopColor={headTop} />
-          <stop offset="100%" stopColor={headBot} />
+          <stop offset="0%"   stopColor={headHigh} />
+          <stop offset="55%"  stopColor={headMid} />
+          <stop offset="100%" stopColor={headShad} />
         </linearGradient>
 
-        {/* Body: top of shoulders lighter, chest darker */}
+        {/* Body: overhead light hits shoulders, chest falls into shadow */}
         <linearGradient id={`${gId}-bd`} x1="0.2" y1="0" x2="0.8" y2="1">
-          <stop offset="0%"   stopColor={bodyTop} />
-          <stop offset="100%" stopColor={bodyBot} />
+          <stop offset="0%"   stopColor={bodyHigh} />
+          <stop offset="50%"  stopColor={bodyMid} />
+          <stop offset="100%" stopColor={bodyShad} />
         </linearGradient>
 
-        {/* Centre warm shine — vertical streak, wider at top */}
-        <radialGradient id={`${gId}-sh`} cx="50%" cy="30%" rx="45%" ry="50%">
-          <stop offset="0%"   stopColor={`rgba(199,177,142,${shineAmt * 1.4})`} />
-          <stop offset="60%"  stopColor={`rgba(199,177,142,${shineAmt * 0.6})`} />
-          <stop offset="100%" stopColor="rgba(199,177,142,0)" />
+        {/* Overhead centre shine — brightest at top-centre of bust */}
+        <radialGradient id={`${gId}-glow`} cx="50%" cy="20%" rx="55%" ry="45%">
+          <stop offset="0%"   stopColor={isCurrent ? "rgba(255,220,160,0.22)" : "rgba(255,255,255,0.10)"} />
+          <stop offset="100%" stopColor="rgba(0,0,0,0)" />
         </radialGradient>
 
-        {/* Left rim light — bronze edge for current player */}
+        {/* Left rim — edge light from stage side */}
         <linearGradient id={`${gId}-rim`} x1="0" y1="0.5" x2="1" y2="0.5">
-          <stop offset="0%"  stopColor={`rgba(199,177,142,${rimAmt})`} />
-          <stop offset="35%" stopColor={`rgba(199,177,142,${rimAmt * 0.3})`} />
-          <stop offset="100%" stopColor="rgba(199,177,142,0)" />
+          <stop offset="0%"   stopColor={rimColor} />
+          <stop offset="40%"  stopColor="rgba(0,0,0,0)" />
         </linearGradient>
       </defs>
 
       {/* ── Head ── */}
       <ellipse cx="65" cy="44" rx="30" ry="33" fill={`url(#${gId}-hd)`} />
 
-      {/* Forward-facing plane — subtle lighter oval on the front of the head */}
-      <ellipse
-        cx="65" cy="46"
-        rx="19" ry="21"
-        fill={`rgba(255,255,255,${isCurrent ? 0.05 : 0.025})`}
-      />
+      {/* Face catch-light — forward-facing plane */}
+      <ellipse cx="64" cy="46" rx="18" ry="21" fill={faceLight} />
 
       {/* ── Neck ── */}
-      <path d="M54 76 L76 76 L79 95 L51 95 Z" fill={bodyTop} />
+      <path d="M54 76 L76 76 L79 95 L51 95 Z" fill={bodyMid} />
 
-      {/* ── Shoulders + chest — the WIDE monumental element ──
-          Shoulders sweep from x=3 to x=127, nearly the full viewBox.
-          Cubic-bezier curves drape naturally from neck to shoulder tip.
+      {/* ── Wide shoulders + chest ──
+          Sweeps from x=3 to x=127 — nearly full viewBox width.
+          Cubic bezier drape for natural shoulder curvature.
       ── */}
       <path
-        d="
-          M 51 95
-          C 37 90, 17 89, 3 100
-          L 3 160
-          L 127 160
-          L 127 100
-          C 113 89, 93 90, 79 95
-          Z
-        "
+        d="M51 95 C37 90,17 89,3 100 L3 160 L127 160 L127 100 C113 89,93 90,79 95 Z"
         fill={`url(#${gId}-bd)`}
       />
 
-      {/* Left shoulder top-surface highlight — catches overhead light */}
+      {/* Left shoulder highlight — top surface catches overhead */}
       <path
-        d="M 51 95 C 37 90, 17 89, 3 100 C 14 93, 30 90, 51 95 Z"
-        fill={`rgba(255,255,255,${isCurrent ? 0.06 : 0.03})`}
+        d="M51 95 C37 90,17 89,3 100 C14 93,30 90,51 95 Z"
+        fill={shoulderHL}
+      />
+      {/* Right shoulder highlight */}
+      <path
+        d="M79 95 C100 90,116 93,127 100 C113 89,93 90,79 95 Z"
+        fill={shoulderHL}
       />
 
-      {/* Right shoulder top-surface highlight */}
+      {/* Centre overhead glow overlay */}
       <path
-        d="M 79 95 C 100 90, 116 93, 127 100 C 113 89, 93 90, 79 95 Z"
-        fill={`rgba(255,255,255,${isCurrent ? 0.06 : 0.03})`}
+        d="M51 95 C37 90,17 89,3 100 L3 160 L127 160 L127 100 C113 89,93 90,79 95 Z"
+        fill={`url(#${gId}-glow)`}
       />
 
-      {/* Warm centre shine overlay */}
+      {/* Left rim light overlay */}
       <path
-        d="M 51 95 C 37 90, 17 89, 3 100 L 3 160 L 127 160 L 127 100 C 113 89, 93 90, 79 95 Z"
-        fill={`url(#${gId}-sh)`}
+        d="M51 95 C37 90,17 89,3 100 L3 160 L127 160 L127 100 C113 89,93 90,79 95 Z"
+        fill={`url(#${gId}-rim)`}
       />
 
-      {/* Bronze rim light — left side, current player only */}
-      {isCurrent && (
-        <path
-          d="M 51 95 C 37 90, 17 89, 3 100 L 3 160 L 127 160 L 127 100 C 113 89, 93 90, 79 95 Z"
-          fill={`url(#${gId}-rim)`}
-        />
-      )}
-
-      {/* Chest shadow — adds mid-body depth */}
-      <ellipse cx="65" cy="130" rx="38" ry="11" fill="rgba(0,0,0,0.16)" />
+      {/* Chest/base shadow for depth */}
+      <ellipse cx="65" cy="148" rx="40" ry="9" fill="rgba(0,0,0,0.22)" />
     </svg>
   );
 }

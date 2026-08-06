@@ -80,10 +80,10 @@ export default function AudienceView() {
           <span
             style={{
               ...serif,
-              color: C.muted,
-              fontSize: "clamp(13px, 1.2vw, 18px)",
-              fontWeight: 500,
-              letterSpacing: "0.24em",
+              color: "#9A8E7E",
+              fontSize: "clamp(17px, 1.6vw, 26px)",
+              fontWeight: 600,
+              letterSpacing: "0.20em",
               textTransform: "uppercase",
             }}
           >
@@ -94,8 +94,8 @@ export default function AudienceView() {
             style={{
               display: "inline-block",
               width: 1,
-              height: 14,
-              background: C.dim,
+              height: 18,
+              background: "rgba(255,255,255,0.18)",
               verticalAlign: "middle",
             }}
           />
@@ -104,10 +104,9 @@ export default function AudienceView() {
             style={{
               ...serif,
               color: C.warmWhite,
-              fontSize: "clamp(13px, 1.2vw, 18px)",
+              fontSize: "clamp(17px, 1.6vw, 26px)",
               fontStyle: "italic",
               letterSpacing: "0.06em",
-              opacity: 0.85,
             }}
           >
             {roundName}
@@ -141,26 +140,26 @@ export default function AudienceView() {
         </AnimatePresence>
 
         {/* Right: active count */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <div
             style={{
-              width: 7,
-              height: 7,
+              width: 9,
+              height: 9,
               borderRadius: "50%",
-              background: C.bronze,
-              boxShadow: `0 0 8px ${C.bronze}`,
+              background: "#DCC080",
+              boxShadow: "0 0 10px rgba(220,192,128,0.8)",
             }}
           />
           <span
             style={{
               ...sans,
               color: C.warmWhite,
-              fontSize: "clamp(12px, 1.1vw, 16px)",
-              letterSpacing: "0.08em",
-              opacity: 0.75,
+              fontSize: "clamp(16px, 1.5vw, 22px)",
+              fontWeight: 600,
+              letterSpacing: "0.06em",
             }}
           >
-            {activePlayers.length} standing
+            {activePlayers.length} <span style={{ opacity: 0.55, fontWeight: 400 }}>standing</span>
           </span>
         </div>
       </header>

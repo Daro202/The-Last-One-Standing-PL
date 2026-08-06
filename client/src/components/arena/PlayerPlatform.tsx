@@ -9,11 +9,6 @@ interface PlayerPlatformProps {
   floorGlow: number;
 }
 
-/**
- * One complete player unit — bust + pedestal — sized responsively.
- * The parent column controls width; we fill 100% of it.
- * Current player is scaled up 25% via CSS transform (preserves layout).
- */
 export function PlayerPlatform({ player, isCurrent, floorGlow }: PlayerPlatformProps) {
   const isEliminated = !player.active;
 
@@ -21,9 +16,9 @@ export function PlayerPlatform({ player, isCurrent, floorGlow }: PlayerPlatformP
     <motion.div
       layout="position"
       animate={{
-        opacity: isEliminated ? 0.45 : 1,
-        y: isCurrent ? -10 : 0,
-        scale: isCurrent ? 1.24 : 1,
+        opacity: isEliminated ? 0.38 : 1,
+        y: isCurrent ? -12 : 0,
+        scale: isCurrent ? 1.22 : 1,
       }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       style={{
@@ -35,37 +30,37 @@ export function PlayerPlatform({ player, isCurrent, floorGlow }: PlayerPlatformP
         width: "100%",
       }}
     >
-      {/* ── Overhead light pool — soft radial, current player only ── */}
+      {/* Overhead soft light — current player only */}
       {isCurrent && (
         <div
           aria-hidden
           style={{
             position: "absolute",
-            top: "-35%",
+            top: "-50%",
             left: "50%",
             transform: "translateX(-50%)",
-            width: "280%",
-            paddingBottom: "280%",   // square aspect ratio trick
+            width: "260%",
+            aspectRatio: "1",
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, rgba(199,177,142,0.10) 0%, rgba(199,177,142,0.04) 45%, transparent 70%)",
+              "radial-gradient(circle, rgba(255,210,140,0.13) 0%, rgba(255,210,140,0.05) 45%, transparent 70%)",
             pointerEvents: "none",
             zIndex: 0,
           }}
         />
       )}
 
-      {/* ── Bust wrapper — controls the display size via parent column width ── */}
+      {/* Bust wrapper */}
       <div
         style={{
           position: "relative",
           zIndex: 1,
-          width: "88%",
+          width: "86%",
           filter: isCurrent
-            ? "drop-shadow(0 0 14px rgba(199,177,142,0.28)) drop-shadow(0 0 5px rgba(199,177,142,0.16))"
+            ? "drop-shadow(0 0 16px rgba(220,180,100,0.40)) drop-shadow(0 0 5px rgba(220,180,100,0.20))"
             : isEliminated
-            ? "brightness(0.50) grayscale(0.75)"
-            : "drop-shadow(0 2px 8px rgba(0,0,0,0.5))",
+            ? "brightness(0.40)"
+            : "drop-shadow(0 3px 10px rgba(0,0,0,0.70))",
           transition: "filter 0.6s ease",
         }}
       >
@@ -76,15 +71,15 @@ export function PlayerPlatform({ player, isCurrent, floorGlow }: PlayerPlatformP
         />
       </div>
 
-      {/* ── Floor glow strip under the bust ── */}
+      {/* Floor glow strip */}
       <div
         aria-hidden
         style={{
-          width: "110%",
+          width: "120%",
           height: 10,
-          marginTop: -2,
-          background: `radial-gradient(ellipse 80% 100% at center, rgba(199,177,142,${
-            isCurrent ? floorGlow * 1.7 : floorGlow * 0.7
+          marginTop: -3,
+          background: `radial-gradient(ellipse 70% 100% at center, rgba(199,177,142,${
+            isCurrent ? floorGlow * 2.2 : floorGlow * 0.6
           }) 0%, transparent 100%)`,
           pointerEvents: "none",
           zIndex: 0,
@@ -96,75 +91,82 @@ export function PlayerPlatform({ player, isCurrent, floorGlow }: PlayerPlatformP
         style={{
           position: "relative",
           zIndex: 1,
-          width: "95%",
+          width: "94%",
           background: isEliminated
-            ? "linear-gradient(180deg, #181820 0%, #0E0E14 100%)"
+            ? "linear-gradient(180deg, #141418 0%, #0C0C10 100%)"
             : isCurrent
-            ? "linear-gradient(180deg, #2E2E3C 0%, #1C1C28 100%)"
-            : "linear-gradient(180deg, #222230 0%, #141420 100%)",
+            ? "linear-gradient(180deg, #2A2830 0%, #18161E 100%)"
+            : "linear-gradient(180deg, #202028 0%, #121218 100%)",
           borderTop: isCurrent
-            ? "1px solid rgba(199,177,142,0.40)"
+            ? "2px solid rgba(220,180,100,0.55)"
             : isEliminated
-            ? "1px solid rgba(255,255,255,0.03)"
-            : "1px solid rgba(255,255,255,0.08)",
-          borderLeft:  isCurrent ? "1px solid rgba(199,177,142,0.12)" : "none",
-          borderRight: isCurrent ? "1px solid rgba(199,177,142,0.12)" : "none",
+            ? "1px solid rgba(255,255,255,0.04)"
+            : "1px solid rgba(180,180,210,0.18)",
+          borderLeft:  isCurrent ? "1px solid rgba(220,180,100,0.15)" : "none",
+          borderRight: isCurrent ? "1px solid rgba(220,180,100,0.15)" : "none",
           borderBottom: "none",
           borderRadius: "1px 1px 0 0",
           boxShadow: isCurrent
-            ? "0 6px 40px rgba(0,0,0,0.8), inset 0 1px 0 rgba(199,177,142,0.14)"
-            : "0 4px 20px rgba(0,0,0,0.65)",
+            ? "0 8px 40px rgba(0,0,0,0.85), inset 0 1px 0 rgba(220,180,100,0.18)"
+            : "0 4px 20px rgba(0,0,0,0.70)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          gap: "clamp(5px, 0.7vh, 9px)",
-          padding: "clamp(8px, 1.2vh, 14px) 8px clamp(10px, 1.4vh, 16px)",
+          gap: "clamp(5px, 0.6vh, 8px)",
+          padding: "clamp(8px, 1vh, 13px) 6px clamp(10px, 1.2vh, 15px)",
         }}
       >
         {/* Name */}
         <p
           style={{
             fontFamily: "'Inter', system-ui, sans-serif",
-            fontSize: "clamp(10px, 1.05vw, 16px)",
-            fontWeight: isCurrent ? 700 : 500,
-            letterSpacing: "0.10em",
+            fontSize: "clamp(10px, 1.0vw, 15px)",
+            fontWeight: 600,
+            letterSpacing: "0.12em",
             textTransform: "uppercase",
-            color: isEliminated ? "#3A3A3E" : isCurrent ? "#F1EEE8" : "#9A8878",
+            color: isEliminated
+              ? "#2E2E32"
+              : isCurrent
+              ? "#F5F0E8"
+              : "#C8C0D0",
             textAlign: "center",
             width: "100%",
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
             lineHeight: 1,
-            paddingLeft: 4,
-            paddingRight: 4,
+            paddingLeft: 3,
+            paddingRight: 3,
           }}
         >
           {player.name}
         </p>
 
         {/* Life cores */}
-        <div style={{ display: "flex", alignItems: "center", gap: "clamp(10px, 1.2vw, 20px)" }}>
-          <LifeCore active={!isEliminated && player.lives >= 1} size={16} />
-          <LifeCore active={!isEliminated && player.lives >= 2} size={16} />
+        <div style={{ display: "flex", alignItems: "center", gap: "clamp(8px, 1vw, 18px)" }}>
+          <LifeCore active={!isEliminated && player.lives >= 1} size={15} />
+          <LifeCore active={!isEliminated && player.lives >= 2} size={15} />
         </div>
 
         {/* Score */}
         <p
           style={{
             fontFamily: "'Inter', system-ui, sans-serif",
-            fontSize: "clamp(14px, 1.5vw, 22px)",
+            fontSize: "clamp(13px, 1.4vw, 21px)",
             fontWeight: 700,
-            letterSpacing: "0.02em",
-            color: isEliminated ? "#28282C" : isCurrent ? "#C7B18E" : "#5A5048",
+            color: isEliminated
+              ? "#242428"
+              : isCurrent
+              ? "#DCC080"
+              : "#7A7090",
             lineHeight: 1,
           }}
         >
           {player.points}
           <span
             style={{
-              fontSize: "0.5em",
+              fontSize: "0.48em",
               fontWeight: 400,
               marginLeft: 3,
               opacity: 0.55,
@@ -175,16 +177,15 @@ export function PlayerPlatform({ player, isCurrent, floorGlow }: PlayerPlatformP
           </span>
         </p>
 
-        {/* Eliminated label */}
         {isEliminated && (
           <p
             style={{
               fontFamily: "'Inter', system-ui, sans-serif",
-              fontSize: "clamp(7px, 0.65vw, 9px)",
+              fontSize: "clamp(7px, 0.6vw, 9px)",
               fontWeight: 500,
-              letterSpacing: "0.22em",
+              letterSpacing: "0.24em",
               textTransform: "uppercase",
-              color: "#32323A",
+              color: "#2A2A2E",
               marginTop: -2,
             }}
           >
@@ -193,14 +194,14 @@ export function PlayerPlatform({ player, isCurrent, floorGlow }: PlayerPlatformP
         )}
       </div>
 
-      {/* Pedestal base — shadow strip */}
+      {/* Base strip */}
       <div
         style={{
-          width: "calc(95% + 6px)",
+          width: "calc(94% + 6px)",
           height: 5,
-          background: "linear-gradient(180deg, #0C0C12 0%, #06060C 100%)",
+          background: "#080810",
           borderRadius: "0 0 3px 3px",
-          boxShadow: "0 4px 14px rgba(0,0,0,0.8)",
+          boxShadow: "0 4px 14px rgba(0,0,0,0.9)",
           zIndex: 1,
         }}
       />
