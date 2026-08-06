@@ -1,65 +1,77 @@
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+export type RoundName = 'WARM UP' | 'SURVIVAL' | 'MANDATORY' | 'BATTLE';
+
 export interface Question {
   id: number;
   text: string;
   answer: string;
   type: 'TRUE_FALSE' | 'OPEN';
-  plant?: string;
-  location?: string;
+  round: RoundName;
+  category: string;
+  difficulty?: string;
 }
 
 export interface Player {
   id: number;
   name: string;
+  avatarId: number;
   points: number;
   lives: number;
-  status: 'ACTIVE' | 'ELIMINATED';
+  active: boolean;
 }
+
+export interface Avatar {
+  id: number;
+  emoji: string;
+  label: string;
+}
+
+// ── Scoring ───────────────────────────────────────────────────────────────────
+
+/** Points awarded for a correct answer, keyed by round name. Single source of truth. */
+export const ROUND_POINTS: Record<RoundName, number> = {
+  'WARM UP':   1,
+  'SURVIVAL':  2,
+  'MANDATORY': 3,
+  'BATTLE':    5,
+};
+
+// ── Rounds ────────────────────────────────────────────────────────────────────
+
+export const ROUNDS: { id: number; name: RoundName; description: string }[] = [
+  { id: 1, name: 'WARM UP',   description: 'TRUE / FALSE — correct answer: +1 point' },
+  { id: 2, name: 'SURVIVAL',  description: 'TRUE / FALSE — correct answer: +2 points' },
+  { id: 3, name: 'MANDATORY', description: 'Open questions — correct answer: +3 points' },
+  { id: 4, name: 'BATTLE',    description: 'Open questions — correct answer: +5 points' },
+];
+
+// ── Avatars ───────────────────────────────────────────────────────────────────
+
+export const AVATARS: Avatar[] = [
+  { id:  1, emoji: '🦁', label: 'Lion'    },
+  { id:  2, emoji: '🐯', label: 'Tiger'   },
+  { id:  3, emoji: '🦊', label: 'Fox'     },
+  { id:  4, emoji: '🐺', label: 'Wolf'    },
+  { id:  5, emoji: '🦝', label: 'Raccoon' },
+  { id:  6, emoji: '🐻', label: 'Bear'    },
+  { id:  7, emoji: '🦄', label: 'Unicorn' },
+  { id:  8, emoji: '🐲', label: 'Dragon'  },
+  { id:  9, emoji: '🦅', label: 'Eagle'   },
+  { id: 10, emoji: '🦈', label: 'Shark'   },
+  { id: 11, emoji: '🦉', label: 'Owl'     },
+  { id: 12, emoji: '🤖', label: 'Robot'   },
+];
+
+export const DEFAULT_LIVES = 2;
+
+// ── Initial players ───────────────────────────────────────────────────────────
 
 export const INITIAL_PLAYERS: Player[] = Array.from({ length: 10 }, (_, i) => ({
   id: i + 1,
   name: `Player ${i + 1}`,
+  avatarId: (i % AVATARS.length) + 1,
   points: 0,
-  lives: 2,
-  status: 'ACTIVE',
+  lives: DEFAULT_LIVES,
+  active: true,
 }));
-
-export const ROUNDS = [
-  { id: 1, name: 'WARM UP',    description: 'TRUE / FALSE questions. Wrong answer costs 1 life.' },
-  { id: 2, name: 'SURVIVAL',   description: 'TRUE / FALSE questions. Wrong answer costs 1 life.' },
-  { id: 3, name: 'MANDATORY',  description: 'Open questions. Correct answer +1 point. Wrong answer costs 1 life.' },
-  { id: 4, name: 'BATTLE',     description: 'Open questions. Last player standing wins.' },
-];
-
-export const QUESTIONS: Record<string, Question[]> = {
-  '1': [
-    { id: 1,  text: 'The capital of Sweden is Stockholm.',               answer: 'TRUE',  type: 'TRUE_FALSE' },
-    { id: 2,  text: 'Switzerland is a member of the European Union.',    answer: 'FALSE', type: 'TRUE_FALSE' },
-    { id: 3,  text: 'The currency of Australia is the Australian dollar.',answer: 'TRUE',  type: 'TRUE_FALSE' },
-    { id: 4,  text: 'Poland is located in Asia.',                        answer: 'FALSE', type: 'TRUE_FALSE' },
-    { id: 5,  text: 'Rome is the capital of Italy.',                     answer: 'TRUE',  type: 'TRUE_FALSE' },
-    { id: 6,  text: 'The euro is the currency of the United Kingdom.',   answer: 'FALSE', type: 'TRUE_FALSE' },
-    { id: 7,  text: 'Japan is an island nation.',                        answer: 'TRUE',  type: 'TRUE_FALSE' },
-    { id: 8,  text: 'The Amazon is the longest river in the world.',     answer: 'FALSE', type: 'TRUE_FALSE' },
-    { id: 9,  text: 'Berlin is the capital of Germany.',                 answer: 'TRUE',  type: 'TRUE_FALSE' },
-    { id: 10, text: 'Mount Everest is located in Europe.',               answer: 'FALSE', type: 'TRUE_FALSE' },
-  ],
-  '2': [
-    { id: 11, text: 'Dolphins are mammals.',                             answer: 'TRUE',  type: 'TRUE_FALSE' },
-    { id: 12, text: 'A leap year has 365 days.',                         answer: 'FALSE', type: 'TRUE_FALSE' },
-    { id: 13, text: 'Penguins can fly.',                                 answer: 'FALSE', type: 'TRUE_FALSE' },
-    { id: 14, text: 'The Sun is a star.',                                answer: 'TRUE',  type: 'TRUE_FALSE' },
-  ],
-  '3': [
-    { id: 20, text: 'What is the capital of France?',                    answer: 'Paris',        type: 'OPEN' },
-    { id: 21, text: 'How many days are in a week?',                      answer: '7',            type: 'OPEN' },
-    { id: 22, text: 'What is the largest planet in the Solar System?',   answer: 'Jupiter',      type: 'OPEN' },
-    { id: 23, text: 'In which country is the Colosseum located?',        answer: 'Italy',        type: 'OPEN' },
-    { id: 24, text: 'What is the highest mountain in the world?',        answer: 'Mount Everest',type: 'OPEN' },
-  ],
-  '4': [
-    { id: 30, text: 'Who painted the Mona Lisa?',                        answer: 'Leonardo da Vinci', type: 'OPEN' },
-    { id: 31, text: 'What is the chemical symbol for oxygen?',           answer: 'O',                 type: 'OPEN' },
-    { id: 32, text: 'What is the largest ocean on Earth?',               answer: 'Pacific Ocean',     type: 'OPEN' },
-    { id: 33, text: 'Who was the first person to walk on the Moon?',     answer: 'Neil Armstrong',    type: 'OPEN' },
-  ],
-};
