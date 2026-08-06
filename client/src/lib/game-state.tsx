@@ -317,23 +317,35 @@ export function GameProvider({ children }: { children: ReactNode }) {
   };
 
   const resetGame = () => {
-    // Preserve names, avatarIds, questions, categories, questionsSource
-    const resetPlayers = state.players.map(p => ({
-      ...p, points: 0, lives: DEFAULT_LIVES, active: true,
-    }));
-    const active = resetPlayers.filter(p => p.active);
-    broadcast({
-      ...state,
-      players: resetPlayers,
-      currentQuestion: null,
-      status: 'WAITING',
-      questionScored: false,
-      usedQuestionIds: [],
-      gameOver: false,
-      winnerId: null,
-      currentPlayerId: active[0]?.id ?? null,
-      roundId: 1,
-      selectedCategory: null,
+    // Use functional setState so we always get the LATEST state, not a closure snapshot.
+    // This prevents stale-closure bugs where questions/questionsSource from a previous
+    // render (e.g. old migrated Polish questions) would get spread into the reset state
+    // instead of the currently imported Excel set.
+    setState(prev => {
+      const resetPlayers = prev.players.map(p => ({
+        ...p, points: 0, lives: DEFAULT_LIVES, active: true,
+      }));
+      const active = resetPlayers.filter(p => p.active);
+      const next: GameState = {
+        // Preserve everything from the latest state — especially:
+        //   questions, categories, questionsSource (loaded Excel set)
+        //   player names and avatarIds
+        ...prev,
+        // Reset only gameplay fields
+        players: resetPlayers,
+        currentQuestion: null,
+        status: 'WAITING',
+        questionScored: false,
+        usedQuestionIds: [],
+        gameOver: false,
+        winnerId: null,
+        currentPlayerId: active[0]?.id ?? null,
+        roundId: 1,
+        selectedCategory: null,
+      };
+      localStorage.setItem('game_state', JSON.stringify(next));
+      channelRef.current?.postMessage({ type: 'SYNC', payload: next });
+      return next;
     });
   };
 
