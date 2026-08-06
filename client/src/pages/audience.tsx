@@ -1,12 +1,38 @@
 import { useGame } from "@/lib/game-state";
-import { ROUNDS, AVATARS } from "@/lib/mock-data";
-import { cn } from "@/lib/utils";
+import { ROUNDS } from "@/lib/mock-data";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart } from "lucide-react";
+import { Arena } from "@/components/arena/Arena";
 
-function avatarEmoji(id: number): string {
-  return AVATARS.find(a => a.id === id)?.emoji ?? '👤';
-}
+// ── Design tokens ─────────────────────────────────────────────────────────────
+
+const C = {
+  bg:        "#050506",
+  graphite:  "#171719",
+  metal:     "#242426",
+  warmWhite: "#F1EEE8",
+  bronze:    "#8A7865",
+  accent:    "#C7B18E",
+  dim:       "#39393C",
+};
+
+// Round-level atmosphere: background darkening + header accent
+const ROUND_ATM: Record<string, { overlay: number; dividerOpacity: number }> = {
+  "WARM UP":   { overlay: 0.00, dividerOpacity: 0.12 },
+  "SURVIVAL":  { overlay: 0.03, dividerOpacity: 0.09 },
+  "MANDATORY": { overlay: 0.06, dividerOpacity: 0.07 },
+  "BATTLE":    { overlay: 0.10, dividerOpacity: 0.05 },
+};
+
+// ── Fonts ─────────────────────────────────────────────────────────────────────
+
+const serifStyle: React.CSSProperties = {
+  fontFamily: "'Cormorant Garamond', Georgia, serif",
+};
+const sansStyle: React.CSSProperties = {
+  fontFamily: "'Inter', system-ui, sans-serif",
+};
+
+// ── Main component ────────────────────────────────────────────────────────────
 
 export default function AudienceView() {
   const {
@@ -15,214 +41,427 @@ export default function AudienceView() {
     selectedCategory, gameOver, winnerId,
   } = useGame();
 
-  const currentRound = ROUNDS.find(r => r.id === roundId);
-  const activePlayers = players.filter(p => p.active);
-  const currentPlayer = players.find(p => p.id === currentPlayerId) ?? null;
-  const winner = players.find(p => p.id === winnerId) ?? null;
+  const currentRound   = ROUNDS.find(r => r.id === roundId);
+  const roundName      = currentRound?.name ?? "WARM UP";
+  const activePlayers  = players.filter(p => p.active);
+  const winner         = players.find(p => p.id === winnerId) ?? null;
 
-  const roundName = currentRound?.name ?? '';
   const roundQuestions = questions.filter(q => q.round === roundName);
   const questionNumber = currentQuestion
-    ? usedQuestionIds.indexOf(currentQuestion.id) + 1
+    ? (usedQuestionIds.indexOf(currentQuestion.id) + 1)
     : 0;
   const totalQuestions = roundQuestions.length;
 
-  return (
-    <div className="min-h-screen bg-black text-white flex flex-col relative overflow-hidden font-display">
-      {/* Background glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-black to-black" />
+  const atm = ROUND_ATM[roundName] ?? ROUND_ATM["WARM UP"];
 
-      {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <header className="relative z-10 flex justify-between items-center px-8 py-5 border-b border-white/10 bg-black/50 backdrop-blur-md">
-        <div className="flex items-center gap-4 flex-wrap">
-          {/* Game title */}
-          <h1 className="text-2xl md:text-3xl font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">
-            THE LAST STANDING
-          </h1>
-          {/* Round badge */}
-          <span className="bg-primary/20 border border-primary/40 text-primary font-bold text-sm px-3 py-1 rounded-full uppercase tracking-wider">
-            {currentRound?.name}
+  return (
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: C.bg,
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+        fontFamily: "'Inter', system-ui, sans-serif",
+      }}
+    >
+      {/* ── Round atmosphere overlay ──────────────────────────────────────── */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: `rgba(0,0,0,${atm.overlay})`,
+          transition: "background 1.2s ease",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
+
+      {/* ── Top bar ───────────────────────────────────────────────────────── */}
+      <header
+        style={{
+          position: "relative",
+          zIndex: 10,
+          flexShrink: 0,
+          height: 54,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingLeft: 40,
+          paddingRight: 40,
+          borderBottom: `0.5px solid rgba(255,255,255,${atm.dividerOpacity})`,
+          background: "rgba(5,5,6,0.7)",
+          backdropFilter: "blur(8px)",
+        }}
+      >
+        {/* Left: branding */}
+        <div style={{ display: "flex", alignItems: "baseline", gap: 20 }}>
+          <span
+            style={{
+              ...serifStyle,
+              color: C.bronze,
+              fontSize: 13,
+              fontWeight: 500,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+            }}
+          >
+            The Last Standing
           </span>
-          {/* Category badge */}
-          {selectedCategory && (
-            <span className="bg-white/10 border border-white/20 text-white/70 text-sm px-3 py-1 rounded-full">
-              {selectedCategory}
-            </span>
-          )}
+
+          <span
+            style={{
+              width: 1,
+              height: 14,
+              background: C.dim,
+              display: "inline-block",
+              verticalAlign: "middle",
+            }}
+          />
+
+          <span
+            style={{
+              ...serifStyle,
+              color: C.warmWhite,
+              fontSize: 13,
+              fontStyle: "italic",
+              letterSpacing: "0.08em",
+              opacity: 0.85,
+            }}
+          >
+            {roundName}
+          </span>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="bg-primary text-black font-black text-lg md:text-2xl px-4 py-1.5 rounded transform -skew-x-12 shadow-[0_0_16px_hsl(var(--primary)/0.5)]">
-            {activePlayers.length} LEFT
-          </div>
-          <div className="text-lg md:text-xl font-mono text-primary animate-pulse">LIVE</div>
+
+        {/* Centre: question counter */}
+        <AnimatePresence mode="wait">
+          {currentQuestion && questionNumber > 0 && (
+            <motion.span
+              key={questionNumber}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              style={{
+                ...sansStyle,
+                color: C.bronze,
+                fontSize: 11,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                position: "absolute",
+                left: "50%",
+                transform: "translateX(-50%)",
+              }}
+            >
+              Question {questionNumber}
+              {totalQuestions > 0 ? ` · ${totalQuestions}` : ""}
+              {selectedCategory ? ` · ${selectedCategory}` : ""}
+            </motion.span>
+          )}
+        </AnimatePresence>
+
+        {/* Right: active count */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: "50%",
+              background: C.accent,
+              boxShadow: `0 0 6px ${C.accent}`,
+              animation: "none",
+            }}
+          />
+          <span
+            style={{
+              ...sansStyle,
+              color: C.warmWhite,
+              fontSize: 12,
+              letterSpacing: "0.1em",
+              opacity: 0.7,
+            }}
+          >
+            {activePlayers.length} standing
+          </span>
         </div>
       </header>
 
-      {/* ── Current player bar ────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {!gameOver && currentPlayer && (
-          <motion.div
-            key={currentPlayer.id}
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            className="relative z-10 flex items-center gap-5 px-8 md:px-14 py-4 bg-white/5 border-b border-white/10 backdrop-blur"
-          >
-            <span className="text-5xl md:text-6xl">{avatarEmoji(currentPlayer.avatarId)}</span>
-            <div className="flex-1">
-              <p className="text-xs text-white/40 uppercase tracking-widest mb-0.5">Now answering</p>
-              <p className="text-3xl md:text-4xl font-black">{currentPlayer.name}</p>
-            </div>
-            <div className="flex items-center gap-6 font-mono text-xl md:text-2xl">
-              <span className="text-green-400 font-bold">{currentPlayer.points} pts</span>
-              <span className="flex items-center gap-1 text-red-400">
-                {Array.from({ length: currentPlayer.lives }).map((_, i) => (
-                  <Heart key={i} className="w-6 h-6 md:w-7 md:h-7 fill-red-400 text-red-400" />
-                ))}
-                {currentPlayer.lives === 0 && <span className="text-red-500">0</span>}
-              </span>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ── Main Content ──────────────────────────────────────────────────── */}
-      <main className="flex-1 relative z-10 flex items-center justify-center px-10 md:px-24 py-12 text-center">
+      {/* ── Main content ──────────────────────────────────────────────────── */}
+      <main
+        style={{
+          position: "relative",
+          zIndex: 10,
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "40px 80px 20px",
+          overflow: "hidden",
+        }}
+      >
         <AnimatePresence mode="wait">
 
-          {/* Game over */}
+          {/* ── Game over ────────────────────────────────────────────────── */}
           {gameOver ? (
-            <motion.div key="gameover"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="space-y-10"
+            <motion.div
+              key="gameover"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+              style={{ textAlign: "center" }}
             >
-              <h2 className="text-6xl md:text-9xl font-black text-accent drop-shadow-[0_0_40px_hsl(var(--accent)/0.8)] uppercase">
+              {/* Ceremonial top glow */}
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: 400,
+                  height: 200,
+                  background: "radial-gradient(ellipse at 50% 0%, rgba(199,177,142,0.12) 0%, transparent 70%)",
+                  pointerEvents: "none",
+                }}
+              />
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+                style={{
+                  ...serifStyle,
+                  color: C.bronze,
+                  fontSize: "clamp(0.9rem, 1.2vw, 1.1rem)",
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  marginBottom: 16,
+                }}
+              >
                 The Last Standing
-              </h2>
+              </motion.p>
+
               {winner && (
-                <div className="space-y-4">
-                  <span className="text-6xl md:text-8xl">{avatarEmoji(winner.avatarId)}</span>
-                  <p className="text-4xl md:text-6xl font-bold text-white">{winner.name}</p>
-                  <p className="text-2xl text-green-400 font-mono">{winner.points} points</p>
-                </div>
+                <>
+                  <motion.h2
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6, duration: 0.9 }}
+                    style={{
+                      ...sansStyle,
+                      color: C.warmWhite,
+                      fontSize: "clamp(3.5rem, 7vw, 6rem)",
+                      fontWeight: 700,
+                      letterSpacing: "-0.02em",
+                      lineHeight: 1,
+                      marginBottom: 20,
+                    }}
+                  >
+                    {winner.name}
+                  </motion.h2>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1, duration: 0.8 }}
+                    style={{
+                      ...sansStyle,
+                      color: C.accent,
+                      fontSize: "clamp(1.2rem, 2vw, 1.8rem)",
+                      fontWeight: 500,
+                      letterSpacing: "0.12em",
+                    }}
+                  >
+                    {winner.points} points
+                  </motion.p>
+                </>
               )}
             </motion.div>
 
           ) : !currentQuestion ? (
-            /* Waiting */
-            <motion.div key="waiting"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.1 }}
-              className="space-y-6"
+            /* ── Waiting ─────────────────────────────────────────────────── */
+            <motion.div
+              key="waiting"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6 }}
+              style={{ textAlign: "center" }}
             >
-              <h2 className="text-6xl md:text-8xl font-black text-white/20 tracking-tighter animate-pulse">
-                WAITING FOR QUESTION
+              <h2
+                style={{
+                  ...serifStyle,
+                  color: "rgba(241,238,232,0.07)",
+                  fontSize: "clamp(3rem, 6vw, 5.5rem)",
+                  fontWeight: 600,
+                  letterSpacing: "0.04em",
+                  lineHeight: 1.1,
+                  userSelect: "none",
+                }}
+              >
+                Waiting for question
               </h2>
-              <p className="text-white/10 font-mono uppercase tracking-widest text-sm">
-                Host is preparing the next question…
+              <p
+                style={{
+                  ...sansStyle,
+                  color: "rgba(138,120,101,0.25)",
+                  fontSize: 11,
+                  letterSpacing: "0.25em",
+                  textTransform: "uppercase",
+                  marginTop: 20,
+                }}
+              >
+                Host is preparing
               </p>
             </motion.div>
 
           ) : (
-            /* Question */
-            <motion.div key={currentQuestion.id}
-              initial={{ opacity: 0, y: 50 }}
+            /* ── Question ────────────────────────────────────────────────── */
+            <motion.div
+              key={currentQuestion.id}
+              initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -50 }}
-              className="w-full max-w-6xl space-y-10"
+              exit={{ opacity: 0, y: -14 }}
+              transition={{ duration: 0.55, ease: "easeOut" }}
+              style={{
+                width: "100%",
+                maxWidth: 1100,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 0,
+              }}
             >
-              {/* Question number + type */}
-              <div className="flex items-center justify-center gap-4 flex-wrap">
-                {questionNumber > 0 && (
-                  <span className="text-sm font-mono text-white/30 uppercase tracking-widest">
-                    Question {questionNumber}{totalQuestions > 0 ? ` / ${totalQuestions}` : ''}
-                  </span>
-                )}
-                <span className="text-xs font-mono bg-white/10 border border-white/20 px-3 py-1 rounded-full text-white/50 uppercase tracking-wider">
-                  {currentQuestion.type === 'TRUE_FALSE' ? 'True / False' : 'Open Question'}
-                </span>
-                {currentQuestion.category && (
-                  <span className="text-xs bg-primary/20 border border-primary/30 text-primary px-3 py-1 rounded-full uppercase tracking-wider">
-                    {currentQuestion.category}
-                  </span>
-                )}
-              </div>
+              {/* Question type label */}
+              <p
+                style={{
+                  ...sansStyle,
+                  color: C.bronze,
+                  fontSize: 11,
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  marginBottom: 28,
+                  opacity: 0.75,
+                }}
+              >
+                {currentQuestion.type === "TRUE_FALSE" ? "True · False" : "Open question"}
+              </p>
 
-              {/* Question text */}
-              <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-r from-transparent via-primary/20 to-transparent blur-xl opacity-50" />
-                <h2 className="relative text-4xl md:text-7xl font-medium leading-tight drop-shadow-2xl">
-                  {currentQuestion.text}
-                </h2>
-              </div>
+              {/* Question text — primary element */}
+              <h2
+                style={{
+                  ...sansStyle,
+                  color: C.warmWhite,
+                  fontSize: "clamp(1.9rem, 3.2vw, 3.4rem)",
+                  fontWeight: 600,
+                  lineHeight: 1.28,
+                  textAlign: "center",
+                  letterSpacing: "-0.01em",
+                  maxWidth: 980,
+                }}
+              >
+                {currentQuestion.text}
+              </h2>
 
-              {/* TRUE/FALSE option pills (hidden until revealed) */}
-              {currentQuestion.type === 'TRUE_FALSE' && status !== 'ANSWER_REVEALED' && (
-                <div className="flex justify-center gap-8">
-                  {['TRUE', 'FALSE'].map(opt => (
-                    <div key={opt}
-                      className="px-10 py-4 rounded-2xl border-2 border-white/20 text-3xl font-black text-white/40 tracking-wider">
+              {/* TRUE / FALSE options — shown before reveal */}
+              {currentQuestion.type === "TRUE_FALSE" && status !== "ANSWER_REVEALED" && (
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 40,
+                    marginTop: 44,
+                  }}
+                >
+                  {["True", "False"].map(opt => (
+                    <div
+                      key={opt}
+                      style={{
+                        padding: "12px 48px",
+                        border: `1px solid rgba(138,120,101,0.28)`,
+                        color: "rgba(241,238,232,0.22)",
+                        fontSize: "1.4rem",
+                        fontWeight: 600,
+                        letterSpacing: "0.14em",
+                        fontFamily: "'Inter', sans-serif",
+                        userSelect: "none",
+                      }}
+                    >
                       {opt}
                     </div>
                   ))}
                 </div>
               )}
 
-              {/* Answer — only after host reveals */}
-              <div className="h-36 flex items-center justify-center">
+              {/* Answer reveal */}
+              <div style={{ height: 120, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <AnimatePresence>
-                  {status === 'ANSWER_REVEALED' && (
+                  {status === "ANSWER_REVEALED" && (
                     <motion.div
-                      initial={{ scale: 0.5, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ type: 'spring', bounce: 0.5 }}
-                      className="bg-accent text-accent-foreground px-12 py-6 rounded-2xl shadow-[0_0_50px_hsl(var(--accent)/0.6)]"
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.45, ease: "easeOut" }}
+                      style={{
+                        padding: "18px 64px",
+                        background: "rgba(199,177,142,0.06)",
+                        border: `1px solid rgba(199,177,142,0.35)`,
+                        color: C.accent,
+                        fontSize: "clamp(1.8rem, 3vw, 3rem)",
+                        fontWeight: 700,
+                        letterSpacing: "0.04em",
+                        fontFamily: "'Inter', sans-serif",
+                        textAlign: "center",
+                        boxShadow: "0 0 40px rgba(199,177,142,0.06)",
+                      }}
                     >
-                      <span className="text-5xl md:text-8xl font-black tracking-wide">
-                        {currentQuestion.answer}
-                      </span>
+                      {currentQuestion.answer}
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
             </motion.div>
           )}
+
         </AnimatePresence>
       </main>
 
-      {/* ── Footer: scoreboard + round description ────────────────────────── */}
-      <footer className="relative z-10 border-t border-white/10 bg-black/80 backdrop-blur">
-        {/* All players mini scoreboard */}
-        <div className="px-6 py-3 flex items-center gap-3 flex-wrap justify-center border-b border-white/5">
-          {players.map(p => (
-            <div key={p.id}
-              className={cn(
-                "flex items-center gap-1.5 text-sm font-mono px-3 py-1.5 rounded-lg border",
-                !p.active
-                  ? "opacity-25 bg-white/5 border-white/10 line-through"
-                  : p.id === currentPlayerId
-                    ? "bg-primary/20 border-primary text-primary"
-                    : "bg-white/5 border-white/10 text-white/70"
-              )}
-            >
-              <span className="text-base">{avatarEmoji(p.avatarId)}</span>
-              <span className="font-bold">{p.name}</span>
-              <span className="text-green-400">{p.points}pt</span>
-              <span className="text-red-400">
-                {Array.from({ length: p.lives }).map(() => '♥').join('') || '—'}
-              </span>
-            </div>
-          ))}
-        </div>
-        {/* Round description */}
-        <div className="px-6 py-3 text-center">
-          <p className="text-base md:text-lg text-muted-foreground tracking-[0.15em]">
-            {currentRound?.description}
-          </p>
-        </div>
-      </footer>
+      {/* ── Arena ─────────────────────────────────────────────────────────── */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          flexShrink: 0,
+          overflow: "visible",
+        }}
+      >
+        {/* Subtle top separator — fades in from the arena */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: 0,
+            left: "15%",
+            right: "15%",
+            height: 1,
+            background: `linear-gradient(90deg,
+              transparent 0%,
+              rgba(138,120,101,${atm.dividerOpacity * 0.8}) 30%,
+              rgba(138,120,101,${atm.dividerOpacity * 0.8}) 70%,
+              transparent 100%
+            )`,
+            transition: "background 1.2s ease",
+            pointerEvents: "none",
+          }}
+        />
+
+        <Arena
+          players={players}
+          currentPlayerId={currentPlayerId}
+          roundName={roundName}
+        />
+      </div>
     </div>
   );
 }

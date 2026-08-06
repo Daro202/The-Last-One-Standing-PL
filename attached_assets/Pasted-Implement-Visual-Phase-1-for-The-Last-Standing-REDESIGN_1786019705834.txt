@@ -1,0 +1,297 @@
+Implement Visual Phase 1 for “The Last Standing”.
+
+REDESIGN ONLY THE AUDIENCE SCREEN.
+
+Do not change gameplay mechanics.
+Do not change scoring.
+Do not change Excel loading.
+Do not change BroadcastChannel or localStorage.
+Do not redesign the Admin screen yet.
+Do not add ElevenLabs.
+Do not use Three.js or full 3D models.
+
+The design direction is:
+
+BLACK KNOWLEDGE ARENA
+
+The Audience screen should feel like:
+- a prestigious live event,
+- a dark amphitheatre,
+- a contemporary sculpture museum,
+- a ceremonial knowledge-elimination arena.
+
+It must not look like:
+- a mobile game,
+- a cyberpunk dashboard,
+- an esports screen,
+- a casino interface,
+- a neon quiz template.
+
+==================================================
+VISUAL STYLE
+==================================================
+
+Use this palette:
+
+Background: #050506
+Deep graphite: #171719
+Platform metal: #242426
+Warm white text: #F1EEE8
+Muted bronze: #8A7865
+Premium accent: #C7B18E
+Eliminated state: #39393C
+
+Remove the strong cyan-neon appearance from the Audience screen.
+
+Use restrained metallic highlights, deep shadows and warm white typography.
+
+Lighting should be the main visual storytelling device.
+
+==================================================
+SCREEN COMPOSITION
+==================================================
+
+Use a cinematic 16:9 layout.
+
+Top section:
+- small title: THE LAST STANDING
+- current round
+- question number
+- number of active players
+- restrained typography
+- no large navigation bar
+
+Main question section:
+- placed in the upper-middle part of the screen
+- largest and most readable element
+- modern sans-serif typography
+- warm white text
+- generous empty space
+- no glowing card
+- no oversized rounded rectangle around the question
+
+The hierarchy must be:
+
+1. Question
+2. Current player
+3. Player arena
+4. Round and status information
+
+==================================================
+PLAYER ARENA
+==================================================
+
+Replace the current simple player display with a visual arena in the lower half of the screen.
+
+Show all ten players at once.
+
+Arrange them in a shallow amphitheatre arc.
+
+Each player should appear as:
+- a simple abstract 2.5D figurine,
+- standing on an individual platform,
+- created with CSS and/or inline SVG,
+- not a realistic human,
+- not a cartoon emoji,
+- not a full 3D model.
+
+The figurines should resemble modern graphite museum sculptures.
+
+Each platform must contain:
+- player name,
+- points,
+- two life indicators,
+- active or eliminated state.
+
+Do not use heart icons on the Audience screen.
+
+Replace hearts with two physical “life cores” integrated into the front of the platform.
+
+Active life core:
+- softly illuminated
+- warm metallic or stone appearance
+
+Lost life core:
+- dark
+- cracked or visually damaged
+- no glow
+
+==================================================
+CURRENT PLAYER
+==================================================
+
+The current player must remain part of the arena.
+
+Do not place the current player in a separate large side panel.
+
+The current player should have:
+- a narrow spotlight from above,
+- a slightly elevated platform,
+- slightly larger visual scale,
+- brighter engraved name and score,
+- stronger contrast than the other players.
+
+The platform may move upward by only a few pixels.
+
+Do not use constant floating animations.
+
+Players should feel heavy, stable and physical.
+
+==================================================
+OTHER PLAYERS
+==================================================
+
+Active players:
+- low controlled ambient lighting
+- still readable
+- visually secondary to the current player
+
+Eliminated players:
+- remain visible in the arena
+- platform slightly lowered
+- no spotlight
+- figurine desaturated and nearly hidden
+- both life cores extinguished
+- clearly marked as eliminated without using a large warning badge
+
+==================================================
+ROUND ATMOSPHERE
+==================================================
+
+Keep one unified arena design.
+
+Change only lighting and tension by round:
+
+WARM UP:
+- slightly brighter
+- warmer
+- more open
+- calm atmosphere
+
+SURVIVAL:
+- stronger contrast
+- narrower spotlight
+- darker shadows
+
+MANDATORY:
+- minimal and ceremonial
+- restrained lighting
+- maximum focus on the question
+
+BATTLE:
+- darkest background
+- strongest spotlight
+- highest contrast
+- final-stage atmosphere
+
+Use CSS variables or one shared round-theme configuration.
+
+Do not duplicate styling logic across components.
+
+==================================================
+TYPOGRAPHY
+==================================================
+
+Use:
+- an editorial serif only for the title and round name
+- a strong modern sans-serif for questions, names and scores
+
+The question must remain readable from several metres away.
+
+Avoid excessive uppercase text.
+
+==================================================
+MOTION
+==================================================
+
+Use Framer Motion carefully.
+
+Allowed motion:
+- question enters with opacity and small vertical movement
+- current platform rises slightly
+- spotlight transitions smoothly
+- eliminated players dim and lower
+- round lighting changes smoothly
+
+Do not add:
+- glitch effects
+- bouncing
+- pulsing neon
+- constant floating
+- excessive particle effects
+- full elimination animation yet
+
+This phase is only the visual foundation.
+
+==================================================
+RESPONSIVENESS
+==================================================
+
+Optimise first for:
+- 1920×1080
+- 16:9 projector view
+
+The design must remain usable on smaller desktop screens.
+
+Do not hide players unnecessarily.
+
+==================================================
+IMPLEMENTATION RULES
+==================================================
+
+Reuse the existing player, round, question and winner state.
+
+Do not create mock data.
+
+Do not break:
+- Admin view
+- BroadcastChannel synchronization
+- localStorage recovery
+- answer reveal
+- current player selection
+- player points
+- player lives
+- elimination state
+
+Create reusable components for:
+- Arena
+- PlayerPlatform
+- PlayerFigurine
+- LifeCore
+- Spotlight
+
+Use CSS/SVG and existing React/Framer Motion tools.
+
+Do not install a heavy graphics engine.
+
+==================================================
+ACCEPTANCE CRITERIA
+==================================================
+
+The Audience screen must visibly show:
+
+- THE LAST STANDING branding
+- current round
+- current question
+- current player
+- all ten players
+- player points
+- two life cores per player
+- eliminated player state
+- clear spotlight on the current player
+
+The result should feel:
+- premium
+- dark
+- restrained
+- ceremonial
+- physical
+- immediately understandable
+
+Continue until the Audience screen is functional and visually coherent.
+
+At the end report:
+- changed files
+- new visual components
+- preserved mechanics
+- any remaining visual issue
