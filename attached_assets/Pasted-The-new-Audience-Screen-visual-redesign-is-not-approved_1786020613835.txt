@@ -1,0 +1,129 @@
+The new Audience Screen visual redesign is not approved.
+
+It looks too empty, too small and too much like chess pieces on a black background.
+
+Restore the Audience Screen from the checkpoint created immediately before Visual Phase 1.
+
+Revert only the recent Audience visual changes.
+
+Do not revert:
+- gameplay mechanics,
+- Excel loading,
+- scoring,
+- lives,
+- avatars,
+- player editing,
+- localStorage,
+- BroadcastChannel synchronization.
+
+After restoring the previous functional Audience Screen, implement a new visual foundation with the following corrections.
+
+DO NOT create tiny pawn-shaped figurines.
+DO NOT use triangular CSS spotlights.
+DO NOT leave most of the screen empty.
+DO NOT place player names and scores in tiny text.
+DO NOT use a large bordered answer box.
+
+NEW COMPOSITION
+
+Use a strong broadcast layout:
+
+1. Top 10%
+- THE LAST STANDING
+- current round
+- question number
+- active player count
+
+2. Question area: approximately 35% of the screen
+- large readable question
+- maximum width around 1100px
+- modern sans-serif
+- warm white
+- no card around it
+- no excessive empty space
+
+3. Player arena: approximately 50% of the screen
+- all ten players must be large and clearly readable
+- arrange players in two shallow rows or one broad amphitheatre arc
+- each player unit should be approximately 140–180px wide on a 1920×1080 screen
+- names, points and lives must be readable from several metres away
+
+PLAYER DESIGN
+
+Use large stylised 2.5D busts or abstract human silhouettes.
+
+They must look like:
+- monumental museum sculptures,
+- broad shoulders and recognisable head shape,
+- graphite or dark bronze material,
+- substantial and physical,
+- not emojis,
+- not chess pawns,
+- not thin stick figures.
+
+Each player stands on a wide, substantial pedestal.
+
+The pedestal must clearly display:
+- player name
+- score
+- two large life cores
+
+CURRENT PLAYER
+
+The current player should:
+- be positioned near the centre,
+- be approximately 25% larger,
+- stand on a higher pedestal,
+- receive a wide, soft overhead pool of light,
+- have stronger contrast and a warm bronze edge light.
+
+Use a soft radial or elliptical light pool.
+
+Do not use a visible triangular beam.
+
+OTHER PLAYERS
+
+Active players:
+- clearly visible in controlled ambient light
+- slightly smaller than the current player
+
+Eliminated players:
+- remain visible
+- lowered pedestal
+- darkened sculpture
+- extinguished life cores
+- readable name with subtle ELIMINATED status
+
+ANSWER REVEAL
+
+Before reveal:
+- show only the question
+
+After reveal:
+- show the answer directly below the question
+- use elegant bronze text
+- no large bordered rectangle
+- the answer must remain secondary to the question
+
+VISUAL QUALITY
+
+The screen must feel:
+- premium
+- dense enough to feel intentional
+- theatrical
+- readable
+- monumental
+- like a prestigious live broadcast
+
+Use:
+- deep graphite background
+- warm white typography
+- restrained bronze highlights
+- subtle depth and shadows
+
+Do not add elimination animation yet.
+Do not redesign Admin.
+Do not change any mechanics.
+
+Implement the corrected Audience Screen now.
+Do not produce another plan.
