@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useGame } from "@/lib/game-state";
-import { ROUNDS, AVATARS, DEFAULT_LIVES } from "@/lib/mock-data";
+import { ROUNDS, AVATARS, DEFAULT_LIVES, ROUND_POINTS } from "@/lib/mock-data";
 import { parseExcelBinaryString } from "@/lib/excel-loader";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -452,9 +452,9 @@ export default function AdminPanel() {
                         <>
                           <Button size="icon" variant="ghost"
                             className="h-7 w-7 text-green-500 hover:bg-green-500/20 border border-green-500/20"
-                            onClick={() => updatePlayer(player.id, { points: player.points + 1 })}
-                            title="+1 point">
-                            <span className="text-xs font-bold">+1</span>
+                            onClick={() => updatePlayer(player.id, { points: player.points + (ROUND_POINTS[roundName] ?? 1) })}
+                            title={`+${ROUND_POINTS[roundName] ?? 1} point`}>
+                            <span className="text-xs font-bold">+{ROUND_POINTS[roundName] ?? 1}</span>
                           </Button>
                           <Button size="icon" variant="ghost"
                             className="h-7 w-7 text-orange-400 hover:bg-orange-500/20 border border-orange-500/20"
