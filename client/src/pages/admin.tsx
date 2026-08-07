@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useGame } from "@/lib/game-state";
 import { ROUNDS, AVATARS, DEFAULT_LIVES, ROUND_POINTS } from "@/lib/mock-data";
 import { parseExcelBinaryString } from "@/lib/excel-loader";
@@ -37,6 +37,9 @@ export default function AdminPanel() {
 
   // Local UI state
   const [confirmReset, setConfirmReset] = useState(false);
+  // Mobile only: three columns don't fit a phone screen, so below the `lg`
+  // breakpoint we show one panel at a time via a bottom tab bar.
+  const [mobileTab, setMobileTab] = useState<'controls' | 'question' | 'players'>('question');
   const [editingPlayerId, setEditingPlayerId] = useState<number | null>(null);
   const [editName, setEditName] = useState('');
   const [editAvatarId, setEditAvatarId] = useState(1);
@@ -44,15 +47,14 @@ export default function AdminPanel() {
   const [timerDisplay, setTimerDisplay] = useState(timerSeconds);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Update live timer display every second
+  // Live timer countdown — updates every 500 ms while the timer is running
   useEffect(() => {
     if (!timerActive || timerStartedAt === null) {
       setTimerDisplay(timerSeconds);
       return;
     }
     const tick = () => {
-      const remaining = Math.max(0, timerSeconds - Math.floor((Date.now() - timerStartedAt) / 1000));
-      setTimerDisplay(remaining);
+      setTimerDisplay(Math.max(0, timerSeconds - Math.floor((Date.now() - timerStartedAt) / 1000)));
     };
     tick();
     const id = setInterval(tick, 500);
@@ -144,14 +146,16 @@ export default function AdminPanel() {
   // ── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-background text-foreground grid grid-cols-[300px_1fr_360px] h-screen overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground flex flex-col lg:grid lg:grid-cols-[300px_1fr_360px] h-screen overflow-hidden pb-14 lg:pb-0">
 
       {/* ══ LEFT: Controls & Questions ═══════════════════════════════════════ */}
-      <div className="border-r border-border bg-card/50 flex flex-col h-full overflow-hidden">
+      <div className={cn(
+        "border-r border-border bg-card/50 flex-col h-full overflow-hidden",
+        mobileTab === 'controls' ? 'flex' : 'hidden', 'lg:flex'
+      )}>
         <div className="p-4 border-b border-border shrink-0 space-y-3">
           <div className="flex items-center justify-between">
             <h2 className="font-bold text-lg tracking-wider text-primary uppercase">Game Controls</h2>
-            {/* WS connection indicator */}
             {wsConnected
               ? <Wifi className="w-4 h-4 text-green-500 shrink-0" />
               : <WifiOff className="w-4 h-4 text-muted-foreground shrink-0 animate-pulse" />
@@ -167,11 +171,10 @@ export default function AdminPanel() {
               <Tv className="w-3.5 h-3.5 text-primary shrink-0" />
               <span className="text-xs text-muted-foreground uppercase tracking-wider">Room code</span>
             </div>
-            {roomCode ? (
-              <span className="font-mono font-black text-xl text-primary tracking-widest">{roomCode}</span>
-            ) : (
-              <span className="text-xs text-muted-foreground italic">connecting…</span>
-            )}
+            {roomCode
+              ? <span className="font-mono font-black text-xl text-primary tracking-widest">{roomCode}</span>
+              : <span className="text-xs text-muted-foreground italic">connecting…</span>
+            }
           </div>
 
           <Button
@@ -320,7 +323,10 @@ export default function AdminPanel() {
       </div>
 
       {/* ══ CENTER: Live Control ══════════════════════════════════════════════ */}
-      <div className="flex flex-col h-full bg-background p-8 gap-6 overflow-y-auto">
+      <div className={cn(
+        "flex-col h-full bg-background p-4 lg:p-8 gap-6 overflow-y-auto",
+        mobileTab === 'question' ? 'flex' : 'hidden', 'lg:flex'
+      )}>
 
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-black uppercase text-foreground/80">{roundName}</h1>
@@ -377,7 +383,6 @@ export default function AdminPanel() {
         {/* Timer controls */}
         <div className="flex items-center gap-2 p-3 rounded-xl bg-muted/20 border border-border">
           <Timer className="w-4 h-4 text-muted-foreground shrink-0" />
-          {/* Duration selector */}
           <select
             className="rounded border border-border bg-background text-foreground text-xs px-1.5 py-1 focus:outline-none focus:ring-1 focus:ring-primary w-20"
             value={timerDuration}
@@ -388,21 +393,20 @@ export default function AdminPanel() {
               <option key={s} value={s}>{s}s</option>
             ))}
           </select>
-          {/* Countdown display */}
           <span className={cn(
             "font-mono font-black text-xl w-12 text-center tabular-nums",
-            timerDisplay <= 5 && timerActive ? "text-red-500 animate-pulse" :
-            timerDisplay <= 10 ? "text-orange-400" : "text-primary"
+            timerDisplay <= 5 && timerActive ? "text-red-500 animate-pulse"
+              : timerDisplay <= 10 ? "text-orange-400" : "text-primary"
           )}>
             {timerDisplay}
           </span>
-          {/* Start / Pause */}
           {timerActive ? (
             <Button size="sm" variant="outline" className="gap-1.5 border-orange-500/50 text-orange-400 hover:bg-orange-500/10" onClick={pauseTimer}>
               <Pause className="w-3.5 h-3.5" /> Pause
             </Button>
           ) : (
-            <Button size="sm" variant="outline" className="gap-1.5 border-green-500/50 text-green-400 hover:bg-green-500/10" onClick={startTimer} disabled={gameOver || !currentQuestion}>
+            <Button size="sm" variant="outline" className="gap-1.5 border-green-500/50 text-green-400 hover:bg-green-500/10"
+              onClick={startTimer} disabled={gameOver || !currentQuestion}>
               <Play className="w-3.5 h-3.5" /> Start
             </Button>
           )}
@@ -431,8 +435,8 @@ export default function AdminPanel() {
                   )}
                 </div>
 
-                {/* Question text */}
-                <p className="text-4xl md:text-5xl font-bold leading-tight">{currentQuestion.text}</p>
+                {/* Question text — shrinks on narrow screens so full text always fits */}
+                <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">{currentQuestion.text}</p>
 
                 {/* Answer — always visible to host */}
                 <div className="pt-6 border-t border-border/50 space-y-5">
@@ -482,7 +486,10 @@ export default function AdminPanel() {
       </div>
 
       {/* ══ RIGHT: Players ════════════════════════════════════════════════════ */}
-      <div className="border-l border-border bg-card/50 flex flex-col h-full">
+      <div className={cn(
+        "border-l border-border bg-card/50 flex-col h-full",
+        mobileTab === 'players' ? 'flex' : 'hidden', 'lg:flex'
+      )}>
         <div className="p-4 border-b border-border bg-card">
           <h2 className="font-bold text-lg tracking-wider text-primary flex items-center justify-between">
             PLAYERS
@@ -622,6 +629,26 @@ export default function AdminPanel() {
             })}
           </div>
         </ScrollArea>
+      </div>
+
+      {/* ══ MOBILE-ONLY: bottom tab bar to switch between the three panels ══ */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 h-14 border-t border-border bg-card flex z-50">
+        {([
+          { id: 'controls' as const, label: 'Controls' },
+          { id: 'question' as const, label: 'Question' },
+          { id: 'players' as const, label: 'Players' },
+        ]).map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setMobileTab(tab.id)}
+            className={cn(
+              "flex-1 text-xs font-bold uppercase tracking-wide transition-colors",
+              mobileTab === tab.id ? "text-primary bg-primary/10" : "text-muted-foreground"
+            )}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
     </div>
   );
