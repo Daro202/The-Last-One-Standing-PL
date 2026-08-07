@@ -73,7 +73,7 @@ function validateAndMap(data: Record<string, unknown>[]): ParseResult {
     errors.push('No active questions found (ACTIVE = 1) in the file.');
   }
 
-  const categories = [...new Set(questions.map(q => q.category))].sort();
+  const categories = Array.from(new Set(questions.map(q => q.category))).sort();
   return { questions, categories, errors, warnings };
 }
 

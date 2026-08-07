@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useGame } from "@/lib/game-state";
 import { ROUNDS, AVATARS, DEFAULT_LIVES, ROUND_POINTS } from "@/lib/mock-data";
 import { parseExcelBinaryString } from "@/lib/excel-loader";
@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   X, Eye, RotateCcw, Skull, Tv, Upload, Download,
   Check, Heart, ChevronRight, Pencil, Shuffle,
+  Timer, Play, Pause, RefreshCw, Wifi, WifiOff,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import * as XLSX from "xlsx";
@@ -29,6 +30,9 @@ export default function AdminPanel() {
     setRound, setQuestion, drawQuestion, revealAnswer,
     markCorrect, markWrong, setCurrentPlayer, nextPlayer, setCategory,
     updatePlayer, resetGame, importQuestions, importPlayers,
+    startTimer, pauseTimer, resetTimer,
+    timerActive, timerSeconds, timerStartedAt,
+    roomCode, wsConnected,
   } = useGame();
 
   // Local UI state
@@ -36,7 +40,24 @@ export default function AdminPanel() {
   const [editingPlayerId, setEditingPlayerId] = useState<number | null>(null);
   const [editName, setEditName] = useState('');
   const [editAvatarId, setEditAvatarId] = useState(1);
+  const [timerDuration, setTimerDuration] = useState(30);
+  const [timerDisplay, setTimerDisplay] = useState(timerSeconds);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Update live timer display every second
+  useEffect(() => {
+    if (!timerActive || timerStartedAt === null) {
+      setTimerDisplay(timerSeconds);
+      return;
+    }
+    const tick = () => {
+      const remaining = Math.max(0, timerSeconds - Math.floor((Date.now() - timerStartedAt) / 1000));
+      setTimerDisplay(remaining);
+    };
+    tick();
+    const id = setInterval(tick, 500);
+    return () => clearInterval(id);
+  }, [timerActive, timerSeconds, timerStartedAt]);
 
   // ── Derived values ─────────────────────────────────────────────────────────
 
@@ -128,7 +149,30 @@ export default function AdminPanel() {
       {/* ══ LEFT: Controls & Questions ═══════════════════════════════════════ */}
       <div className="border-r border-border bg-card/50 flex flex-col h-full overflow-hidden">
         <div className="p-4 border-b border-border shrink-0 space-y-3">
-          <h2 className="font-bold text-lg tracking-wider text-primary uppercase">Game Controls</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="font-bold text-lg tracking-wider text-primary uppercase">Game Controls</h2>
+            {/* WS connection indicator */}
+            {wsConnected
+              ? <Wifi className="w-4 h-4 text-green-500 shrink-0" />
+              : <WifiOff className="w-4 h-4 text-muted-foreground shrink-0 animate-pulse" />
+            }
+          </div>
+
+          {/* Room code badge */}
+          <div className={cn(
+            "rounded-lg border px-3 py-2 flex items-center justify-between gap-2",
+            roomCode ? "bg-primary/10 border-primary/40" : "bg-muted/20 border-border"
+          )}>
+            <div className="flex items-center gap-2">
+              <Tv className="w-3.5 h-3.5 text-primary shrink-0" />
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">Room code</span>
+            </div>
+            {roomCode ? (
+              <span className="font-mono font-black text-xl text-primary tracking-widest">{roomCode}</span>
+            ) : (
+              <span className="text-xs text-muted-foreground italic">connecting…</span>
+            )}
+          </div>
 
           <Button
             variant="outline" size="sm" className="w-full border-primary/50 text-primary hover:bg-primary/10"
@@ -167,10 +211,10 @@ export default function AdminPanel() {
               <Upload className="w-4 h-4 mr-2" /> Import Excel (.xlsx)
             </Button>
             <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" size="xs" onClick={handleExportPlayers}>
+              <Button variant="outline" size="sm" onClick={handleExportPlayers}>
                 <Download className="w-3 h-3 mr-1" /> Players
               </Button>
-              <Button variant="outline" size="xs" onClick={handleExportQuestions}>
+              <Button variant="outline" size="sm" onClick={handleExportQuestions}>
                 <Download className="w-3 h-3 mr-1" /> Questions
               </Button>
             </div>
@@ -329,6 +373,45 @@ export default function AdminPanel() {
             )}
           </div>
         )}
+
+        {/* Timer controls */}
+        <div className="flex items-center gap-2 p-3 rounded-xl bg-muted/20 border border-border">
+          <Timer className="w-4 h-4 text-muted-foreground shrink-0" />
+          {/* Duration selector */}
+          <select
+            className="rounded border border-border bg-background text-foreground text-xs px-1.5 py-1 focus:outline-none focus:ring-1 focus:ring-primary w-20"
+            value={timerDuration}
+            onChange={e => { const s = Number(e.target.value); setTimerDuration(s); resetTimer(s); }}
+            disabled={timerActive}
+          >
+            {[10, 15, 20, 30, 45, 60, 90].map(s => (
+              <option key={s} value={s}>{s}s</option>
+            ))}
+          </select>
+          {/* Countdown display */}
+          <span className={cn(
+            "font-mono font-black text-xl w-12 text-center tabular-nums",
+            timerDisplay <= 5 && timerActive ? "text-red-500 animate-pulse" :
+            timerDisplay <= 10 ? "text-orange-400" : "text-primary"
+          )}>
+            {timerDisplay}
+          </span>
+          {/* Start / Pause */}
+          {timerActive ? (
+            <Button size="sm" variant="outline" className="gap-1.5 border-orange-500/50 text-orange-400 hover:bg-orange-500/10" onClick={pauseTimer}>
+              <Pause className="w-3.5 h-3.5" /> Pause
+            </Button>
+          ) : (
+            <Button size="sm" variant="outline" className="gap-1.5 border-green-500/50 text-green-400 hover:bg-green-500/10" onClick={startTimer} disabled={gameOver || !currentQuestion}>
+              <Play className="w-3.5 h-3.5" /> Start
+            </Button>
+          )}
+          <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-foreground px-2"
+            onClick={() => { resetTimer(timerDuration); setTimerDisplay(timerDuration); }}
+            title="Reset timer">
+            <RefreshCw className="w-3.5 h-3.5" />
+          </Button>
+        </div>
 
         {/* Question card */}
         <Card className="flex-1 flex flex-col justify-center border-primary/20 bg-card/30 relative overflow-hidden">

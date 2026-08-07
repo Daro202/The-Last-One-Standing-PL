@@ -10,16 +10,20 @@ export interface GameState {
   roundId: number;
   currentQuestion: Question | null;
   status: 'WAITING' | 'READING' | 'ANSWER_REVEALED';
-  questionScored: boolean;          // prevents double-scoring same question
+  questionScored: boolean;
   players: Player[];
-  questions: Question[];            // all loaded questions (flat)
-  categories: string[];             // discovered from loaded questions
-  selectedCategory: string | null;  // null = All Categories
+  questions: Question[];
+  categories: string[];
+  selectedCategory: string | null;
   currentPlayerId: number | null;
-  usedQuestionIds: number[];        // global — never repeats during a game
+  usedQuestionIds: number[];
   gameOver: boolean;
   winnerId: number | null;
   questionsSource: 'default' | 'manual' | 'none';
+  // ── Timer ──────────────────────────────────────────────────────────────────
+  timerActive: boolean;
+  timerSeconds: number;         // total duration configured
+  timerStartedAt: number | null; // epoch ms when timer last started
 }
 
 export interface GameContextType extends GameState {
@@ -37,6 +41,16 @@ export interface GameContextType extends GameState {
   broadcast: (state: GameState) => void;
   importQuestions: (questions: Question[], categories: string[]) => void;
   importPlayers: (players: Player[]) => void;
+  // ── Timer actions ──────────────────────────────────────────────────────────
+  startTimer: () => void;
+  pauseTimer: () => void;
+  resetTimer: (seconds?: number) => void;
+  // ── Socket / room ──────────────────────────────────────────────────────────
+  roomCode: string | null;
+  roomJoined: boolean;
+  wsConnected: boolean;
+  wsError: string | null;
+  joinRoom: (code: string) => void;
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -49,24 +63,23 @@ function getNextActiveId(players: Player[], fromId: number | null): number | nul
   return active[(idx + 1) % active.length]?.id ?? null;
 }
 
-// ── State migration from previous format ──────────────────────────────────────
+// ── State migration ───────────────────────────────────────────────────────────
 
 function migrateState(parsed: Record<string, unknown>): GameState {
-  // Migrate players: add avatarId, replace status string with active boolean
-  let players: Player[] = ((parsed.players as Player[] | undefined) ?? INITIAL_PLAYERS).map(
-    (p: Record<string, unknown>, i: number) => ({
-      id: (p.id as number) ?? i + 1,
-      name: (p.name as string) ?? `Player ${i + 1}`,
-      avatarId: (p.avatarId as number) ?? ((i % 12) + 1),
-      points: (p.points as number) ?? 0,
-      lives: (p.lives as number) ?? DEFAULT_LIVES,
-      active: p.active !== undefined
-        ? Boolean(p.active)
-        : (p.status === 'ACTIVE' || p.status === undefined),
-    })
-  );
+  const rawPlayers = (
+    (parsed.players as unknown[] | undefined) ?? (INITIAL_PLAYERS as unknown[])
+  ) as Array<Record<string, unknown>>;
+  let players: Player[] = rawPlayers.map((p, i: number) => ({
+    id: (p['id'] as number) ?? i + 1,
+    name: (p['name'] as string) ?? `Player ${i + 1}`,
+    avatarId: (p['avatarId'] as number) ?? ((i % 12) + 1),
+    points: (p['points'] as number) ?? 0,
+    lives: (p['lives'] as number) ?? DEFAULT_LIVES,
+    active: p['active'] !== undefined
+      ? Boolean(p['active'])
+      : (p['status'] === 'ACTIVE' || p['status'] === undefined),
+  }));
 
-  // Migrate questions from old dynamicQuestions Record<string, OldQuestion[]>
   let questions: Question[] = (parsed.questions as Question[]) ?? [];
   let categories: string[] = (parsed.categories as string[]) ?? [];
   let questionsSource = (parsed.questionsSource as GameState['questionsSource']) ?? 'none';
@@ -91,10 +104,9 @@ function migrateState(parsed: Record<string, unknown>): GameState {
       });
     });
     if (questions.length) questionsSource = 'default';
-    categories = [...new Set(questions.map(q => q.category))].sort();
+    categories = Array.from(new Set(questions.map(q => q.category))).sort();
   }
 
-  // Migrate usedQuestionIds from old Record<string, number[]> to flat number[]
   let usedQuestionIds: number[] = [];
   const raw = parsed.usedQuestionIds;
   if (Array.isArray(raw)) {
@@ -121,6 +133,9 @@ function migrateState(parsed: Record<string, unknown>): GameState {
     gameOver: (parsed.gameOver as boolean) ?? false,
     winnerId: (parsed.winnerId as number | null) ?? null,
     questionsSource,
+    timerActive: (parsed.timerActive as boolean) ?? false,
+    timerSeconds: (parsed.timerSeconds as number) ?? 30,
+    timerStartedAt: (parsed.timerStartedAt as number | null) ?? null,
   };
 }
 
@@ -140,55 +155,225 @@ const INITIAL_STATE: GameState = {
   gameOver: false,
   winnerId: null,
   questionsSource: 'none',
+  timerActive: false,
+  timerSeconds: 30,
+  timerStartedAt: null,
 };
 
 // ── Context ───────────────────────────────────────────────────────────────────
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
-const CHANNEL_NAME = 'last_standing_broadcast_v2';
+
+// Storage keys
+const STORAGE_KEY_STATE      = 'game_state';
+const STORAGE_KEY_ADMIN      = 'last_standing_room';        // localStorage  (admin)
+const STORAGE_KEY_AUDIENCE   = 'last_standing_room';        // sessionStorage (audience)
+const STORAGE_KEY_OWNER_TOKEN = 'last_standing_owner_token'; // localStorage  (admin only)
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<GameState>(() => {
     try {
-      const saved = localStorage.getItem('game_state');
+      const saved = localStorage.getItem(STORAGE_KEY_STATE);
       if (saved) return migrateState(JSON.parse(saved));
     } catch { /* ignore */ }
     return INITIAL_STATE;
   });
 
   const stateRef = useRef(state);
-  const channelRef = useRef<BroadcastChannel | null>(null);
-
   useEffect(() => {
     stateRef.current = state;
-    localStorage.setItem('game_state', JSON.stringify(state));
+    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(state));
   }, [state]);
 
-  // BroadcastChannel setup
+  // ── Role detection ─────────────────────────────────────────────────────────
+  const isAdminPage = typeof window !== 'undefined' && window.location.pathname.includes('/admin');
+
+  // ── WebSocket refs ─────────────────────────────────────────────────────────
+  const wsRef              = useRef<WebSocket | null>(null);
+  const roomCodeRef        = useRef<string | null>(null);
+  const isRoomCreatorRef   = useRef(false);
+  const reconnectDelayRef  = useRef(1000);
+  const reconnectTimerRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const mountedRef         = useRef(true);
+
+  // ── WebSocket state ────────────────────────────────────────────────────────
+  const [roomCode,   setRoomCode]   = useState<string | null>(() => {
+    if (typeof window === 'undefined') return null;
+    return isAdminPage
+      ? localStorage.getItem(STORAGE_KEY_ADMIN) ?? null
+      : sessionStorage.getItem(STORAGE_KEY_AUDIENCE) ?? null;
+  });
+  const [roomJoined,  setRoomJoined]  = useState(false);
+  const [wsConnected, setWsConnected] = useState(false);
+  const [wsError,     setWsError]     = useState<string | null>(null);
+
+  // Keep roomCodeRef in sync
+  useEffect(() => { roomCodeRef.current = roomCode; }, [roomCode]);
+
+  // ── WS push helper ─────────────────────────────────────────────────────────
+  const pushState = (newState: GameState) => {
+    const ws   = wsRef.current;
+    const code = roomCodeRef.current;
+    if (ws?.readyState === WebSocket.OPEN && code && isRoomCreatorRef.current) {
+      ws.send(JSON.stringify({ type: 'STATE_UPDATE', roomCode: code, state: newState }));
+    }
+  };
+
+  const sendEffect = (effect: 'CONFETTI' | 'FANFARE' | 'WRONG') => {
+    const ws   = wsRef.current;
+    const code = roomCodeRef.current;
+    if (ws?.readyState === WebSocket.OPEN && code && isRoomCreatorRef.current) {
+      ws.send(JSON.stringify({ type: 'EFFECT', roomCode: code, effect }));
+    }
+  };
+
+  // ── WebSocket connect / reconnect ──────────────────────────────────────────
   useEffect(() => {
-    const channel = new BroadcastChannel(CHANNEL_NAME);
-    channelRef.current = channel;
+    mountedRef.current = true;
 
-    channel.onmessage = (event: MessageEvent) => {
-      if (event.data?.type === 'SYNC')         setState(event.data.payload);
-      if (event.data?.type === 'REQUEST_SYNC') channel.postMessage({ type: 'SYNC', payload: stateRef.current });
-      if (event.data?.type === 'CONFETTI')     confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
-      if (event.data?.type === 'FANFARE')      playFanfare();
-      if (event.data?.type === 'WRONG')        playWrong();
-    };
+    function connect() {
+      if (!mountedRef.current) return;
+      if (wsRef.current?.readyState === WebSocket.OPEN ||
+          wsRef.current?.readyState === WebSocket.CONNECTING) return;
 
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === 'game_state' && e.newValue) {
-        try { setState(JSON.parse(e.newValue)); } catch { /* ignore */ }
+      const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const ws    = new WebSocket(`${proto}//${window.location.host}/ws`);
+      wsRef.current = ws;
+
+      ws.onopen = () => {
+        if (!mountedRef.current) { ws.close(); return; }
+        setWsConnected(true);
+        setWsError(null);
+        reconnectDelayRef.current = 1000;
+
+        const storedCode = isAdminPage
+          ? localStorage.getItem(STORAGE_KEY_ADMIN)
+          : sessionStorage.getItem(STORAGE_KEY_AUDIENCE);
+
+        if (storedCode) {
+          // Try to rejoin the room we were in.
+          // Admin includes the server-issued owner token so the server can
+          // restore creator authority without a fresh CREATE_ROOM.
+          const ownerToken = isAdminPage
+            ? (localStorage.getItem(STORAGE_KEY_OWNER_TOKEN) ?? '')
+            : '';
+          ws.send(JSON.stringify({ type: 'JOIN_ROOM', roomCode: storedCode, ownerToken }));
+        } else if (isAdminPage) {
+          // Admin with no stored code: create a fresh room
+          ws.send(JSON.stringify({ type: 'CREATE_ROOM', state: stateRef.current }));
+        }
+        // Audience with no stored code: wait for joinRoom() to be called
+      };
+
+      ws.onmessage = (event) => {
+        if (!mountedRef.current) return;
+        let msg: Record<string, unknown>;
+        try { msg = JSON.parse(event.data as string) as Record<string, unknown>; }
+        catch { return; }
+
+        switch (msg.type) {
+          case 'ROOM_CREATED': {
+            isRoomCreatorRef.current = true;
+            const code = msg.roomCode as string;
+            const ownerToken = String(msg.ownerToken ?? '');
+            roomCodeRef.current = code;
+            setRoomCode(code);
+            setRoomJoined(true);
+            localStorage.setItem(STORAGE_KEY_ADMIN, code);
+            // Store the server-issued owner token so we can prove creator
+            // identity after a WebSocket reconnect.
+            if (ownerToken) localStorage.setItem(STORAGE_KEY_OWNER_TOKEN, ownerToken);
+            break;
+          }
+          case 'ROOM_JOINED': {
+            const code = msg.roomCode as string;
+            roomCodeRef.current = code;
+            setRoomCode(code);
+            setRoomJoined(true);
+            if (isAdminPage) {
+              // Admin rejoined their own room — push current local state to update server
+              isRoomCreatorRef.current = true;
+              if (ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'STATE_UPDATE', roomCode: code, state: stateRef.current }));
+              }
+            } else {
+              // Audience: apply the server's authoritative state
+              const serverState = migrateState(msg.state as Record<string, unknown>);
+              setState(serverState);
+              localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(serverState));
+              sessionStorage.setItem(STORAGE_KEY_AUDIENCE, code);
+            }
+            break;
+          }
+          case 'SYNC': {
+            // Only audience clients receive this (server excludes sender)
+            const serverState = migrateState(msg.state as Record<string, unknown>);
+            setState(serverState);
+            localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(serverState));
+            break;
+          }
+          case 'EFFECT': {
+            const eff = msg.effect as string;
+            if (eff === 'CONFETTI') confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+            if (eff === 'FANFARE')  playFanfare();
+            if (eff === 'WRONG')    playWrong();
+            break;
+          }
+          case 'ERROR': {
+            const errMsg = msg.message as string;
+            console.warn('[WS] Server error:', errMsg);
+            setWsError(errMsg);
+            if (isAdminPage) {
+              // Room not found (server restarted) — create a fresh room
+              localStorage.removeItem(STORAGE_KEY_ADMIN);
+              roomCodeRef.current = null;
+              setRoomCode(null);
+              setRoomJoined(false);
+              isRoomCreatorRef.current = false;
+              if (ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'CREATE_ROOM', state: stateRef.current }));
+              }
+            } else {
+              // Audience: stored room code is stale — clear it, show join screen again
+              sessionStorage.removeItem(STORAGE_KEY_AUDIENCE);
+              roomCodeRef.current = null;
+              setRoomCode(null);
+              setRoomJoined(false);
+            }
+            break;
+          }
+        }
+      };
+
+      ws.onclose = () => {
+        if (!mountedRef.current) return;
+        setWsConnected(false);
+        setRoomJoined(false);
+        wsRef.current = null;
+        // Exponential back-off, max 5 s
+        const delay = reconnectDelayRef.current;
+        reconnectDelayRef.current = Math.min(delay * 1.5, 5000);
+        reconnectTimerRef.current = setTimeout(connect, delay);
+      };
+
+      ws.onerror = () => {
+        setWsError('WebSocket connection error');
+      };
+    }
+
+    connect();
+
+    return () => {
+      mountedRef.current = false;
+      if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
+      if (wsRef.current) {
+        wsRef.current.onclose = null; // prevent reconnect loop on intentional unmount
+        wsRef.current.close();
       }
     };
-    window.addEventListener('storage', handleStorage);
-    channel.postMessage({ type: 'REQUEST_SYNC' });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    return () => { channel.close(); window.removeEventListener('storage', handleStorage); };
-  }, []);
-
-  // Auto-load default Excel on first launch
+  // ── Auto-load default Excel ────────────────────────────────────────────────
   useEffect(() => {
     if (stateRef.current.questionsSource !== 'none') return;
     fetch('/data/quiz_questions.xlsx')
@@ -200,8 +385,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
           setState(prev => {
             if (prev.questionsSource !== 'none') return prev;
             const next: GameState = { ...prev, questions, categories, questionsSource: 'default' };
-            localStorage.setItem('game_state', JSON.stringify(next));
-            channelRef.current?.postMessage({ type: 'SYNC', payload: next });
+            localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(next));
+            pushState(next);
             return next;
           });
         }
@@ -209,15 +394,29 @@ export function GameProvider({ children }: { children: ReactNode }) {
       .catch(err => console.warn('[Auto-load] Default questions not found:', err));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Core broadcast helper ──────────────────────────────────────────────────
+  // ── Core broadcast ─────────────────────────────────────────────────────────
 
   const broadcast = (newState: GameState) => {
     setState(newState);
-    channelRef.current?.postMessage({ type: 'SYNC', payload: newState });
-    localStorage.setItem('game_state', JSON.stringify(newState));
+    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(newState));
+    pushState(newState);
   };
 
-  // ── Actions ────────────────────────────────────────────────────────────────
+  // ── joinRoom (called by audience join screen) ──────────────────────────────
+
+  const joinRoom = (code: string) => {
+    const trimmed = code.trim();
+    if (!trimmed || trimmed.length !== 4) return;
+    sessionStorage.setItem(STORAGE_KEY_AUDIENCE, trimmed);
+    roomCodeRef.current = trimmed;
+    setRoomCode(trimmed);
+    setWsError(null);
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({ type: 'JOIN_ROOM', roomCode: trimmed }));
+    }
+  };
+
+  // ── Game actions ───────────────────────────────────────────────────────────
 
   const setRound = (id: number) => {
     const active = state.players.filter(p => p.active);
@@ -227,6 +426,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
       currentQuestion: null,
       status: 'WAITING',
       questionScored: false,
+      timerActive: false,
+      timerStartedAt: null,
       currentPlayerId: active[0]?.id ?? null,
     });
   };
@@ -237,7 +438,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const used = state.usedQuestionIds.includes(id)
       ? state.usedQuestionIds
       : [...state.usedQuestionIds, id];
-    broadcast({ ...state, currentQuestion: question, status: 'READING', questionScored: false, usedQuestionIds: used });
+    broadcast({
+      ...state,
+      currentQuestion: question,
+      status: 'READING',
+      questionScored: false,
+      usedQuestionIds: used,
+      timerActive: false,
+      timerStartedAt: null,
+    });
   };
 
   const drawQuestion = () => {
@@ -255,15 +464,25 @@ export function GameProvider({ children }: { children: ReactNode }) {
       status: 'READING',
       questionScored: false,
       usedQuestionIds: [...state.usedQuestionIds, q.id],
+      timerActive: false,
+      timerStartedAt: null,
     });
   };
 
   const revealAnswer = () => {
-    const next: GameState = { ...state, status: 'ANSWER_REVEALED' };
-    setState(next);
-    channelRef.current?.postMessage({ type: 'SYNC', payload: next });
-    channelRef.current?.postMessage({ type: 'CONFETTI' });
-    localStorage.setItem('game_state', JSON.stringify(next));
+    // Pause timer when revealing
+    const timerSeconds = state.timerActive && state.timerStartedAt
+      ? Math.max(0, state.timerSeconds - Math.floor((Date.now() - state.timerStartedAt) / 1000))
+      : state.timerSeconds;
+    const next: GameState = {
+      ...state,
+      status: 'ANSWER_REVEALED',
+      timerActive: false,
+      timerStartedAt: null,
+      timerSeconds,
+    };
+    broadcast(next);
+    sendEffect('CONFETTI');
   };
 
   const markCorrect = () => {
@@ -275,12 +494,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
     );
     const nextId = getNextActiveId(newPlayers, state.currentPlayerId);
     broadcast({ ...state, players: newPlayers, currentPlayerId: nextId, questionScored: true });
-    channelRef.current?.postMessage({ type: 'FANFARE' });
+    sendEffect('FANFARE');
   };
 
   const markWrong = () => {
     if (!state.currentPlayerId || !state.currentQuestion || state.questionScored || state.gameOver) return;
-    channelRef.current?.postMessage({ type: 'WRONG' });
+    sendEffect('WRONG');
     const newPlayers = state.players.map(p => {
       if (p.id !== state.currentPlayerId) return p;
       const newLives = Math.max(0, p.lives - 1);
@@ -291,7 +510,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const winner = active[0] ?? null;
       if (winner) {
         confetti({ particleCount: 250, spread: 130, origin: { y: 0.5 } });
-        channelRef.current?.postMessage({ type: 'CONFETTI' });
+        sendEffect('CONFETTI');
       }
       broadcast({
         ...state,
@@ -300,6 +519,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
         gameOver: true,
         winnerId: winner?.id ?? null,
         currentPlayerId: winner?.id ?? null,
+        timerActive: false,
+        timerStartedAt: null,
       });
       return;
     }
@@ -322,21 +543,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
   };
 
   const resetGame = () => {
-    // Use functional setState so we always get the LATEST state, not a closure snapshot.
-    // This prevents stale-closure bugs where questions/questionsSource from a previous
-    // render (e.g. old migrated Polish questions) would get spread into the reset state
-    // instead of the currently imported Excel set.
     setState(prev => {
       const resetPlayers = prev.players.map(p => ({
         ...p, points: 0, lives: DEFAULT_LIVES, active: true,
       }));
       const active = resetPlayers.filter(p => p.active);
       const next: GameState = {
-        // Preserve everything from the latest state — especially:
-        //   questions, categories, questionsSource (loaded Excel set)
-        //   player names and avatarIds
         ...prev,
-        // Reset only gameplay fields
         players: resetPlayers,
         currentQuestion: null,
         status: 'WAITING',
@@ -347,9 +560,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
         currentPlayerId: active[0]?.id ?? null,
         roundId: 1,
         selectedCategory: null,
+        timerActive: false,
+        timerSeconds: 30,
+        timerStartedAt: null,
       };
-      localStorage.setItem('game_state', JSON.stringify(next));
-      channelRef.current?.postMessage({ type: 'SYNC', payload: next });
+      localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(next));
+      pushState(next);
       return next;
     });
   };
@@ -379,12 +595,33 @@ export function GameProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  // ── Timer actions ──────────────────────────────────────────────────────────
+
+  const startTimer = () => {
+    broadcast({ ...state, timerActive: true, timerStartedAt: Date.now() });
+  };
+
+  const pauseTimer = () => {
+    const remaining = state.timerActive && state.timerStartedAt
+      ? Math.max(0, state.timerSeconds - Math.floor((Date.now() - state.timerStartedAt) / 1000))
+      : state.timerSeconds;
+    broadcast({ ...state, timerActive: false, timerStartedAt: null, timerSeconds: remaining });
+  };
+
+  const resetTimer = (seconds = 30) => {
+    broadcast({ ...state, timerActive: false, timerStartedAt: null, timerSeconds: seconds });
+  };
+
+  // ── Context value ──────────────────────────────────────────────────────────
+
   return (
     <GameContext.Provider value={{
       ...state,
       setRound, setQuestion, drawQuestion, revealAnswer,
       markCorrect, markWrong, setCurrentPlayer, nextPlayer, setCategory,
       updatePlayer, resetGame, broadcast, importQuestions, importPlayers,
+      startTimer, pauseTimer, resetTimer,
+      roomCode, roomJoined, wsConnected, wsError, joinRoom,
     }}>
       {children}
     </GameContext.Provider>
