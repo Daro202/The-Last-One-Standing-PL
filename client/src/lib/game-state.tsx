@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState, useRef, ReactNod
 import { Player, Question, INITIAL_PLAYERS, ROUNDS, ROUND_POINTS, DEFAULT_LIVES } from './mock-data';
 import { parseExcelBuffer } from './excel-loader';
 import confetti from 'canvas-confetti';
+import { playFanfare, playWrong } from './arena-audio';
 
 // ── State shape ───────────────────────────────────────────────────────────────
 
@@ -172,6 +173,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
       if (event.data?.type === 'SYNC')         setState(event.data.payload);
       if (event.data?.type === 'REQUEST_SYNC') channel.postMessage({ type: 'SYNC', payload: stateRef.current });
       if (event.data?.type === 'CONFETTI')     confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+      if (event.data?.type === 'FANFARE')      playFanfare();
+      if (event.data?.type === 'WRONG')        playWrong();
     };
 
     const handleStorage = (e: StorageEvent) => {
@@ -272,10 +275,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
     );
     const nextId = getNextActiveId(newPlayers, state.currentPlayerId);
     broadcast({ ...state, players: newPlayers, currentPlayerId: nextId, questionScored: true });
+    channelRef.current?.postMessage({ type: 'FANFARE' });
   };
 
   const markWrong = () => {
     if (!state.currentPlayerId || !state.currentQuestion || state.questionScored || state.gameOver) return;
+    channelRef.current?.postMessage({ type: 'WRONG' });
     const newPlayers = state.players.map(p => {
       if (p.id !== state.currentPlayerId) return p;
       const newLives = Math.max(0, p.lives - 1);
