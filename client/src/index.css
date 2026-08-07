@@ -105,3 +105,10 @@ h1, h2, h3, h4, h5, h6 {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--primary) / 0.5);
 }
+
+/* iOS Safari: nested scroll containers sometimes don't engage momentum
+   scrolling without this, which can make them feel "stuck". Harmless
+   elsewhere. */
+.overflow-y-auto {
+  -webkit-overflow-scrolling: touch;
+}

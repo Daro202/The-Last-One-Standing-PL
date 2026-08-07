@@ -146,7 +146,7 @@ export default function AdminPanel() {
   // ── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col lg:grid lg:grid-cols-[300px_1fr_360px] h-screen overflow-hidden pb-14 lg:pb-0">
+    <div className="min-h-dvh bg-background text-foreground flex flex-col lg:grid lg:grid-cols-[300px_1fr_360px] h-dvh overflow-hidden pb-14 lg:pb-0">
 
       {/* ══ LEFT: Controls & Questions ═══════════════════════════════════════ */}
       <div className={cn(
