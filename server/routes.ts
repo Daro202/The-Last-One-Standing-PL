@@ -2,6 +2,34 @@ import type { Express } from "express";
 import { type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
 import { randomBytes } from "crypto";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { join } from "path";
+
+// ── Server-side persistent store ──────────────────────────────────────────────
+// Questions (and categories) are saved to a JSON file on disk so they survive
+// server restarts and are available to any device without re-importing Excel.
+
+const DATA_DIR   = join(process.cwd(), "server", "data");
+const STORE_PATH = join(DATA_DIR, "store.json");
+
+interface StoreShape {
+  questions: unknown[];
+  categories: string[];
+}
+
+function readStore(): StoreShape {
+  try {
+    if (!existsSync(STORE_PATH)) return { questions: [], categories: [] };
+    return JSON.parse(readFileSync(STORE_PATH, "utf-8")) as StoreShape;
+  } catch {
+    return { questions: [], categories: [] };
+  }
+}
+
+function writeStore(data: StoreShape): void {
+  if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
+  writeFileSync(STORE_PATH, JSON.stringify(data, null, 2), "utf-8");
+}
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -45,6 +73,28 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express,
 ): Promise<Server> {
+
+  // ── REST: persistent question store ────────────────────────────────────────
+
+  /** Return the saved questions + categories (empty arrays if nothing saved yet). */
+  app.get("/api/data", (_req, res) => {
+    res.json(readStore());
+  });
+
+  /** Save questions + categories from the host's Excel import. */
+  app.post("/api/data", (req, res) => {
+    const body = req.body as Partial<StoreShape>;
+    if (!Array.isArray(body.questions)) {
+      res.status(400).json({ error: "questions array required" });
+      return;
+    }
+    const store: StoreShape = {
+      questions:  body.questions,
+      categories: Array.isArray(body.categories) ? body.categories : [],
+    };
+    writeStore(store);
+    res.json({ ok: true, count: body.questions.length });
+  });
   // noServer: true — we handle HTTP upgrades manually so that Vite's HMR
   // WebSocket on /vite-hmr is never intercepted or rejected by this server.
   const wss = new WebSocketServer({ noServer: true });

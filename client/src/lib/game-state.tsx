@@ -381,25 +381,41 @@ export function GameProvider({ children }: { children: ReactNode }) {
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Auto-load default Excel ────────────────────────────────────────────────
+  // ── Auto-load questions ────────────────────────────────────────────────────
+  // Priority: 1) server-persisted store (cross-device)
+  //           2) static xlsx bundled with the app (single-device fallback)
   useEffect(() => {
     if (stateRef.current.questionsSource !== 'none') return;
-    fetch('/data/quiz_questions.xlsx')
-      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.arrayBuffer(); })
-      .then(buf => {
-        const { questions, categories, errors } = parseExcelBuffer(buf);
-        if (errors.length) console.warn('[Auto-load] Excel errors:', errors);
-        if (questions.length) {
-          setState(prev => {
-            if (prev.questionsSource !== 'none') return prev;
-            const next: GameState = { ...prev, questions, categories, questionsSource: 'default' };
-            localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(next));
-            pushState(next);
-            return next;
-          });
-        }
+
+    const applyQuestions = (questions: Question[], categories: string[], source: GameState['questionsSource']) => {
+      setState(prev => {
+        if (prev.questionsSource !== 'none') return prev;
+        const next: GameState = { ...prev, questions, categories, questionsSource: source };
+        localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(next));
+        pushState(next);
+        return next;
+      });
+    };
+
+    // 1. Try server store
+    fetch('/api/data')
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+      .then((data: { questions: Question[]; categories: string[] }) => {
+        if (!data.questions?.length) throw new Error('Server store empty');
+        console.log(`[Auto-load] Loaded ${data.questions.length} questions from server store`);
+        applyQuestions(data.questions, data.categories ?? [], 'default');
       })
-      .catch(err => console.warn('[Auto-load] Default questions not found:', err));
+      .catch(() => {
+        // 2. Fall back to the static xlsx bundled with the app
+        fetch('/data/quiz_questions.xlsx')
+          .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.arrayBuffer(); })
+          .then(buf => {
+            const { questions, categories, errors } = parseExcelBuffer(buf);
+            if (errors.length) console.warn('[Auto-load] Excel errors:', errors);
+            if (questions.length) applyQuestions(questions, categories, 'default');
+          })
+          .catch(err => console.warn('[Auto-load] Default questions not found:', err));
+      });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Core broadcast ─────────────────────────────────────────────────────────
@@ -590,6 +606,17 @@ export function GameProvider({ children }: { children: ReactNode }) {
       usedQuestionIds: [],
       selectedCategory: null,
     });
+    // Persist to server so every device gets these questions on next load
+    fetch('/api/data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ questions: newQuestions, categories: newCategories }),
+    })
+      .then(r => r.json())
+      .then((d: { ok: boolean; count: number }) =>
+        console.log(`[Persist] Saved ${d.count} questions to server`),
+      )
+      .catch(err => console.warn('[Persist] Failed to save questions to server:', err));
   };
 
   const importPlayers = (newPlayers: Player[]) => {
