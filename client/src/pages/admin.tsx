@@ -150,7 +150,7 @@ export default function AdminPanel() {
 
       {/* ══ LEFT: Controls & Questions ═══════════════════════════════════════ */}
       <div className={cn(
-        "border-r border-border bg-card/50 flex-col h-full overflow-hidden",
+        "border-r border-border bg-card/50 flex-col h-full min-h-0 overflow-hidden",
         mobileTab === 'controls' ? 'flex' : 'hidden', 'lg:flex'
       )}>
         <div className="p-4 border-b border-border shrink-0 space-y-3">
@@ -324,7 +324,7 @@ export default function AdminPanel() {
 
       {/* ══ CENTER: Live Control ══════════════════════════════════════════════ */}
       <div className={cn(
-        "flex-col h-full bg-background p-4 lg:p-8 gap-6 overflow-y-auto",
+        "flex-col h-full min-h-0 bg-background p-4 lg:p-8 gap-6 overflow-y-auto",
         mobileTab === 'question' ? 'flex' : 'hidden', 'lg:flex'
       )}>
 
@@ -487,7 +487,7 @@ export default function AdminPanel() {
 
       {/* ══ RIGHT: Players ════════════════════════════════════════════════════ */}
       <div className={cn(
-        "border-l border-border bg-card/50 flex-col h-full",
+        "border-l border-border bg-card/50 flex-col h-full min-h-0",
         mobileTab === 'players' ? 'flex' : 'hidden', 'lg:flex'
       )}>
         <div className="p-4 border-b border-border bg-card">
