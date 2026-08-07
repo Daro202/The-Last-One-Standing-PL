@@ -82,7 +82,7 @@ function JoinScreen({ onJoin, wsConnected, wsError }: {
           textTransform: "uppercase",
           marginBottom: 12,
         }}>
-          The Last Standing
+          The Last One Standing
         </p>
         <h1 style={{
           ...serif,
@@ -322,7 +322,7 @@ export default function AudienceView() {
             letterSpacing: "0.20em",
             textTransform: "uppercase",
           }}>
-            The Last Standing
+            The Last One Standing
           </span>
           <span style={{
             display: "inline-block",
@@ -487,7 +487,7 @@ export default function AudienceView() {
                   letterSpacing: "0.32em", textTransform: "uppercase", marginBottom: 16,
                 }}
               >
-                The Last Standing
+                The Last One Standing
               </motion.p>
               {winner && (
                 <>

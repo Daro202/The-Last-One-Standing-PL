@@ -3,7 +3,6 @@ import { useGame } from "@/lib/game-state";
 import { ROUNDS, AVATARS, DEFAULT_LIVES, ROUND_POINTS } from "@/lib/mock-data";
 import { parseExcelBinaryString } from "@/lib/excel-loader";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -146,11 +145,11 @@ export default function AdminPanel() {
   // ── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-dvh bg-background text-foreground flex flex-col lg:grid lg:grid-cols-[300px_1fr_360px] h-dvh overflow-hidden pb-14 lg:pb-0">
+    <div className="min-h-dvh bg-background text-foreground flex flex-col lg:grid lg:grid-cols-[300px_1fr_360px] lg:h-dvh lg:overflow-hidden pb-14 lg:pb-0">
 
       {/* ══ LEFT: Controls & Questions ═══════════════════════════════════════ */}
       <div className={cn(
-        "border-r border-border bg-card/50 flex-col h-full min-h-0 overflow-hidden",
+        "border-r border-border bg-card/50 flex-col lg:h-full lg:min-h-0 lg:overflow-hidden",
         mobileTab === 'controls' ? 'flex' : 'hidden', 'lg:flex'
       )}>
         <div className="p-4 border-b border-border shrink-0 space-y-3">
@@ -281,7 +280,7 @@ export default function AdminPanel() {
         </div>
 
         {/* Question list */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar">
+        <div className="lg:flex-1 lg:overflow-y-auto custom-scrollbar">
           {loading ? (
             <div className="p-4 text-sm text-muted-foreground italic">Loading questions…</div>
           ) : roundQuestions.length === 0 ? (
@@ -324,7 +323,7 @@ export default function AdminPanel() {
 
       {/* ══ CENTER: Live Control ══════════════════════════════════════════════ */}
       <div className={cn(
-        "flex-col h-full min-h-0 bg-background p-4 lg:p-8 gap-6 overflow-y-auto",
+        "flex-col lg:h-full lg:min-h-0 bg-background p-4 lg:p-8 gap-6 lg:overflow-y-auto",
         mobileTab === 'question' ? 'flex' : 'hidden', 'lg:flex'
       )}>
 
@@ -487,7 +486,7 @@ export default function AdminPanel() {
 
       {/* ══ RIGHT: Players ════════════════════════════════════════════════════ */}
       <div className={cn(
-        "border-l border-border bg-card/50 flex-col h-full min-h-0",
+        "border-l border-border bg-card/50 flex-col lg:h-full lg:min-h-0 lg:overflow-hidden",
         mobileTab === 'players' ? 'flex' : 'hidden', 'lg:flex'
       )}>
         <div className="p-4 border-b border-border bg-card">
@@ -497,7 +496,7 @@ export default function AdminPanel() {
           </h2>
         </div>
 
-        <ScrollArea className="flex-1">
+        <div className="lg:flex-1 lg:overflow-y-auto custom-scrollbar">
           <div className="p-3 space-y-2">
             {players.map(player => {
               const isCurrent = player.id === currentPlayerId;
@@ -628,7 +627,7 @@ export default function AdminPanel() {
               );
             })}
           </div>
-        </ScrollArea>
+        </div>
       </div>
 
       {/* ══ MOBILE-ONLY: bottom tab bar to switch between the three panels ══ */}

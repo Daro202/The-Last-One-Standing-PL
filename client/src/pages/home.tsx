@@ -235,7 +235,7 @@ export default function Home() {
             textShadow: "0 0 60px rgba(199,177,142,0.18)",
           }}
         >
-          The Last Standing
+          The Last One Standing
         </motion.h1>
 
         <motion.div
