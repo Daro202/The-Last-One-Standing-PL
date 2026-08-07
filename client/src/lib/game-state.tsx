@@ -220,6 +220,14 @@ export function GameProvider({ children }: { children: ReactNode }) {
   };
 
   const sendEffect = (effect: 'CONFETTI' | 'FANFARE' | 'WRONG') => {
+    // Play locally on the admin page.
+    // The server excludes the sender from EFFECT fan-out, so without this
+    // the admin would hear no audio feedback after removing BroadcastChannel.
+    // CONFETTI is handled separately at call sites (preserving animation params),
+    // so only FANFARE and WRONG need the local fallback here.
+    if (effect === 'FANFARE') playFanfare();
+    if (effect === 'WRONG')   playWrong();
+    // Fan out to audience via WebSocket
     const ws   = wsRef.current;
     const code = roomCodeRef.current;
     if (ws?.readyState === WebSocket.OPEN && code && isRoomCreatorRef.current) {
