@@ -297,3 +297,38 @@ export function playClick() {
   osc.start();
   osc.stop(c.currentTime + 0.32);
 }
+
+// ── Question narration — plays a pre-generated ElevenLabs mp3 ───────────────
+// Files live in client/public/audio_questions/q_<ID>.mp3 and are generated
+// offline by generate_question_audio.py. Nothing is called at runtime against
+// the ElevenLabs API, so a live event never depends on that service being up.
+
+let currentNarration: HTMLAudioElement | null = null;
+
+/** Stops any question narration that's currently playing. */
+export function stopQuestionNarration() {
+  if (currentNarration) {
+    currentNarration.pause();
+    currentNarration.currentTime = 0;
+    currentNarration = null;
+  }
+}
+
+/**
+ * Plays the narration for a given question ID.
+ * Silently does nothing if the file is missing (e.g. a question that failed
+ * to generate) — a missing mp3 must never break the game flow.
+ */
+export function playQuestionNarration(questionId: number | string) {
+  if (muted) return;
+  stopQuestionNarration();
+
+  const audio = new Audio(`/audio_questions/q_${questionId}.mp3`);
+  audio.volume = 0.95;
+  currentNarration = audio;
+
+  audio.play().catch((err) => {
+    // Autoplay policy or missing file — log, don't throw.
+    console.warn(`[audio] Could not play narration for question ${questionId}:`, err?.message ?? err);
+  });
+}

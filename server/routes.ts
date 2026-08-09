@@ -203,13 +203,18 @@ export async function registerRoutes(
           break;
         }
 
-        // ── Room creator sends a transient effect (confetti / fanfare / wrong)
-        // Same authorization requirement as STATE_UPDATE.
+        // ── Room creator sends a transient effect (confetti / fanfare / wrong /
+        // read-question). Same authorization requirement as STATE_UPDATE.
         case "EFFECT": {
           if (!isCreator || !currentRoomCode) return;
           const room = rooms.get(currentRoomCode);
           if (!room) return;
-          broadcastToRoom(room, { type: "EFFECT", effect: msg.effect }, ws);
+          // questionId is only present for READ_QUESTION; harmless otherwise.
+          broadcastToRoom(
+            room,
+            { type: "EFFECT", effect: msg.effect, questionId: msg.questionId },
+            ws,
+          );
           break;
         }
 

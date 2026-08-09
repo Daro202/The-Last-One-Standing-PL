@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState, useRef, ReactNod
 import { Player, Question, INITIAL_PLAYERS, ROUNDS, ROUND_POINTS, DEFAULT_LIVES } from './mock-data';
 import { parseExcelBuffer } from './excel-loader';
 import confetti from 'canvas-confetti';
-import { playFanfare, playWrong } from './arena-audio';
+import { playFanfare, playWrong, playQuestionNarration, stopQuestionNarration } from './arena-audio';
 
 // ── State shape ───────────────────────────────────────────────────────────────
 
@@ -219,7 +219,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const sendEffect = (effect: 'CONFETTI' | 'FANFARE' | 'WRONG') => {
+  const sendEffect = (
+    effect: 'CONFETTI' | 'FANFARE' | 'WRONG' | 'READ_QUESTION',
+    payload?: { questionId?: number | string },
+  ) => {
     // Play locally on the admin page.
     // The server excludes the sender from EFFECT fan-out, so without this
     // the admin would hear no audio feedback after removing BroadcastChannel.
@@ -227,11 +230,14 @@ export function GameProvider({ children }: { children: ReactNode }) {
     // so only FANFARE and WRONG need the local fallback here.
     if (effect === 'FANFARE') playFanfare();
     if (effect === 'WRONG')   playWrong();
+    if (effect === 'READ_QUESTION' && payload?.questionId !== undefined) {
+      playQuestionNarration(payload.questionId);
+    }
     // Fan out to audience via WebSocket
     const ws   = wsRef.current;
     const code = roomCodeRef.current;
     if (ws?.readyState === WebSocket.OPEN && code && isRoomCreatorRef.current) {
-      ws.send(JSON.stringify({ type: 'EFFECT', roomCode: code, effect }));
+      ws.send(JSON.stringify({ type: 'EFFECT', roomCode: code, effect, ...payload }));
     }
   };
 
@@ -325,6 +331,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
             if (eff === 'CONFETTI') confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
             if (eff === 'FANFARE')  playFanfare();
             if (eff === 'WRONG')    playWrong();
+            if (eff === 'READ_QUESTION' && msg.questionId !== undefined) {
+              playQuestionNarration(msg.questionId as number | string);
+            }
             break;
           }
           case 'ERROR': {
@@ -471,6 +480,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
       timerActive: false,
       timerStartedAt: null,
     });
+    // Read the question aloud shortly after it appears on screen.
+    stopQuestionNarration();
+    window.setTimeout(() => sendEffect('READ_QUESTION', { questionId: id }), 1000);
   };
 
   const drawQuestion = () => {
@@ -491,6 +503,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
       timerActive: false,
       timerStartedAt: null,
     });
+    // Read the question aloud shortly after it appears on screen.
+    stopQuestionNarration();
+    window.setTimeout(() => sendEffect('READ_QUESTION', { questionId: q.id }), 1000);
   };
 
   const revealAnswer = () => {
