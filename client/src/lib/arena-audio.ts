@@ -9,7 +9,7 @@ let droneNodes: { stop: () => void } | null = null;
 let unlocked = false;
 let muted = false;
 
-const AMBIENT_LEVEL = 0.055; // ~15-20% "felt" loudness after filtering
+const AMBIENT_LEVEL = 0.045; // ~15-20% "felt" loudness after filtering
 
 function getCtx(): AudioContext {
   if (!ctx) {
@@ -26,17 +26,25 @@ function startDrone() {
   const c = getCtx();
   const bus = c.createGain();
   bus.gain.value = 1;
-  bus.connect(masterGain!);
+
+  // High-pass the whole ambient bus: on headphones the old 55 Hz drone read as
+  // a physical "throb" (sub-bass beating). Cutting everything below ~80 Hz
+  // removes that rumble while keeping the tone present.
+  const busHP = c.createBiquadFilter();
+  busHP.type = "highpass";
+  busHP.frequency.value = 80;
+  bus.connect(busHP);
+  busHP.connect(masterGain!);
 
   const osc1 = c.createOscillator();
   osc1.type = "sine";
-  osc1.frequency.value = 55; // low A
+  osc1.frequency.value = 110; // low A, one octave up — off the sub-rumble floor
   const osc2 = c.createOscillator();
   osc2.type = "sine";
-  osc2.frequency.value = 55 * 1.006; // slight detune for slow beating
+  osc2.frequency.value = 110 * 1.004; // gentler detune → subtler, slower beat
 
   const oscGain = c.createGain();
-  oscGain.gain.value = 0.6;
+  oscGain.gain.value = 0.5;
   osc1.connect(oscGain);
   osc2.connect(oscGain);
   oscGain.connect(bus);
@@ -53,7 +61,7 @@ function startDrone() {
   noiseFilter.type = "lowpass";
   noiseFilter.frequency.value = 260;
   const noiseGain = c.createGain();
-  noiseGain.gain.value = 0.32;
+  noiseGain.gain.value = 0.26;
   noise.connect(noiseFilter);
   noiseFilter.connect(noiseGain);
   noiseGain.connect(bus);

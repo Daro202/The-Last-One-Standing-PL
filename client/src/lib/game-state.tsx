@@ -195,6 +195,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const reconnectDelayRef  = useRef(1000);
   const reconnectTimerRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
   const mountedRef         = useRef(true);
+  // Resilience: keep-alive ping + a watchdog that re-drives the room handshake
+  // if the socket opens but ROOM_CREATED/ROOM_JOINED never lands (e.g. the
+  // reply is dropped by a proxy). Without this the UI sticks on "connecting…".
+  const heartbeatRef       = useRef<ReturnType<typeof setInterval> | null>(null);
+  const joinWatchdogRef    = useRef<ReturnType<typeof setInterval> | null>(null);
+  const roomEstablishedRef = useRef(false);
 
   // ── WebSocket state ────────────────────────────────────────────────────────
   const [roomCode,   setRoomCode]   = useState<string | null>(() => {
@@ -255,20 +261,20 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const ws    = new WebSocket(`${proto}//${window.location.host}/ws`);
       wsRef.current = ws;
 
-      ws.onopen = () => {
-        if (!mountedRef.current) { ws.close(); return; }
-        setWsConnected(true);
-        setWsError(null);
-        reconnectDelayRef.current = 1000;
-
+      // (Re)drives the room handshake for the current role. Safe to call
+      // repeatedly: admin re-creates/re-joins, audience re-joins only if it
+      // already has a code. The server always answers ROOM_* or ERROR, so the
+      // watchdog below stops as soon as the room is actually established.
+      const sendHandshake = () => {
+        if (ws.readyState !== WebSocket.OPEN) return;
         const storedCode = isAdminPage
           ? localStorage.getItem(STORAGE_KEY_ADMIN)
           : sessionStorage.getItem(STORAGE_KEY_AUDIENCE);
 
         if (storedCode) {
-          // Try to rejoin the room we were in.
-          // Admin includes the server-issued owner token so the server can
-          // restore creator authority without a fresh CREATE_ROOM.
+          // Try to rejoin the room we were in. Admin includes the
+          // server-issued owner token so the server can restore creator
+          // authority without a fresh CREATE_ROOM.
           const ownerToken = isAdminPage
             ? (localStorage.getItem(STORAGE_KEY_OWNER_TOKEN) ?? '')
             : '';
@@ -280,6 +286,38 @@ export function GameProvider({ children }: { children: ReactNode }) {
         // Audience with no stored code: wait for joinRoom() to be called
       };
 
+      ws.onopen = () => {
+        if (!mountedRef.current) { ws.close(); return; }
+        setWsConnected(true);
+        setWsError(null);
+        reconnectDelayRef.current = 1000;
+        roomEstablishedRef.current = false;
+
+        sendHandshake();
+
+        // Keep-alive: some proxies (incl. Replit's preview) cull idle sockets.
+        // The server replies PONG, which we simply ignore.
+        if (heartbeatRef.current) clearInterval(heartbeatRef.current);
+        heartbeatRef.current = setInterval(() => {
+          if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: 'PING' }));
+          }
+        }, 25000);
+
+        // Watchdog: if the socket is open but the room never comes up (dropped
+        // reply, race behind the proxy), re-drive the handshake every 3s until
+        // it lands. This is what kills the "green wifi + connecting… forever".
+        if (joinWatchdogRef.current) clearInterval(joinWatchdogRef.current);
+        joinWatchdogRef.current = setInterval(() => {
+          if (roomEstablishedRef.current) {
+            if (joinWatchdogRef.current) clearInterval(joinWatchdogRef.current);
+            joinWatchdogRef.current = null;
+            return;
+          }
+          sendHandshake();
+        }, 3000);
+      };
+
       ws.onmessage = (event) => {
         if (!mountedRef.current) return;
         let msg: Record<string, unknown>;
@@ -289,6 +327,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         switch (msg.type) {
           case 'ROOM_CREATED': {
             isRoomCreatorRef.current = true;
+            roomEstablishedRef.current = true;
             const code = msg.roomCode as string;
             const ownerToken = String(msg.ownerToken ?? '');
             roomCodeRef.current = code;
@@ -301,6 +340,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
             break;
           }
           case 'ROOM_JOINED': {
+            roomEstablishedRef.current = true;
             const code = msg.roomCode as string;
             roomCodeRef.current = code;
             setRoomCode(code);
@@ -365,6 +405,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
       };
 
       ws.onclose = () => {
+        roomEstablishedRef.current = false;
+        if (heartbeatRef.current)    { clearInterval(heartbeatRef.current);    heartbeatRef.current = null; }
+        if (joinWatchdogRef.current) { clearInterval(joinWatchdogRef.current); joinWatchdogRef.current = null; }
         if (!mountedRef.current) return;
         setWsConnected(false);
         setRoomJoined(false);
@@ -385,6 +428,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
     return () => {
       mountedRef.current = false;
       if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
+      if (heartbeatRef.current)    clearInterval(heartbeatRef.current);
+      if (joinWatchdogRef.current) clearInterval(joinWatchdogRef.current);
       if (wsRef.current) {
         wsRef.current.onclose = null; // prevent reconnect loop on intentional unmount
         wsRef.current.close();
