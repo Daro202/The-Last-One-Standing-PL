@@ -5,7 +5,6 @@
 
 let ctx: AudioContext | null = null;
 let masterGain: GainNode | null = null;
-let droneNodes: { stop: () => void } | null = null;
 let unlocked = false;
 let muted = false;
 
@@ -21,99 +20,20 @@ function getCtx(): AudioContext {
   return ctx;
 }
 
-// ── Ambient: two detuned low drones + slow filtered noise bed ───────────────
-function startDrone() {
-  const c = getCtx();
-  const bus = c.createGain();
-  bus.gain.value = 1;
-
-  // High-pass the whole ambient bus: on headphones the old 55 Hz drone read as
-  // a physical "throb" (sub-bass beating). Cutting everything below ~80 Hz
-  // removes that rumble while keeping the tone present.
-  const busHP = c.createBiquadFilter();
-  busHP.type = "highpass";
-  busHP.frequency.value = 80;
-  bus.connect(busHP);
-  busHP.connect(masterGain!);
-
-  const osc1 = c.createOscillator();
-  osc1.type = "sine";
-  osc1.frequency.value = 110; // low A, one octave up — off the sub-rumble floor
-  const osc2 = c.createOscillator();
-  osc2.type = "sine";
-  osc2.frequency.value = 110 * 1.004; // gentler detune → subtler, slower beat
-
-  const oscGain = c.createGain();
-  oscGain.gain.value = 0.5;
-  osc1.connect(oscGain);
-  osc2.connect(oscGain);
-  oscGain.connect(bus);
-
-  // Filtered noise bed — the "room tone" under the drone
-  const bufSize = 2 * c.sampleRate;
-  const buf = c.createBuffer(1, bufSize, c.sampleRate);
-  const data = buf.getChannelData(0);
-  for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
-  const noise = c.createBufferSource();
-  noise.buffer = buf;
-  noise.loop = true;
-  const noiseFilter = c.createBiquadFilter();
-  noiseFilter.type = "lowpass";
-  noiseFilter.frequency.value = 260;
-  const noiseGain = c.createGain();
-  noiseGain.gain.value = 0.26;
-  noise.connect(noiseFilter);
-  noiseFilter.connect(noiseGain);
-  noiseGain.connect(bus);
-
-  // Wave LFO — sweeps the noise filter cutoff up/down so the "surf" itself
-  // swells and recedes, independent of the overall breathing below.
-  const waveLfo = c.createOscillator();
-  waveLfo.frequency.value = 0.09;
-  const waveLfoGain = c.createGain();
-  waveLfoGain.gain.value = 160; // sweep range in Hz around the base cutoff
-  waveLfo.connect(waveLfoGain);
-  waveLfoGain.connect(noiseFilter.frequency);
-
-  // Slow LFO breathing on the whole bed
-  const lfo = c.createOscillator();
-  lfo.frequency.value = 0.06;
-  const lfoGain = c.createGain();
-  lfoGain.gain.value = 0.35;
-  lfo.connect(lfoGain);
-  lfoGain.connect(bus.gain);
-
-  osc1.start();
-  osc2.start();
-  noise.start();
-  lfo.start();
-  waveLfo.start();
-
-  droneNodes = {
-    stop: () => {
-      [osc1, osc2, noise, lfo, waveLfo].forEach((n) => {
-        try {
-          n.stop();
-        } catch {}
-      });
-      bus.disconnect();
-    },
-  };
-}
+// Ambient drone removed: the continuous low tone read as an unpleasant
+// throb on headphones. Only one-shot SFX remain (hover/click/fanfare/etc).
 
 export function unlock() {
   if (unlocked) return;
   unlocked = true;
   const c = getCtx();
   if (c.state === "suspended") c.resume();
-  startDrone();
+  // No ambient drone anymore — the context just needs to be live so the
+  // one-shot SFX can play after the first user interaction.
 }
 
 export function toggleMute(): boolean {
   muted = !muted;
-  if (masterGain) {
-    masterGain.gain.setTargetAtTime(muted ? 0 : AMBIENT_LEVEL, getCtx().currentTime, 0.15);
-  }
   return muted;
 }
 
@@ -156,6 +76,7 @@ export function playHover() {
 //    Deliberately lighter and shorter than playFanfare(), so revealing the
 //    answer and scoring a correct answer never sound like the same event.
 export function playReveal() {
+  if (muted) return;
   const c = getCtx();
   if (c.state === "suspended") c.resume();
 
@@ -194,6 +115,7 @@ export function playReveal() {
 }
 
 export function playFanfare() {
+  if (muted) return;
   const c = getCtx();
   if (c.state === "suspended") c.resume();
 
@@ -277,6 +199,7 @@ export function playFanfare() {
 // ── One-shot: wrong-answer hit — low, descending, slightly dissonant.
 //    Meant to feel heavy (a life lost), not comedic or arcade-like.
 export function playWrong() {
+  if (muted) return;
   const c = getCtx();
   if (c.state === "suspended") c.resume();
 
