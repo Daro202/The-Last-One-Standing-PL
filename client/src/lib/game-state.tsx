@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState, useRef, ReactNod
 import { Player, Question, INITIAL_PLAYERS, ROUNDS, ROUND_POINTS, DEFAULT_LIVES } from './mock-data';
 import { parseExcelBuffer } from './excel-loader';
 import confetti from 'canvas-confetti';
-import { playFanfare, playWrong, playQuestionNarration, stopQuestionNarration } from './arena-audio';
+import { playFanfare, playWrong, playReveal, playQuestionNarration, stopQuestionNarration } from './arena-audio';
 
 // ── State shape ───────────────────────────────────────────────────────────────
 
@@ -220,7 +220,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   };
 
   const sendEffect = (
-    effect: 'CONFETTI' | 'FANFARE' | 'WRONG' | 'READ_QUESTION',
+    effect: 'CONFETTI' | 'FANFARE' | 'WRONG' | 'READ_QUESTION' | 'REVEAL',
     payload?: { questionId?: number | string },
   ) => {
     // Play locally on the admin page.
@@ -230,6 +230,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     // so only FANFARE and WRONG need the local fallback here.
     if (effect === 'FANFARE') playFanfare();
     if (effect === 'WRONG')   playWrong();
+    if (effect === 'REVEAL')  playReveal();
     // NOTE: READ_QUESTION is deliberately NOT played locally. Host and audience
     // are usually in the same room, so playing it on both devices sounds like
     // an echo. Only the audience screen narrates the question.
@@ -331,6 +332,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
             if (eff === 'CONFETTI') confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
             if (eff === 'FANFARE')  playFanfare();
             if (eff === 'WRONG')    playWrong();
+            if (eff === 'REVEAL')   playReveal();
             if (eff === 'READ_QUESTION' && msg.questionId !== undefined) {
               playQuestionNarration(msg.questionId as number | string);
             }
@@ -522,6 +524,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     };
     broadcast(next);
     sendEffect('CONFETTI');
+    sendEffect('REVEAL');
   };
 
   const markCorrect = () => {

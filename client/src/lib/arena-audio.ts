@@ -144,6 +144,47 @@ export function playHover() {
 
 // ── One-shot: correct-answer fanfare — ascending brass triad with a bright
 //    shimmer tail. Synthesized (saw+square blend for a "brass" edge), no files.
+// ── One-shot: answer reveal accent — a short, bright "ta-dam".
+//    Deliberately lighter and shorter than playFanfare(), so revealing the
+//    answer and scoring a correct answer never sound like the same event.
+export function playReveal() {
+  const c = getCtx();
+  if (c.state === "suspended") c.resume();
+
+  const bus = c.createGain();
+  bus.gain.value = 0.4;
+  bus.connect(c.destination);
+
+  // Two notes: a quick lift then a landing — "ta-DAM"
+  const notes = [
+    { freq: 392.0, start: 0,    dur: 0.14, peak: 0.35 }, // G4 — "ta"
+    { freq: 587.3, start: 0.13, dur: 0.42, peak: 0.5  }, // D5 — "dam"
+  ];
+
+  notes.forEach(({ freq, start, dur, peak }) => {
+    const t0 = c.currentTime + start;
+
+    const osc = c.createOscillator();
+    osc.type = "triangle"; // softer than the fanfare's saw+square brass
+    osc.frequency.value = freq;
+
+    const filter = c.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 3200;
+
+    const g = c.createGain();
+    g.gain.setValueAtTime(0, t0);
+    g.gain.linearRampToValueAtTime(peak, t0 + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+
+    osc.connect(filter);
+    filter.connect(g);
+    g.connect(bus);
+    osc.start(t0);
+    osc.stop(t0 + dur + 0.05);
+  });
+}
+
 export function playFanfare() {
   const c = getCtx();
   if (c.state === "suspended") c.resume();
