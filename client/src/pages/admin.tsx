@@ -36,6 +36,28 @@ export default function AdminPanel() {
 
   // Local UI state
   const [confirmReset, setConfirmReset] = useState(false);
+
+  // Self-heal the initial connection. On this deployment the first WebSocket
+  // after a fresh page load often comes up "open but dead", and only a full
+  // page reload gets a live one — exactly what the Reconnect button does. So
+  // do it automatically: if no room code has appeared ~4s after load, reload.
+  // A sessionStorage counter stops it from looping forever and gives up after
+  // a few tries, leaving the manual Reconnect button as the last resort.
+  useEffect(() => {
+    if (roomCode) {
+      sessionStorage.removeItem('ls_admin_reload_n');
+      return;
+    }
+    const t = setTimeout(() => {
+      if (roomCode) return;
+      const n = parseInt(sessionStorage.getItem('ls_admin_reload_n') ?? '0', 10);
+      if (n < 5) {
+        sessionStorage.setItem('ls_admin_reload_n', String(n + 1));
+        window.location.reload();
+      }
+    }, 4000);
+    return () => clearTimeout(t);
+  }, [roomCode]);
   // Mobile only: three columns don't fit a phone screen, so below the `lg`
   // breakpoint we show one panel at a time via a bottom tab bar.
   const [mobileTab, setMobileTab] = useState<'controls' | 'question' | 'players'>('question');
