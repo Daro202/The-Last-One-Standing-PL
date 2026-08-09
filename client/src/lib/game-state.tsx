@@ -416,7 +416,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       })
       .catch(() => {
         // 2. Fall back to the static xlsx bundled with the app
-        fetch('/data/quiz_questions.xlsx')
+        fetch('/data/The_Last_Standing_Questions_EN.xlsx')
           .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.arrayBuffer(); })
           .then(buf => {
             const { questions, categories, errors } = parseExcelBuffer(buf);
