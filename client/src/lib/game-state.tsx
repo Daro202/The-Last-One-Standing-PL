@@ -201,7 +201,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const heartbeatRef       = useRef<ReturnType<typeof setInterval> | null>(null);
   const joinWatchdogRef    = useRef<ReturnType<typeof setInterval> | null>(null);
   const roomEstablishedRef = useRef(false);
-  const handshakeTriesRef  = useRef(0);
+  const everEstablishedRef = useRef(false);
+  const reloadFallbackRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ── WebSocket state ────────────────────────────────────────────────────────
   const [roomCode,   setRoomCode]   = useState<string | null>(() => {
@@ -293,11 +294,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
         setWsError(null);
         reconnectDelayRef.current = 1000;
         roomEstablishedRef.current = false;
-        handshakeTriesRef.current = 0;
 
         sendHandshake();
 
-        // Keep-alive: some proxies (incl. Replit's preview) cull idle sockets.
+        // Keep-alive: some proxies (incl. Replit's edge) cull idle sockets.
         // The server replies PONG, which we simply ignore.
         if (heartbeatRef.current) clearInterval(heartbeatRef.current);
         heartbeatRef.current = setInterval(() => {
@@ -306,13 +306,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
           }
         }, 25000);
 
-        // Watchdog: if the socket is open but the room never comes up, the
-        // socket may be "open but dead" (round-trips silently dropped by the
-        // proxy) — resending on it does nothing, which is the "green wifi +
-        // connecting… forever" state. So: retry the handshake once, and if it
-        // still hasn't landed, force-close the socket. onclose then reconnects
-        // with a fresh, live socket — the same recovery a manual refresh gives,
-        // but automatic.
+        // Gentle watchdog: a handshake reply is occasionally dropped on this
+        // socket. Just re-send it every 2.5s until the room lands. We do NOT
+        // close the socket here — closing mid-handshake was actively
+        // sabotaging slow-but-healthy connections.
         if (joinWatchdogRef.current) clearInterval(joinWatchdogRef.current);
         joinWatchdogRef.current = setInterval(() => {
           if (roomEstablishedRef.current) {
@@ -320,15 +317,28 @@ export function GameProvider({ children }: { children: ReactNode }) {
             joinWatchdogRef.current = null;
             return;
           }
-          handshakeTriesRef.current += 1;
-          if (handshakeTriesRef.current >= 2) {
-            // Two tries (~6s) with no room → drop this socket and get a new one.
-            handshakeTriesRef.current = 0;
-            try { ws.close(); } catch { /* onclose handles reconnect */ }
-            return;
-          }
           sendHandshake();
-        }, 3000);
+        }, 2500);
+
+        // Hard backstop, initial connection only: if the room still hasn't
+        // come up after ~9s, do the one recovery we know always works — a full
+        // page reload. Guarded by a sessionStorage counter so it can never
+        // loop, and never armed once a room has been established (so a mid-game
+        // network blip reconnects quietly instead of reloading the host).
+        if (isAdminPage && !everEstablishedRef.current) {
+          if (reloadFallbackRef.current) clearTimeout(reloadFallbackRef.current);
+          reloadFallbackRef.current = setTimeout(() => {
+            if (roomEstablishedRef.current || everEstablishedRef.current) return;
+            const KEY = 'ls_auto_reload_n';
+            const n = parseInt(sessionStorage.getItem(KEY) ?? '0', 10);
+            if (n < 2) {
+              sessionStorage.setItem(KEY, String(n + 1));
+              window.location.reload();
+            }
+            // After 2 auto-reloads we stop and leave the manual Reconnect
+            // button as the last resort, rather than reloading forever.
+          }, 9000);
+        }
       };
 
       ws.onmessage = (event) => {
@@ -341,6 +351,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
           case 'ROOM_CREATED': {
             isRoomCreatorRef.current = true;
             roomEstablishedRef.current = true;
+            everEstablishedRef.current = true;
+            if (reloadFallbackRef.current) { clearTimeout(reloadFallbackRef.current); reloadFallbackRef.current = null; }
+            sessionStorage.removeItem('ls_auto_reload_n');
             const code = msg.roomCode as string;
             const ownerToken = String(msg.ownerToken ?? '');
             roomCodeRef.current = code;
@@ -354,6 +367,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
           }
           case 'ROOM_JOINED': {
             roomEstablishedRef.current = true;
+            everEstablishedRef.current = true;
+            if (reloadFallbackRef.current) { clearTimeout(reloadFallbackRef.current); reloadFallbackRef.current = null; }
+            sessionStorage.removeItem('ls_auto_reload_n');
             const code = msg.roomCode as string;
             roomCodeRef.current = code;
             setRoomCode(code);
@@ -421,6 +437,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         roomEstablishedRef.current = false;
         if (heartbeatRef.current)    { clearInterval(heartbeatRef.current);    heartbeatRef.current = null; }
         if (joinWatchdogRef.current) { clearInterval(joinWatchdogRef.current); joinWatchdogRef.current = null; }
+        if (reloadFallbackRef.current) { clearTimeout(reloadFallbackRef.current); reloadFallbackRef.current = null; }
         if (!mountedRef.current) return;
         setWsConnected(false);
         setRoomJoined(false);
@@ -443,6 +460,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
       if (heartbeatRef.current)    clearInterval(heartbeatRef.current);
       if (joinWatchdogRef.current) clearInterval(joinWatchdogRef.current);
+      if (reloadFallbackRef.current) clearTimeout(reloadFallbackRef.current);
       if (wsRef.current) {
         wsRef.current.onclose = null; // prevent reconnect loop on intentional unmount
         wsRef.current.close();
