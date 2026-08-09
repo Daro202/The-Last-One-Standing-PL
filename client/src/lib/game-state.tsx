@@ -318,26 +318,28 @@ export function GameProvider({ children }: { children: ReactNode }) {
             return;
           }
           sendHandshake();
-        }, 2500);
+        }, 1800);
 
-        // Hard backstop, initial connection only: if the room still hasn't
-        // come up after ~9s, do the one recovery we know always works — a full
-        // page reload. Guarded by a sessionStorage counter so it can never
-        // loop, and never armed once a room has been established (so a mid-game
-        // network blip reconnects quietly instead of reloading the host).
+        // Hard backstop, initial connection only: on this deployment the FIRST
+        // socket after a fresh page load reliably comes up "open but dead"
+        // (frames dropped at the edge), and only a full page reload gets a live
+        // one. So if the room hasn't come up within ~4s, reload automatically —
+        // the user never has to press anything. Guarded by a sessionStorage
+        // counter so it can't loop forever, and never armed once a room has
+        // been established (a mid-game blip reconnects quietly instead).
         if (isAdminPage && !everEstablishedRef.current) {
           if (reloadFallbackRef.current) clearTimeout(reloadFallbackRef.current);
           reloadFallbackRef.current = setTimeout(() => {
             if (roomEstablishedRef.current || everEstablishedRef.current) return;
             const KEY = 'ls_auto_reload_n';
             const n = parseInt(sessionStorage.getItem(KEY) ?? '0', 10);
-            if (n < 2) {
+            if (n < 4) {
               sessionStorage.setItem(KEY, String(n + 1));
               window.location.reload();
             }
-            // After 2 auto-reloads we stop and leave the manual Reconnect
+            // After several auto-reloads we stop and leave the manual Reconnect
             // button as the last resort, rather than reloading forever.
-          }, 9000);
+          }, 4000);
         }
       };
 
@@ -453,7 +455,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
       };
     }
 
-    connect();
+    // Small delay on the very first connect: opening the socket the instant
+    // the page loads tends to produce an "open but dead" socket on this
+    // deployment. Letting the edge settle for ~400ms first makes the initial
+    // socket far more likely to actually relay frames. Reconnects (via onclose)
+    // keep their own back-off and are not delayed here.
+    reconnectTimerRef.current = setTimeout(connect, 400);
 
     return () => {
       mountedRef.current = false;
