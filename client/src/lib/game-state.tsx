@@ -230,9 +230,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
     // so only FANFARE and WRONG need the local fallback here.
     if (effect === 'FANFARE') playFanfare();
     if (effect === 'WRONG')   playWrong();
-    if (effect === 'READ_QUESTION' && payload?.questionId !== undefined) {
-      playQuestionNarration(payload.questionId);
-    }
+    // NOTE: READ_QUESTION is deliberately NOT played locally. Host and audience
+    // are usually in the same room, so playing it on both devices sounds like
+    // an echo. Only the audience screen narrates the question.
     // Fan out to audience via WebSocket
     const ws   = wsRef.current;
     const code = roomCodeRef.current;
