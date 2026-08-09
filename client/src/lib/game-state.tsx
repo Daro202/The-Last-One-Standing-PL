@@ -201,6 +201,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const heartbeatRef       = useRef<ReturnType<typeof setInterval> | null>(null);
   const joinWatchdogRef    = useRef<ReturnType<typeof setInterval> | null>(null);
   const roomEstablishedRef = useRef(false);
+  const handshakeTriesRef  = useRef(0);
 
   // ── WebSocket state ────────────────────────────────────────────────────────
   const [roomCode,   setRoomCode]   = useState<string | null>(() => {
@@ -292,6 +293,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         setWsError(null);
         reconnectDelayRef.current = 1000;
         roomEstablishedRef.current = false;
+        handshakeTriesRef.current = 0;
 
         sendHandshake();
 
@@ -304,14 +306,25 @@ export function GameProvider({ children }: { children: ReactNode }) {
           }
         }, 25000);
 
-        // Watchdog: if the socket is open but the room never comes up (dropped
-        // reply, race behind the proxy), re-drive the handshake every 3s until
-        // it lands. This is what kills the "green wifi + connecting… forever".
+        // Watchdog: if the socket is open but the room never comes up, the
+        // socket may be "open but dead" (round-trips silently dropped by the
+        // proxy) — resending on it does nothing, which is the "green wifi +
+        // connecting… forever" state. So: retry the handshake once, and if it
+        // still hasn't landed, force-close the socket. onclose then reconnects
+        // with a fresh, live socket — the same recovery a manual refresh gives,
+        // but automatic.
         if (joinWatchdogRef.current) clearInterval(joinWatchdogRef.current);
         joinWatchdogRef.current = setInterval(() => {
           if (roomEstablishedRef.current) {
             if (joinWatchdogRef.current) clearInterval(joinWatchdogRef.current);
             joinWatchdogRef.current = null;
+            return;
+          }
+          handshakeTriesRef.current += 1;
+          if (handshakeTriesRef.current >= 2) {
+            // Two tries (~6s) with no room → drop this socket and get a new one.
+            handshakeTriesRef.current = 0;
+            try { ws.close(); } catch { /* onclose handles reconnect */ }
             return;
           }
           sendHandshake();

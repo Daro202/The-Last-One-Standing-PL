@@ -176,6 +176,19 @@ export default function AdminPanel() {
             }
           </div>
 
+          {/* Manual escape hatch: if the code hasn't shown up, reload to force a
+              fresh connection. The watchdog auto-recovers, but this gives the
+              host a one-tap fallback during a live event. */}
+          {!roomCode && (
+            <Button
+              variant="outline" size="sm"
+              className="w-full border-border text-muted-foreground hover:bg-muted/30"
+              onClick={() => window.location.reload()}
+            >
+              <RefreshCw className="w-4 h-4 mr-2" /> Reconnect
+            </Button>
+          )}
+
           <Button
             variant="outline" size="sm" className="w-full border-primary/50 text-primary hover:bg-primary/10"
             onClick={() => window.open('/audience', '_blank', 'width=1920,height=1080')}
