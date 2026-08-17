@@ -1,0 +1,2707 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Czy karta kontrolna może pomagać w audycie stanowiska?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 2,
+      "text": "Czy Berlin jest stolicą Niemiec?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 3,
+      "text": "Czy brak osłony bezpieczeństwa można zignorować, jeśli produkcja się spieszy?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 4,
+      "text": "Czy temperatura zamarzania czystej wody przy normalnym ciśnieniu wynosi 0°C?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 5,
+      "text": "Czy Ziemia krąży wokół Słońca?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 6,
+      "text": "Czy kwadrat ma cztery równe boki?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 7,
+      "text": "Czy kontrola stanu noży i matryc wpływa na jakość cięcia?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 8,
+      "text": "Czy liner jest płaską warstwą papieru w tekturze falistej?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 9,
+      "text": "Czy magazynowanie wykrojników bez oznaczeń ułatwia szybkie przezbrojenia?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 10,
+      "text": "Czy pudełko fasonowe często wymaga specjalnego wykrojnika?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 11,
+      "text": "Czy Warszawa jest stolicą Polski?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 12,
+      "text": "Czy 1 kilogram to 1000 gramów?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 13,
+      "text": "Czy pingwin jest ptakiem?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 14,
+      "text": "Czy brudne czujniki mogą powodować błędne zatrzymania maszyny?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 15,
+      "text": "Czy w SMED dąży się do wykonywania części czynności przezbrojenia, gdy maszyna jeszcze pracuje?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 16,
+      "text": "Czy 'NOK' oznacza wynik niezgodny z wymaganiami?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 17,
+      "text": "Czy 10 × 10 daje 100?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 18,
+      "text": "Czy rok przestępny ma 366 dni?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 19,
+      "text": "Czy kontrola jakości może obejmować sprawdzenie nadruku, klejenia i wymiarów?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 20,
+      "text": "Czy starożytne piramidy w Gizie znajdują się w Egipcie?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 21,
+      "text": "Czy Kanada leży w Ameryce Północnej?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 22,
+      "text": "Czy w pudełku klapowym szczelina między klapami może wynikać z konstrukcji opakowania?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 23,
+      "text": "Czy przy produkcji pudełek kierunek fali tektury może mieć znaczenie?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 24,
+      "text": "Czy Księżyc jest naturalnym satelitą Ziemi?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 25,
+      "text": "Czy celem 5S jest gromadzenie jak największej liczby narzędzi przy maszynie?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 26,
+      "text": "Czy tydzień ma siedem dni?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 27,
+      "text": "Czy II wojna światowa zakończyła się w 1945 roku?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 28,
+      "text": "Czy Nil jest rzeką?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 29,
+      "text": "Czy smarowanie wybranych elementów może być częścią prewencyjnego utrzymania ruchu?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 30,
+      "text": "Czy narzędzia potrzebne do przezbrojenia powinny mieć stałe miejsce?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 31,
+      "text": "Czy standaryzacja pracy pomaga wykonywać czynności w powtarzalny sposób?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 32,
+      "text": "Czy Słońce jest gwiazdą?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 33,
+      "text": "Czy pszczoły są owadami?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 34,
+      "text": "Czy Polska graniczy z Niemcami?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 35,
+      "text": "Czy pudełka transportowe muszą być dopasowane do wymagań klienta?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 36,
+      "text": "Czy wilgotność tektury może wpływać na jej zachowanie podczas przetwarzania?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 37,
+      "text": "Czy plan przeglądów pomaga utrzymać maszynę w dobrym stanie technicznym?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 38,
+      "text": "Czy dorosły człowiek ma zwykle więcej niż 100 kości?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 39,
+      "text": "Czy TPM zakłada zaangażowanie operatorów w podstawową dbałość o maszyny?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 40,
+      "text": "Czy człowiek ma dwa płuca?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 41,
+      "text": "Czy poprawne ustawienie suszenia farby może wpływać na jakość nadruku?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 42,
+      "text": "Czy trójkąt ma trzy boki?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 43,
+      "text": "Czy Wisła jest najdłuższą rzeką w Polsce?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 44,
+      "text": "Czy język włoski należy do języków romańskich?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 45,
+      "text": "Czy język portugalski jest językiem romańskim?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 46,
+      "text": "Czy klejarka powinna być uruchamiana bez sprawdzenia poziomu kleju?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 47,
+      "text": "Czy 5S obejmuje utrzymywanie ustalonych standardów porządku na stanowisku?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 48,
+      "text": "Czy rozklejenie gotowego pudełka jest wadą jakościową?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 49,
+      "text": "Czy szybka reakcja na mikroprzestoje może poprawić wydajność linii?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 50,
+      "text": "Czy Afryka jest kontynentem?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 51,
+      "text": "Czy czyszczenie maszyny może być elementem autonomicznego utrzymania w TPM?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 52,
+      "text": "Czy Krzysztof Kolumb dotarł do Ameryki w XV wieku?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 53,
+      "text": "Czy fala w tekturze falistej zwiększa jej sztywność w porównaniu z samym papierem płaskim?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 54,
+      "text": "Czy wizualne oznaczenia miejsc odkładczych wspierają 5S?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 55,
+      "text": "Czy fluting to papier przeznaczony do formowania warstwy pofalowanej?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 56,
+      "text": "Czy woda składa się z wodoru i tlenu?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 57,
+      "text": "Czy maszyna może wymagać regulacji prowadnic pod konkretny format pudełka?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 58,
+      "text": "Czy zgnieciona fala może obniżyć wytrzymałość pudełka?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 59,
+      "text": "Czy Mikołaj Kopernik był astronomem?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 60,
+      "text": "Czy chrzest Polski tradycyjnie datuje się na 966 rok?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 61,
+      "text": "Czy Europa jest większa powierzchniowo od Azji?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 62,
+      "text": "Czy Rzym jest stolicą Hiszpanii?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 63,
+      "text": "Czy złoto jest metalem?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 64,
+      "text": "Czy Mount Everest jest najwyższym szczytem Ziemi nad poziomem morza?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 65,
+      "text": "Czy FEFCO to katalog standardowych konstrukcji opakowań z tektury?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 66,
+      "text": "Czy TWI Job Instruction służy do ustandaryzowanego instruowania pracownika, jak wykonywać pracę?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 67,
+      "text": "Czy Francja leży w Europie?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 68,
+      "text": "Czy 'OK' oznacza, że element spełnia wymagania kontroli?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 69,
+      "text": "Czy Dunaj przepływa przez Europę?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 70,
+      "text": "Czy TPM dotyczy wyłącznie działu utrzymania ruchu?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 71,
+      "text": "Czy w pudełku klapowym wszystkie klapy są zawsze klejone na stałe?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 72,
+      "text": "Czy Ocean Spokojny jest największym oceanem na Ziemi?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 73,
+      "text": "Czy Bałtyk jest morzem?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 74,
+      "text": "Czy Leonardo da Vinci namalował Mona Lisę?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 75,
+      "text": "Czy nieprawidłowe ustawienie maszyny drukującej może spowodować przesunięcie nadruku względem wykroju?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "WARM UP",
+      "category": "Produkcja",
+      "difficulty": "EASY"
+    },
+    {
+      "id": 76,
+      "text": "Czy północ geograficzna na standardowej mapie jest zwykle u góry?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 77,
+      "text": "Czy 25% z 200 to 50?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 78,
+      "text": "Czy rok 2000 był rokiem przestępnym?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 79,
+      "text": "Czy OEE może pomagać w ocenie dostępności, wydajności i jakości procesu?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 80,
+      "text": "Czy analiza przyczyn powtarzającej się awarii jest zgodna z podejściem TPM?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 81,
+      "text": "Czy opakowanie powinno chronić produkt w transporcie i magazynowaniu?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 82,
+      "text": "Czy wysoka wilgotność może pogorszyć sztywność części rodzajów tektury falistej?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 83,
+      "text": "Czy regularne audyty 5S pomagają utrzymać standard po sprzątaniu?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 84,
+      "text": "Czy przed rozpoczęciem przezbrojenia warto przygotować narzędzia i materiały potrzebne do nowego zlecenia?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 85,
+      "text": "Czy Japonia jest państwem wyspiarskim?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 86,
+      "text": "Czy 0,5 to to samo co jedna druga?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 87,
+      "text": "Czy Napoleon Bonaparte był cesarzem Francuzów?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 88,
+      "text": "Czy Grenlandia jest większa powierzchniowo od Polski?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 89,
+      "text": "Czy rtęć w temperaturze pokojowej jest metalem ciekłym?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 90,
+      "text": "Czy człowiek ma cztery komory serca?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 91,
+      "text": "Czy Węgry mają dostęp do morza?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 92,
+      "text": "Czy Polska odzyskała niepodległość w 1918 roku?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 93,
+      "text": "Czy liczba 9 jest liczbą pierwszą?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 94,
+      "text": "Czy w układzie SI podstawową jednostką długości jest metr?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 95,
+      "text": "Czy zdjęcie usterki może pomóc w dokumentacji problemu?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 96,
+      "text": "Czy Amazonka uchodzi do Oceanu Atlantyckiego?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 97,
+      "text": "Czy Konstytucję 3 maja uchwalono w XVIII wieku?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 98,
+      "text": "Czy nieprawidłowe ułożenie arkuszy na podajniku może powodować problemy z prowadzeniem i nadrukiem?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 99,
+      "text": "Czy Maria Skłodowska-Curie otrzymała Nagrodę Nobla?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 100,
+      "text": "Czy brak identyfikacji narzędzia może wydłużyć czas szukania podczas przezbrojenia?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 101,
+      "text": "Czy standard pracy powinien być aktualizowany po zatwierdzeniu lepszego sposobu wykonania zadania?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 102,
+      "text": "Czy Mars jest bliżej Słońca niż Ziemia?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 103,
+      "text": "Czy fotosynteza zachodzi głównie dzięki energii światła?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 104,
+      "text": "Czy równik dzieli Ziemię na półkulę północną i południową?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 105,
+      "text": "Czy 3/4 jest większe niż 2/3?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 106,
+      "text": "Czy dźwięk rozchodzi się w próżni tak samo jak w powietrzu?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 107,
+      "text": "Czy metal zawsze jest lżejszy od drewna o tej samej objętości?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 108,
+      "text": "Czy mikroprzestoje są zawsze nieważne, bo trwają krótko?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 109,
+      "text": "Czy kontrola stanu noży i narzędzi może być elementem prewencji w TPM?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 110,
+      "text": "Czy Australia jest jednocześnie nazwą państwa i kontynentu?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 111,
+      "text": "Czy 1 litr wody ma objętość 1000 cm³?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 112,
+      "text": "Czy w 5S niepotrzebne przedmioty powinny pozostać na stanowisku na wszelki wypadek?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 113,
+      "text": "Czy hałas, wibracje i temperatura mogą być objawami pogarszającego się stanu maszyny?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 114,
+      "text": "Czy światło porusza się szybciej niż dźwięk?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 115,
+      "text": "Czy operator powinien znać punkty smarowania wskazane w instrukcji obsługiwanej maszyny?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 116,
+      "text": "Czy standard TWI powinien wskazywać kluczowe kroki, kluczowe punkty oraz powody ich przestrzegania?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 117,
+      "text": "Czy przy zmianie zlecenia identyfikacja materiału pomaga zapobiegać pomieszaniu produkcji?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 118,
+      "text": "Czy człowiek oddycha tlenem zawartym w powietrzu?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 119,
+      "text": "Czy odłożenie narzędzia w przypadkowe miejsce jest zgodne z zasadą systematyki w 5S?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 120,
+      "text": "Czy starożytny Rzym powstał wcześniej niż średniowiecze?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 121,
+      "text": "Czy dobra jakość cięcia i bigowania wpływa na późniejsze składanie pudełka?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 122,
+      "text": "Czy Kaizen powinien kończyć się wdrożeniem i sprawdzeniem efektu, a nie tylko pomysłem?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 123,
+      "text": "Czy dobra komunikacja między zmianami pomaga uniknąć powtarzania tych samych problemów?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 124,
+      "text": "Czy celem SMED jest wyłącznie zwiększenie prędkości maszyny podczas produkcji?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 125,
+      "text": "Czy Morze Śródziemne leży między Europą a Afryką?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 126,
+      "text": "Czy przy SMED czynność wykonywana tylko po zatrzymaniu maszyny jest czynnością wewnętrzną?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 127,
+      "text": "Czy trójkąt prostokątny może mieć dwa kąty proste?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 128,
+      "text": "Czy Organizacja Narodów Zjednoczonych powstała po II wojnie światowej?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 129,
+      "text": "Czy przezbrojenie bez checklisty może zwiększać ryzyko pominięcia ważnej czynności?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 130,
+      "text": "Czy test po naprawie powinien potwierdzić, że maszyna działa stabilnie?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 131,
+      "text": "Czy oznaczenie minimalnego i maksymalnego zapasu części może ułatwić utrzymanie dostępności?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 132,
+      "text": "Czy instrukcja pakowania klienta może określać sposób układania pudełek na palecie?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 133,
+      "text": "Czy wady nadruku mogą wynikać z zabrudzonego wałka lub złej lepkości farby?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 134,
+      "text": "Czy wszystkie miesiące mają co najmniej 28 dni?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 135,
+      "text": "Czy pierwszym królem Polski był Bolesław Chrobry?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 136,
+      "text": "Czy Alpy leżą w Europie?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 137,
+      "text": "Czy zabrudzone czujniki mogą powodować nieplanowane zatrzymania maszyny?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 138,
+      "text": "Czy zbyt mały docisk w procesie klejenia może sprzyjać rozklejaniu połączenia?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 139,
+      "text": "Czy jakość klejenia można ocenić tylko po kolorze tektury?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 140,
+      "text": "Czy w utrzymaniu ruchu ważna jest historia awarii maszyny?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 141,
+      "text": "Czy bitwa pod Grunwaldem odbyła się w 1410 roku?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 142,
+      "text": "Czy pracownik powinien obchodzić zabezpieczenia maszyny, jeśli przeszkadzają w pracy?",
+      "answer": "FALSE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 143,
+      "text": "Czy DNA jest nośnikiem informacji genetycznej?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 144,
+      "text": "Czy kontrola ilości na palecie jest elementem sprawdzenia zgodności wysyłki?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 145,
+      "text": "Czy Sahara znajduje się w Afryce?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 146,
+      "text": "Czy stolica Czech to Praga?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 147,
+      "text": "Czy liczba pierwsza ma dokładnie dwa dodatnie dzielniki?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 148,
+      "text": "Czy pudełka displayowe mogą pełnić jednocześnie funkcję transportową i ekspozycyjną?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 149,
+      "text": "Czy po zmianie ustawienia maszyny należy sprawdzić jakość pierwszych wyprodukowanych sztuk?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 150,
+      "text": "Czy opis awarii powinien być konkretny, aby utrzymanie ruchu mogło szybciej zareagować?",
+      "answer": "TRUE",
+      "type": "TRUE_FALSE",
+      "round": "SURVIVAL",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 151,
+      "text": "Jak nazywa się operacja tworzenia linii zgięcia na tekturze?",
+      "answer": "Bigowanie",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 152,
+      "text": "Jak nazywa się narzędzie używane do wycinania kształtu pudełka?",
+      "answer": "Wykrojnik",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 153,
+      "text": "Jaką technikę druku stosuje się w zakładach w Łodzi, Tychach i Ostrołęce?",
+      "answer": "druk fleksograficzny / fleksografia",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 154,
+      "text": "Jak nazywa się maszyna służąca do składania i klejenia wykrojonych pudełek?",
+      "answer": "składarko-sklejarka",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 155,
+      "text": "Jakim skrótem określa się katalog standardowych konstrukcji opakowań?",
+      "answer": "FEFCO",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 156,
+      "text": "Jak nazywa się klasyczne pudełko klapowe według FEFCO?",
+      "answer": "FEFCO 0201",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 157,
+      "text": "Jak nazywa się wynik kontroli oznaczający zgodność z wymaganiami?",
+      "answer": "OK",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 158,
+      "text": "Jak nazywa się wynik kontroli oznaczający niezgodność?",
+      "answer": "NOK",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 159,
+      "text": "Jak nazywa się czas przygotowania maszyny do kolejnego zlecenia?",
+      "answer": "Przezbrojenie/ Setup",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 160,
+      "text": "Jak nazywa się pierwszy prawidłowo wykonany wyrób zatwierdzający ustawienia maszyny przed rozpoczęciem produkcji seryjnej?",
+      "answer": "Pierwsza dobra sztuka",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 161,
+      "text": "Jak nazywa się metoda pięciu kroków porządkowania stanowiska pracy?",
+      "answer": "5S",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 162,
+      "text": "Który element 5S oznacza usunięcie rzeczy zbędnych ze stanowiska?",
+      "answer": "Selekcja",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 163,
+      "text": "Który element 5S oznacza utrzymanie czystości?",
+      "answer": "Sprzątanie",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 164,
+      "text": "Jak nazywa się japońska filozofia ciągłego doskonalenia małymi krokami?",
+      "answer": "Kaizen",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 165,
+      "text": "Jak nazywa się metoda zadawania kolejnych pytań 'dlaczego' w analizie problemu?",
+      "answer": "5 Why / 5 razy dlaczego",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 166,
+      "text": "Jak nazywa się dział odpowiedzialny za sprawność techniczną maszyn?",
+      "answer": "Utrzymanie ruchu",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 167,
+      "text": "Jak nazywa się obsługa zapobiegająca awariom przez planowe kontrole?",
+      "answer": "Utrzymanie prewencyjne",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 168,
+      "text": "Jak nazywa się procedura zabezpieczenia maszyny przed przypadkowym uruchomieniem?",
+      "answer": "LOTO",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 169,
+      "text": "Jak nazywa się wskaźnik obejmujący dostępność, wydajność i jakość?",
+      "answer": "OEE",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 170,
+      "text": "Jak nazywa się odpadowy materiał powstający z papieru podczas produkcji?",
+      "answer": "Makulatura",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 171,
+      "text": "Jak nazywa się pofalowana warstwa w tekturze falistej?",
+      "answer": "Fala/ Fluting",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 172,
+      "text": "Jak nazywa się arkusz tektury docięty do określonych wymiarów, przeznaczony do dalszego przetwarzania?",
+      "answer": "Formatka",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 173,
+      "text": "Jak nazywa się wada polegająca na przesunięciu grafiki względem oczekiwanego położenia?",
+      "answer": "Przesunięcie nadruku",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 174,
+      "text": "Jak nazywa się wada, gdy pudełko rozkleja się po złożeniu?",
+      "answer": "Słabe klejenie / rozklejanie",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 175,
+      "text": "Jak nazywa się czynność układania gotowych produktów na palecie?",
+      "answer": "Paletyzacja",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 176,
+      "text": "Jak nazywa się dokument lub wzór pokazujący wymagane parametry produktu?",
+      "answer": "Specyfikacja",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 177,
+      "text": "Jak nazywa się część procesu, w której sprawdza się np. wymiary wyrobu?",
+      "answer": "Kontrola jakości",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 178,
+      "text": "Jak nazywa się maszyna wykonująca nacięcia i rowki w tekturze?",
+      "answer": "Slotter",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 179,
+      "text": "Jak nazywa się element farbowy przenoszący farbę w druku fleksograficznym?",
+      "answer": "Wałek / anilox",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 180,
+      "text": "Jak nazywa się forma drukowa używana we fleksografii?",
+      "answer": "Fotopolimer / płyta drukowa",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 181,
+      "text": "Jak nazywa się parametr określający siłę nacisku rolek na materiał podczas jego prowadzenia przez maszynę?",
+      "answer": "Docisk rolek",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 182,
+      "text": "Jak nazywa się lista czynności do wykonania podczas kontroli lub przezbrojenia?",
+      "answer": "Checklista",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 183,
+      "text": "Jak nazywa się oznaczenie wskazujące wyznaczone miejsce przechowywania narzędzia lub materiału?",
+      "answer": "Oznaczenie wizualne",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 184,
+      "text": "Jak nazywa się krótkie, nieplanowane zatrzymanie maszyny?",
+      "answer": "Mikroprzestój",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 185,
+      "text": "Jak nazywa się naprawa maszyny wykonywana po wystąpieniu awarii?",
+      "answer": "Utrzymanie korekcyjne / naprawa awaryjna",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 186,
+      "text": "Jak nazywają się części potrzebne do naprawy maszyny?",
+      "answer": "Części zamienne",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 187,
+      "text": "Jak nazywa się osoba obsługująca maszynę produkcyjną?",
+      "answer": "Operator",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 188,
+      "text": "Jak nazywa się przekazanie niezbędnych informacji o problemach między zmianami?",
+      "answer": "Przekazanie zmiany",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 189,
+      "text": "Jak nazywa się działanie usuwające przyczynę niezgodności?",
+      "answer": "Działanie korygujące",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 190,
+      "text": "Jak nazywa się działanie zapobiegające ponownemu wystąpieniu problemu?",
+      "answer": "Działanie zapobiegawcze",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 191,
+      "text": "Jak nazywa się badanie przyczyny problemu, a nie tylko jego objawu?",
+      "answer": "Analiza przyczyny źródłowej",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 192,
+      "text": "Jak nazywa się pudełko przygotowane do ekspozycji produktu w sklepie?",
+      "answer": "Display",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 193,
+      "text": "Jak nazywa się pudełko z oddzielną pokrywą i dnem?",
+      "answer": "Pudełko wieczkowe/ dwuczęściowe",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 194,
+      "text": "Jak nazywa się opakowanie wykonane według nietypowego kształtu z wykrojnika?",
+      "answer": "Pudełko fasonowe",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 195,
+      "text": "Jak nazywa się kontrola porządku, standardu i zgodności stanowiska z 5S?",
+      "answer": "Audyt 5S",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 196,
+      "text": "Jak nazywa się obrazkowa lub kolorystyczna metoda pokazania stanu obszaru?",
+      "answer": "Zarządzanie wizualne",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 197,
+      "text": "Jak nazywa się instrukcja opisująca najlepszy znany sposób wykonania pracy?",
+      "answer": "Standard pracy",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 198,
+      "text": "Jak nazywa się skrócenie czasu przezbrojenia przez przygotowanie czynności zewnętrznych?",
+      "answer": "SMED",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 199,
+      "text": "Jak nazywa się kontrola wykonana po naprawie, aby potwierdzić skuteczność działania?",
+      "answer": "Test po naprawie/ weryfikacja",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 200,
+      "text": "Jak nazywa się zgłoszenie pomysłu usprawniającego proces?",
+      "answer": "Pomysł Kaizen / wniosek usprawniający",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 201,
+      "text": "Jak nazywa się największy ocean na Ziemi?",
+      "answer": "Ocean Spokojny / Pacyfik",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 202,
+      "text": "Ile stopni ma kąt prosty?",
+      "answer": "90 stopni",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 203,
+      "text": "Jak nazywa się stolica Włoch?",
+      "answer": "Rzym",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 204,
+      "text": "Jaki pierwiastek chemiczny ma symbol O?",
+      "answer": "Tlen",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 205,
+      "text": "Ile minut ma jedna godzina?",
+      "answer": "60",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 206,
+      "text": "Jak nazywa się proces, w którym rośliny wykorzystują światło do wytwarzania substancji odżywczych?",
+      "answer": "Fotosynteza",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 207,
+      "text": "Jak nazywa się najdłuższa rzeka w Polsce?",
+      "answer": "Wisła",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 208,
+      "text": "Jaki jest wynik działania 12 × 8?",
+      "answer": "96",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 209,
+      "text": "Jak nazywa się naturalny satelita Ziemi?",
+      "answer": "Księżyc",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 210,
+      "text": "Ile boków ma sześciokąt?",
+      "answer": "6",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 211,
+      "text": "Jak nazywa się jednostka natężenia prądu elektrycznego?",
+      "answer": "Amper",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 212,
+      "text": "Który kontynent jest największy powierzchniowo?",
+      "answer": "Azja",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 213,
+      "text": "Jak nazywa się przyrząd do pomiaru temperatury?",
+      "answer": "Termometr",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 214,
+      "text": "Jak nazywa się płaska warstwa papieru w tekturze falistej?",
+      "answer": "Liner",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 215,
+      "text": "Jak nazywa się pofalowana warstwa papieru pomiędzy linerami?",
+      "answer": "Fluting / fala",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 216,
+      "text": "Jak nazywa się metoda TWI poświęcona instruowaniu pracownika w wykonywaniu pracy?",
+      "answer": "Job Instruction / JI",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 217,
+      "text": "Jak nazywa się krok 5S polegający na utrzymywaniu i przestrzeganiu ustalonych zasad?",
+      "answer": "Standaryzacja / standaryzowanie",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 218,
+      "text": "Jak nazywa się podejście TPM, w którym operator wykonuje podstawowe czynności czyszczenia, kontroli i smarowania?",
+      "answer": "Autonomiczne utrzymanie ruchu",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 219,
+      "text": "Jak w SMED nazywa się czynność przezbrojenia, którą można wykonać przy pracującej maszynie?",
+      "answer": "Czynność zewnętrzna",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 220,
+      "text": "Jak nazywa się parametr opisujący liczbę warstw papieru tworzących tekturę falistą, np. 3- lub 5-warstwową?",
+      "answer": "Liczba warstw / budowa tektury",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 221,
+      "text": "Jak nazywa się kontrola wykonywana na początku zlecenia w celu potwierdzenia zgodności produktu?",
+      "answer": "Kontrola pierwszej sztuki",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 222,
+      "text": "Jak nazywa się działanie polegające na przywracaniu maszyny do warunków podstawowych przez czyszczenie i usuwanie drobnych nieprawidłowości?",
+      "answer": "Działanie prewencyjne",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 223,
+      "text": "Jak nazywa się wizualne oznaczenie stałego miejsca dla narzędzia w ramach 5S?",
+      "answer": "Zarządzanie wizualne / oznaczenie miejsca",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 224,
+      "text": "Jak nazywa się zmiana ustawień maszyny z jednego produktu na drugi?",
+      "answer": "Przezbrojenie/ Setup",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 225,
+      "text": "Jak nazywa się dokument opisujący najlepszy, uzgodniony sposób wykonania pracy?",
+      "answer": "Standard pracy / instrukcja standardowa",
+      "type": "OPEN",
+      "round": "MANDATORY",
+      "category": "Produkcja",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "id": 226,
+      "text": "Który parametr procesu może jednocześnie wpływać na jakość nadruku, zużycie farby i ryzyko uszkodzenia tektury?",
+      "answer": "Docisk / ustawienie docisku",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 227,
+      "text": "Jak nazywa się metoda oddzielania czynności wewnętrznych i zewnętrznych w celu skrócenia przezbrojenia?",
+      "answer": "SMED",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 228,
+      "text": "Jaki problem jakościowy może powstać, gdy biga jest zbyt mocna albo źle ustawiona?",
+      "answer": "Pękanie bigi / uszkodzenie zagięcia",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 229,
+      "text": "Jaki problem może powodować tępy nóż w wykrojniku?",
+      "answer": "Strzępienie krawędzi / słabe cięcie",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 230,
+      "text": "Jakie trzy obszary składają się na wskaźnik OEE?",
+      "answer": "Dostępność, wydajność i jakość",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 231,
+      "text": "Jak nazywa się podejście, w którym operator wykonuje podstawowe kontrole i czyszczenie maszyny?",
+      "answer": "Autonomiczne utrzymanie ruchu / TPM",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 232,
+      "text": "Co należy sprawdzić, gdy pudełko rozkleja się po opuszczeniu klejarki?",
+      "answer": "Ilość kleju, ustawienie dysz, docisk i czas wiązania",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 233,
+      "text": "Jaka dokumentacja pomaga operatorowi ustawić maszynę zgodnie z wymaganiami produktu?",
+      "answer": "Specyfikacja / rysunek techniczny / karta technologiczna",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 234,
+      "text": "Co oznacza, że problem został rozwiązany u źródła?",
+      "answer": "Usunięto przyczynę, a nie tylko objaw",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 235,
+      "text": "Dlaczego oznaczenie miejsc na narzędzia skraca przezbrojenie?",
+      "answer": "Bo zmniejsza czas szukania i ryzyko pomyłki",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 236,
+      "text": "Jakie ryzyko powstaje, gdy półprodukty z dwóch zleceń są składowane bez jasnej identyfikacji?",
+      "answer": "Pomyłka zleceń / reklamacja",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 237,
+      "text": "Jaki element kontroli pierwszej sztuki jest szczególnie ważny przy zmianie grafiki?",
+      "answer": "Zgodność nadruku z wzorcem",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 238,
+      "text": "Co może być przyczyną fałszywych zatrzymań maszyny na czujniku?",
+      "answer": "Zabrudzenie, uszkodzenie lub złe ustawienie czujnika",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 239,
+      "text": "Jak nazywa się zapis historii awarii i wykonanych napraw maszyny?",
+      "answer": "Historia awarii / rejestr awarii",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 240,
+      "text": "Dlaczego regularne czyszczenie jest częścią utrzymania ruchu, a nie tylko porządku?",
+      "answer": "Bo pomaga wykrywać usterki i zmniejsza ryzyko awarii",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 241,
+      "text": "Jaki typ pudełka najczęściej kojarzy się z kodem FEFCO 0201?",
+      "answer": "Pudełko klapowe",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 242,
+      "text": "Jakie parametry warto obserwować przy problemach z nadrukiem fleksograficznym?",
+      "answer": "Docisk, farbę, anilox, płytę, rejestr i suszenie",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 243,
+      "text": "Co oznacza standaryzacja po udanym Kaizen?",
+      "answer": "Wpisanie nowego sposobu pracy do standardu",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 244,
+      "text": "Dlaczego zdjęcie NOK jest przydatne w audycie lub reklamacji wewnętrznej?",
+      "answer": "Pokazuje rzeczywisty stan i ułatwia analizę",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 245,
+      "text": "Jakie działanie powinno nastąpić po wykryciu powtarzalnego mikroprzestoju?",
+      "answer": "Analiza przyczyny i działanie korygujące",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 246,
+      "text": "Co jest przykładem zarządzania wizualnego przy wykrojnikach?",
+      "answer": "Etykiety, kolory, lokalizacje i tablica stanu",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 247,
+      "text": "Jak nazywa się wynik procesu, gdy produkt nie spełnia wymagań klienta?",
+      "answer": "Niezgodność",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 248,
+      "text": "Jakie zagrożenie powoduje obchodzenie zabezpieczeń maszyny?",
+      "answer": "Ryzyko wypadku i niekontrolowanego uruchomienia",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 249,
+      "text": "Dlaczego ważny jest kierunek fali w tekturze?",
+      "answer": "Wpływa na sztywność, składanie i wytrzymałość pudełka",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 250,
+      "text": "Co może powodować deformację gotowych pudełek na palecie?",
+      "answer": "Zbyt duży nacisk, złe układanie lub zbyt mocne spięcie",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 251,
+      "text": "Jak można ograniczyć błędy podczas przezbrojenia?",
+      "answer": "Checklistą, standardem, oznaczeniami i przygotowaniem narzędzi",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 252,
+      "text": "Jak nazywa się sytuacja, gdy maszyna jest dostępna, ale pracuje wolniej niż zakładano? Weź pod uwagę wskaźnik OEE.",
+      "answer": "Strata wydajności",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 253,
+      "text": "Jak nazywa się sytuacja, gdy wyprodukowane sztuki są odrzucane jako wadliwe?  Weź pod uwagę wskaźnik OEE.",
+      "answer": "Strata jakości",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 254,
+      "text": "Jak nazywa się sytuacja, gdy maszyna stoi z powodu awarii lub przezbrojenia?  Weź pod uwagę wskaźnik OEE.",
+      "answer": "Strata dostępności",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 255,
+      "text": "Dlaczego warto analizować awarie powtarzalne, a nie tylko największe?",
+      "answer": "Bo małe, częste problemy mogą dawać dużą stratę łączną",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 256,
+      "text": "Co powinno zawierać dobre zgłoszenie awarii do utrzymania ruchu?",
+      "answer": "Maszynę, objaw, czas, miejsce, zdjęcie i wpływ na produkcję",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 257,
+      "text": "Jakie są dwa główne typy działań np. po problemie jakościowym?",
+      "answer": "Korygujące i zapobiegawcze",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 258,
+      "text": "Co oznacza, że kontrola jest oparta na standardzie?",
+      "answer": "Sprawdza się wymagania opisane w ustalonych kryteriach",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 259,
+      "text": "Jaki problem może powstać przy niewłaściwej lepkości farby?",
+      "answer": "Słaby nadruk, zalewanie lub niestabilna jakość",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 260,
+      "text": "Jaki element maszyny fleksograficznej dawkuje farbę na formę drukową?",
+      "answer": "Wałek anilox",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 261,
+      "text": "Co może oznaczać rosnąca temperatura łożyska?",
+      "answer": "Pogarszający się stan techniczny lub brak smarowania",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 262,
+      "text": "Jaki sygnał może wskazywać na niewyważenie lub zużycie elementu obrotowego?",
+      "answer": "Wibracje",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 263,
+      "text": "Po co stosuje się przekładki między warstwami na palecie?",
+      "answer": "Dla stabilizacji i ochrony produktów",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 264,
+      "text": "Dlaczego test po naprawie powinien być wykonany przed pełnym uruchomieniem produkcji?",
+      "answer": "Aby potwierdzić skuteczność i bezpieczeństwo naprawy",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 265,
+      "text": "Co odróżnia działanie tymczasowe od trwałego rozwiązania problemu?",
+      "answer": "Tymczasowe ogranicza skutek, trwałe usuwa przyczynę",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 266,
+      "text": "Jakie pytanie najlepiej rozpoczęłoby analizę 5 Why przy rozklejaniu pudełek?",
+      "answer": "Dlaczego klejenie nie utrzymało połączenia?",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 267,
+      "text": "Dlaczego audyt 5S nie powinien być tylko sprzątaniem przed wizytą?",
+      "answer": "Bo ma utrzymywać codzienny standard pracy",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 268,
+      "text": "Co oznacza Jaką zasadę w 5S realizuje hasło 'miejsce dla wszystkiego i wszystko na swoim miejscu'?",
+      "answer": "Systematyka / Seiton",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 269,
+      "text": "Jakie dane pomagają porównać zmianę przed i po usprawnieniu Kaizen?",
+      "answer": "Czas, ilość błędów, przestoje, wydajność lub jakość",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 270,
+      "text": "Jaki problem może wynikać z nieaktualnej instrukcji ustawienia maszyny?",
+      "answer": "Błędne ustawienia i powtarzanie starych problemów",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 271,
+      "text": "Co należy zrobić, jeśli po wdrożeniu usprawnienia pojawia się nowe ryzyko BHP?",
+      "answer": "Zatrzymać zmianę, ocenić ryzyko i poprawić rozwiązanie",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 272,
+      "text": "Dlaczego warto angażować operatorów w Kaizen przy maszynach przetwórczych?",
+      "answer": "Bo najlepiej znają codzienne problemy procesu",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 273,
+      "text": "Jakie znaczenie ma kontrola zgodności etykiety z wyrobem?",
+      "answer": "Zapobiega pomieszaniu produktów i błędom wysyłki",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 274,
+      "text": "Co powinno być efektem zamknięcia działania po audycie NOK?",
+      "answer": "Usunięta niezgodność i potwierdzona skuteczność działań",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 275,
+      "text": "Jaki rodzaj pudełka często wymaga bardziej złożonego wykrojnika niż proste pudełko klapowe?",
+      "answer": "Pudełko fasonowe / display",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 276,
+      "text": "Jak nazywa się zjawisko zmiany kierunku światła przy przejściu z jednego ośrodka do drugiego?",
+      "answer": "Załamanie światła / refrakcja",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 277,
+      "text": "Która planeta Układu Słonecznego ma największą masę?",
+      "answer": "Jowisz",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 278,
+      "text": "Jak nazywa się twierdzenie wiążące długości boków w trójkącie prostokątnym?",
+      "answer": "Twierdzenie Pitagorasa",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 279,
+      "text": "Jaki gaz stanowi największą część atmosfery ziemskiej?",
+      "answer": "Azot",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 280,
+      "text": "Jak nazywa się skala używana do określania kwasowości lub zasadowości roztworu?",
+      "answer": "Skala pH",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 281,
+      "text": "Jaka jest suma kątów wewnętrznych trójkąta w geometrii euklidesowej?",
+      "answer": "180 stopni",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 282,
+      "text": "Jak nazywa się proces przejścia substancji ze stanu stałego bezpośrednio w gazowy?",
+      "answer": "Sublimacja",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 283,
+      "text": "Który pierwiastek chemiczny ma liczbę atomową 26?",
+      "answer": "Żelazo",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 284,
+      "text": "Jak nazywa się jednostka mocy w układzie SI?",
+      "answer": "Wat",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 285,
+      "text": "Jaki jest wynik 15% z 240?",
+      "answer": "36",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 286,
+      "text": "Jak nazywa się największa część mózgu człowieka odpowiedzialna m.in. za świadome myślenie?",
+      "answer": "Mózgowie / kresomózgowie / półkule mózgowe",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 287,
+      "text": "Jak nazywa się linia łącząca punkty o tej samej wysokości na mapie?",
+      "answer": "Poziomica / izohipsa",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 288,
+      "text": "Jakie trzy elementy powinien przekazać instruktor zgodnie z metodą TWI Job Instruction dla każdego ważnego fragmentu pracy?",
+      "answer": "Główne kroki, kluczowe punkty i powody kluczowych punktów",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 289,
+      "text": "Jaka jest pierwsza praktyczna zasada SMED przy analizie przezbrojenia?",
+      "answer": "Rozdzielenie czynności wewnętrznych i zewnętrznych",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 290,
+      "text": "Co jest głównym celem autonomicznego utrzymania ruchu w TPM z punktu widzenia operatora?",
+      "answer": "Utrzymywanie podstawowego stanu maszyny i wczesne wykrywanie nieprawidłowości",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 291,
+      "text": "Jakie zagrożenie jakościowe może powodować nadmierne zgniatanie fali przed sztancowaniem lub drukiem?",
+      "answer": "Spadek wytrzymałości tektury / pudełka",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 292,
+      "text": "Dlaczego kierunek fali ma znaczenie przy projektowaniu pudełka z tektury falistej?",
+      "answer": "Wpływa na sztywność, wytrzymałość i sposób zginania opakowania",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 293,
+      "text": "Co należy zrobić ze standardem pracy po trwałym wdrożeniu zatwierdzonego usprawnienia Kaizen?",
+      "answer": "Zaktualizować standard i przeszkolić pracowników",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 294,
+      "text": "Jaki problem w procesie może ujawnić powtarzalne przesunięcie nadruku względem wykroju?",
+      "answer": "Błąd rejestru / synchronizacji nadruku i wykroju",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 295,
+      "text": "Dlaczego przygotowanie narzędzi poza maszyną skraca czas przezbrojenia według SMED?",
+      "answer": "Przenosi czynności z czasu postoju do czynności zewnętrznych",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 296,
+      "text": "Jaki jest sens oznaczania punktów kontroli i wartości prawidłowych bezpośrednio na maszynie w TPM?",
+      "answer": "Ułatwia szybkie wykrycie odchylenia i reakcję operatora",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 297,
+      "text": "Co w 5S oznacza zasada, że każda rzecz ma swoje miejsce i każda rzecz jest na swoim miejscu?",
+      "answer": "Systematyka / uporządkowanie",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 298,
+      "text": "Jakie dwa podstawowe elementy papierowe tworzą tekturę falistą?",
+      "answer": "Linery i fluting / warstwa pofalowana",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 299,
+      "text": "Co powinno być pierwszym krokiem przy nawracającym problemie jakościowym po chwilowej korekcie ustawień?",
+      "answer": "Analiza przyczyny źródłowej",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    },
+    {
+      "id": 300,
+      "text": "Jakie działanie w TPM pomaga zapobiegać awariom wynikającym z pogarszającego się stanu elementu maszyny?",
+      "answer": "Planowa kontrola i konserwacja prewencyjna / predykcyjna",
+      "type": "OPEN",
+      "round": "BATTLE",
+      "category": "Produkcja",
+      "difficulty": "HARD"
+    }
+  ],
+  "categories": [
+    "Produkcja"
+  ]
+}
