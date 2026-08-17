@@ -568,7 +568,7 @@ export default function AudienceView() {
                 letterSpacing: "0.24em", textTransform: "uppercase",
                 marginBottom: "clamp(14px, 2vh, 24px)", opacity: 0.8,
               }}>
-                {currentQuestion.type === "TRUE_FALSE" ? "True · False" : "Open question"}
+                {currentQuestion.type === "TRUE_FALSE" ? "Prawda · Fałsz" : "Pytanie otwarte"}
               </p>
 
               <h2 style={{
@@ -586,7 +586,7 @@ export default function AudienceView() {
                   gap: "clamp(20px, 3vw, 48px)",
                   marginTop: "clamp(20px, 3vh, 36px)",
                 }}>
-                  {["True", "False"].map(opt => (
+                  {["Prawda", "Fałsz"].map(opt => (
                     <div key={opt} style={{
                       padding: "10px 40px",
                       border: "1px solid rgba(138,120,101,0.25)",
