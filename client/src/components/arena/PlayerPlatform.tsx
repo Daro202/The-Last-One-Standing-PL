@@ -173,7 +173,7 @@ export function PlayerPlatform({ player, isCurrent, floorGlow }: PlayerPlatformP
               letterSpacing: "0.08em",
             }}
           >
-            pts
+            pkt
           </span>
         </p>
 

@@ -69,7 +69,7 @@ export const DEFAULT_LIVES = 2;
 
 export const INITIAL_PLAYERS: Player[] = Array.from({ length: 10 }, (_, i) => ({
   id: i + 1,
-  name: `Player ${i + 1}`,
+  name: `Gracz ${i + 1}`,
   avatarId: (i % AVATARS.length) + 1,
   points: 0,
   lives: DEFAULT_LIVES,

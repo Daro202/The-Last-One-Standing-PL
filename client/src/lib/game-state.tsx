@@ -71,7 +71,12 @@ function migrateState(parsed: Record<string, unknown>): GameState {
   ) as Array<Record<string, unknown>>;
   let players: Player[] = rawPlayers.map((p, i: number) => ({
     id: (p['id'] as number) ?? i + 1,
-    name: (p['name'] as string) ?? `Player ${i + 1}`,
+    name: (() => {
+      const n = p['name'] as string | undefined;
+      // Zamień stare domyślne "Player N" na "Gracz N"; własne nazwy zostaw.
+      if (!n || /^Player \d+$/.test(n)) return `Gracz ${i + 1}`;
+      return n;
+    })(),
     avatarId: (p['avatarId'] as number) ?? ((i % 12) + 1),
     points: (p['points'] as number) ?? 0,
     lives: (p['lives'] as number) ?? DEFAULT_LIVES,

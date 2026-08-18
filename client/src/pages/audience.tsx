@@ -82,7 +82,7 @@ function JoinScreen({ onJoin, wsConnected, wsError }: {
           textTransform: "uppercase",
           marginBottom: 12,
         }}>
-          The Last One Standing
+          Dziesięciu
         </p>
         <h1 style={{
           ...serif,
@@ -322,7 +322,7 @@ export default function AudienceView() {
             letterSpacing: "0.20em",
             textTransform: "uppercase",
           }}>
-            The Last One Standing
+            Dziesięciu
           </span>
           <span style={{
             display: "inline-block",
@@ -362,7 +362,7 @@ export default function AudienceView() {
                 whiteSpace: "nowrap",
               }}
             >
-              Question {questionNumber}{totalQ > 0 ? ` · ${totalQ}` : ""}
+              Pytanie {questionNumber}{totalQ > 0 ? ` · ${totalQ}` : ""}
               {selectedCategory ? ` · ${selectedCategory}` : ""}
             </motion.p>
           )}
@@ -385,7 +385,7 @@ export default function AudienceView() {
             letterSpacing: "0.06em",
           }}>
             {activePlayers.length}{" "}
-            <span style={{ opacity: 0.55, fontWeight: 400 }}>standing</span>
+            <span style={{ opacity: 0.55, fontWeight: 400 }}>w grze</span>
           </span>
         </div>
       </header>
@@ -487,7 +487,7 @@ export default function AudienceView() {
                   letterSpacing: "0.32em", textTransform: "uppercase", marginBottom: 16,
                 }}
               >
-                The Last One Standing
+                Dziesięciu
               </motion.p>
               {winner && (
                 <>
@@ -513,7 +513,7 @@ export default function AudienceView() {
                       fontWeight: 500, letterSpacing: "0.12em",
                     }}
                   >
-                    {winner.points} points
+                    {winner.points} pkt
                   </motion.p>
                 </>
               )}
@@ -533,7 +533,7 @@ export default function AudienceView() {
                 fontSize: "clamp(2.8rem, 5.5vw, 5rem)",
                 fontWeight: 500, letterSpacing: "0.03em", lineHeight: 1.1, userSelect: "none",
               }}>
-                Waiting for question
+                Czekamy na pytanie
               </h2>
               <p style={{
                 ...sans,
@@ -541,7 +541,7 @@ export default function AudienceView() {
                 fontSize: "clamp(10px, 1vw, 13px)",
                 letterSpacing: "0.28em", textTransform: "uppercase", marginTop: 18,
               }}>
-                Host is preparing
+                Prowadzący przygotowuje
               </p>
             </motion.div>
 
