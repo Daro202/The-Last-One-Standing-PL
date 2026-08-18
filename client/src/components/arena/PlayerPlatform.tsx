@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Player } from "@/lib/mock-data";
+import { Player, AVATARS } from "@/lib/mock-data";
 import { PlayerFigurine } from "./PlayerFigurine";
 import { LifeCore } from "./LifeCore";
 
@@ -11,6 +11,7 @@ interface PlayerPlatformProps {
 
 export function PlayerPlatform({ player, isCurrent, floorGlow }: PlayerPlatformProps) {
   const isEliminated = !player.active;
+  const avatarEmoji = AVATARS.find(a => a.id === player.avatarId)?.emoji ?? "";
 
   return (
     <motion.div
@@ -69,6 +70,27 @@ export function PlayerPlatform({ player, isCurrent, floorGlow }: PlayerPlatformP
           isCurrent={isCurrent}
           isEliminated={isEliminated}
         />
+
+        {/* Avatar badge — animal emoji on the figure's right chest */}
+        {avatarEmoji && (
+          <span
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: "70%",
+              left: "40%",
+              transform: "translate(-50%, -50%)",
+              fontSize: "clamp(11px, 1.35vw, 22px)",
+              lineHeight: 1,
+              pointerEvents: "none",
+              filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.65))",
+              opacity: isEliminated ? 0.45 : 1,
+              transition: "opacity 0.6s ease",
+            }}
+          >
+            {avatarEmoji}
+          </span>
+        )}
       </div>
 
       {/* Floor glow strip */}
